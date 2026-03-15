@@ -767,7 +767,7 @@ const lightboxClose = document.getElementById('lightbox-close');
 
 document.querySelectorAll('.study-img').forEach(img => {
   img.addEventListener('click', () => {
-    const fullSrc = img.src.split('?')[0] + '?ssl=1';
+    const fullSrc = img.src.replace(/^https:\/\/i\d+\.wp\.com\//, 'https://').split('?')[0];
     lightboxImg.alt = img.alt;
     lightboxImg.src = fullSrc;
     lightbox.classList.add('open');
