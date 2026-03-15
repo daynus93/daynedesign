@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRIVE Portal – Dayne Petera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root { --white:#ffffff; --off:#f7f9fc; --sky:#4a9edd; --sky-lt:#d6eaf8; --sky-mid:#2176ae; --stone:#c8d4dc; --slate:#8099b0; --muted:#6a7f90; --ink:#1c2b3a; --serif:'Playfair Display',Georgia,serif; --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace; --radius:999px; --radius-card:16px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--off);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+nav{position:fixed;top:0;left:0;right:0;z-index:9001;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 4rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--stone);transition:box-shadow 0.3s;}
+nav.scrolled{box-shadow:0 2px 24px rgba(28,43,58,0.07);}
+.nav-logo{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-0.02em;display:flex;align-items:center;gap:0.55rem;}
+.nav-logo-img{width:28px;height:28px;border-radius:50%;}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--sky);}
+.nav-cta{background:var(--sky);color:#fff!important;padding:0.5rem 1.2rem;border-radius:var(--radius);font-family:var(--mono);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;}
+.nav-cta:hover{background:var(--sky-mid);transform:translateY(-1px);}
+.study-hero{margin-top:64px;padding:5rem 5rem 0;background:var(--white);border-bottom:1px solid var(--stone);}
+.study-back{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:2.5rem;transition:color 0.2s;}
+.study-back:hover{color:var(--sky);}
+.study-back svg{width:12px;height:12px;}
+.study-label{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sky);margin-bottom:0.8rem;}
+.study-title{font-family:var(--serif);font-size:clamp(3rem,5vw,5.5rem);font-weight:900;line-height:1.0;color:var(--ink);letter-spacing:-0.02em;margin-bottom:1.5rem;}
+.study-tagline{font-size:1.15rem;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:3rem;}
+.study-meta{display:flex;gap:3rem;flex-wrap:wrap;padding:2rem 0;border-top:1px solid var(--stone);}
+.meta-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--slate);margin-bottom:0.3rem;}
+.meta-value{font-size:0.9rem;color:var(--ink);font-weight:500;}
+.meta-value small{display:block;font-size:0.8rem;color:var(--muted);font-weight:400;}
+.hero-img-wrap{margin:0 -5rem;margin-top:2rem;overflow:hidden;height:480px;position:relative;}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.study-body{display:grid;grid-template-columns:1fr 200px;gap:4rem;max-width:1200px;margin:0 auto;padding:5rem 3rem;align-items:start;}
+.content-section{margin-bottom:5rem;}
+.content-section.animate{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.content-section.animate.visible{opacity:1;transform:translateY(0);}
+.section-eyebrow{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sky);margin-bottom:0.7rem;}
+.section-heading{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;line-height:1.15;color:var(--ink);margin-bottom:1.2rem;letter-spacing:-0.01em;}
+.section-heading em{font-style:italic;color:var(--sky-mid);}
+.body-text{font-size:1rem;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;}
+.body-text strong{color:var(--ink);font-weight:600;}
+.subsection{margin-top:2.5rem;}
+.subsection-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;font-style:italic;color:var(--ink);margin-bottom:0.8rem;}
+.callout{background:var(--sky-lt);border-left:3px solid var(--sky);border-radius:0 var(--radius-card) var(--radius-card) 0;padding:1.2rem 1.5rem;margin:1.8rem 0;}
+.callout p{font-size:0.95rem;color:var(--sky-mid);line-height:1.7;margin:0;}
+.callout strong{color:var(--ink);}
+.study-list{list-style:none;margin:1rem 0 1.5rem;}
+.study-list li{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.95rem;color:var(--muted);line-height:1.7;padding:0.5rem 0;border-bottom:1px solid rgba(200,212,220,0.4);}
+.study-list li:last-child{border-bottom:none;}
+.study-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sky);flex-shrink:0;margin-top:0.6rem;}
+.tool-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0;}
+.tool-chip{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.35rem 0.85rem;background:var(--white);border:1px solid var(--stone);border-radius:var(--radius);color:var(--muted);}
+.content-divider{height:1px;background:var(--stone);margin:3rem 0;border:none;}
+.study-img{width:100%;border-radius:var(--radius-card);border:1px solid var(--stone);display:block;margin:1.5rem 0;transition:box-shadow 0.3s;cursor:zoom-in;}
+.study-img:hover{box-shadow:0 12px 40px rgba(28,43,58,0.12);}
+.img-caption{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);text-align:center;margin-top:-0.8rem;margin-bottom:1.5rem;}
+.img-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.img-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin:1.5rem 0;}
+.result-card{background:var(--white);border:1px solid var(--stone);border-radius:var(--radius-card);padding:1.5rem;transition:border-color 0.2s,transform 0.2s;}
+.result-card:hover{border-color:var(--sky);transform:translateY(-2px);}
+.result-num{font-family:var(--serif);font-size:2.5rem;font-weight:900;color:var(--sky);line-height:1;margin-bottom:0.4rem;}
+.result-label{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+.learning-list{list-style:none;margin:1rem 0;}
+.learning-list li{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(200,212,220,0.4);font-size:0.95rem;color:var(--muted);line-height:1.7;}
+.learning-list li:last-child{border-bottom:none;}
+.learning-num{font-family:var(--mono);font-size:0.6rem;color:var(--sky);background:var(--sky-lt);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.1rem;letter-spacing:0;}
+.study-toc{position:sticky;top:96px;align-self:start;}
+.toc-label{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--slate);margin-bottom:1rem;}
+.toc-list{list-style:none;}
+.toc-link{display:flex;align-items:center;gap:0.6rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--slate);text-decoration:none;padding:0.45rem 0;border-left:2px solid transparent;padding-left:0.75rem;transition:color 0.2s,border-color 0.2s;line-height:1.3;}
+.toc-link:hover{color:var(--sky);border-left-color:var(--sky-lt);}
+.toc-link.active{color:var(--sky-mid);border-left-color:var(--sky);font-weight:500;}
+.toc-progress{height:2px;background:var(--stone);border-radius:1px;margin-bottom:1.2rem;overflow:hidden;}
+.toc-progress-fill{height:100%;background:var(--sky);border-radius:1px;width:0%;transition:width 0.1s;}
+footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:var(--serif);font-size:1rem;color:white;text-decoration:none;display:flex;align-items:center;gap:0.5rem;}
+.footer-logo img{width:24px;height:24px;border-radius:50%;}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap;}
+.footer-links a{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--sky);}
+.footer-copy{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.06em;color:#ffffff;}
+#lightbox{display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,18,26,0.92);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:2rem;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:min(90vw,1400px);max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 32px 80px rgba(0,0,0,0.6);cursor:zoom-out;animation:lbIn 0.2s ease;}
+@keyframes lbIn{from{opacity:0;transform:scale(0.96);}to{opacity:1;transform:scale(1);}}
+#lightbox-close{position:fixed;top:1.25rem;right:1.5rem;width:36px;height:36px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:50%;color:white;font-size:1.1rem;line-height:36px;text-align:center;cursor:pointer;transition:background 0.2s;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-animate{opacity:0;animation:fadeUp 0.7s forwards;}
+.hero-animate:nth-child(1){animation-delay:0.1s;}
+.hero-animate:nth-child(2){animation-delay:0.2s;}
+.hero-animate:nth-child(3){animation-delay:0.3s;}
+.hero-animate:nth-child(4){animation-delay:0.4s;}
+@media(max-width:960px){.study-hero{padding:4rem 2rem 0;}.hero-img-wrap{margin:0 -2rem;max-height:360px;}.study-body{grid-template-columns:1fr;padding:3rem 2rem;gap:0;}.study-toc{display:none;}footer{padding:2rem;flex-direction:column;text-align:center;}.img-3col{grid-template-columns:1fr;}.results-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.study-meta{gap:1.5rem;}.img-2col{grid-template-columns:1fr;}.results-grid{grid-template-columns:1fr;}}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;z-index:9002;}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:transform 0.3s,opacity 0.2s;}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);background:#fff;}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:#fff;}
+#mobileMenu{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-width:100vw;min-height:100vh;background:#1c2b3a;z-index:9000;flex-direction:column;align-items:center;justify-content:center;gap:1rem;box-sizing:border-box;}
+#mobileMenu.open{display:flex;}
+.mobile-link{font-family:var(--serif);font-size:3rem;font-weight:900;color:#fff;text-decoration:none;line-height:1.2;}
+.mobile-link:hover{color:var(--sky);}
+.mobile-link-cta{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--sky)!important;margin-top:1rem;padding:0.8rem 2rem;border:1px solid var(--sky);border-radius:999px;text-decoration:none;}
+@media(max-width:960px){nav{padding:1rem 1.5rem;}.nav-links{display:none;}.nav-hamburger{display:flex;}}
+</style>
+</head>
+<body>
+<nav id="mainNav">
+  <a class="nav-logo" href="index.html"><img src="https://dayne.design/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera" class="nav-logo-img">Dayne Petera</a>
+  <ul class="nav-links">
+    <li><a href="index.html#studies">Work</a></li>
+    <li><a href="index.html#experience">Experience</a></li>
+    <li><a href="index.html#fish-quiz">Play</a></li>
+    <li><a class="nav-cta" href="mailto:dayne@dayne.design">Say hello</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="study-hero">
+  <a class="study-back" href="index.html#studies"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L4 6l4 4"/></svg>All Work</a>
+  <div class="hero-animate">
+    <div class="study-label">Project Showcase &middot; Pearson Hackathon</div>
+    <h1 class="study-title">DRIVE Portal</h1>
+    <p class="study-tagline">Winner of the 2016 Pearson Learning Services hackathon &mdash; a conceptual parent-student portal keeping students, parents, and teachers connected and informed.</p>
+  </div>
+  <div class="study-meta hero-animate">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">UX Designer<small>IA &middot; Wireframes &middot; Hi-Fi Prototype</small></div></div>
+    <div class="meta-item"><div class="meta-label">Company</div><div class="meta-value">Pearson<small>Internal Hackathon</small></div></div>
+    <div class="meta-item"><div class="meta-label">Platform</div><div class="meta-value">Mobile<small>iOS Concept</small></div></div>
+    <div class="meta-item"><div class="meta-label">Award</div><div class="meta-value">1st Place<small>Most Learner-Centric Idea</small></div></div>
+  </div>
+  <div class="hero-img-wrap hero-animate">
+    <img src="https://dayne.design/wp-content/uploads/2017/01/dive_mockup2.png" alt="DRIVE Portal">
+  </div>
+</section>
+
+<div class="study-body">
+  <main class="study-content">
+    <section class="content-section animate" id="about">
+      <div class="section-eyebrow">Background</div>
+      <h2 class="section-heading">Award-winning in <em>one day</em></h2>
+      <p class="body-text">During the 2016 Pearson Learning Services Technology-wide hackathon, designers, developers, and other professionals came together to build concepts that could benefit Pearson as a whole. Our team's idea: a parent portal application that would give students, parents, and teachers a shared, real-time view of academic progress.</p>
+      <p class="body-text">We won for Most Learner-Centric Idea.</p>
+      <div class="tool-grid">
+        <span class="tool-chip">Axure</span>
+        <span class="tool-chip">iOS Concept</span>
+        <span class="tool-chip">Wireframing</span>
+        <span class="tool-chip">Hi-Fi Prototype</span>
+        <span class="tool-chip">Hackathon</span>
+      </div>
+    </section>
+    <hr class="content-divider">
+    <section class="content-section animate" id="process">
+      <div class="section-eyebrow">Process</div>
+      <h2 class="section-heading">From ideation <em>to prototype</em></h2>
+      <p class="body-text">The process followed a compressed but complete design loop in a single day:</p>
+      <ul class="study-list">
+        <li>Ideation session after framing the design problem</li>
+        <li>Sketching to explore structural approaches</li>
+        <li>Wireframing to nail down functionality and flow</li>
+        <li>Final high-fidelity mockups with a fully functioning Axure prototype</li>
+      </ul>
+      <div class="img-2col">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/ia.jpg" alt="IA session" class="study-img" style="margin:0">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/sketching.jpg" alt="Sketching" class="study-img" style="margin:0">
+      </div>
+      <p class="img-caption">Ideation and information architecture, then sketching</p>
+    </section>
+    <hr class="content-divider">
+    <section class="content-section animate" id="designs">
+      <div class="section-eyebrow">Wireframes &amp; Final Design</div>
+      <h2 class="section-heading">Wireframes to <em>hi-fi in hours</em></h2>
+      <div class="img-2col">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/wire11-e1490729895261.png" alt="Wireframe 1" class="study-img" style="margin:0">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/wire21-e1490729919985.png" alt="Wireframe 2" class="study-img" style="margin:0">
+      </div>
+      <div class="img-2col">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/wire41-e1490729984689.png" alt="Wireframe 3" class="study-img" style="margin:0">
+        <img src="https://dayne.design/wp-content/uploads/2017/01/wire31-e1490730041954.png" alt="Wireframe 4" class="study-img" style="margin:0">
+      </div>
+      <p class="img-caption">Wireframes establishing the core flow and functionality</p>
+      <img src="https://dayne.design/wp-content/uploads/2017/01/drive_mockup-e1491240476632.png" alt="DRIVE final mockup" class="study-img">
+      <p class="img-caption">Final high-fidelity mockup with functioning Axure prototype</p>
+    </section>
+    <hr class="content-divider">
+    <section class="content-section animate" id="reflection">
+      <div class="section-eyebrow">Reflection</div>
+      <h2 class="section-heading">What I <em>learned</em></h2>
+      <ul class="learning-list">
+        <li><span class="learning-num">1</span>A strong problem framing wins hackathons. We didn't just build something cool &mdash; we built something that was clearly centered on learners, which resonated with judges immediately.</li>
+        <li><span class="learning-num">2</span>The compressed design loop reinforced that sketching and wireframing aren't formalities &mdash; they're the fastest way to find structural problems before committing to hi-fi.</li>
+        <li><span class="learning-num">3</span>A functional prototype communicates more than a static mockup ever can. The Axure prototype let us demonstrate the full experience, not just show screens.</li>
+      </ul>
+    </section>
+  </main>
+  <aside class="study-toc">
+    <div class="toc-progress"><div class="toc-progress-fill" id="tocProgress"></div></div>
+    <div class="toc-label">On this page</div>
+    <ul class="toc-list">
+      <li><a class="toc-link" href="#about">Background</a></li>
+      <li><a class="toc-link" href="#process">Process</a></li>
+      <li><a class="toc-link" href="#designs">Designs</a></li>
+      <li><a class="toc-link" href="#reflection">Reflection</a></li>
+    </ul>
+  </aside>
+</div>
+
+<div id="lightbox"><span id="lightbox-close">&#x2715;</span><img id="lightbox-img" src="" alt=""></div>
+<footer>
+  <a class="footer-logo" href="index.html"><img src="https://dayne.design/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera">Dayne Petera</a>
+  <div class="footer-links"><a href="index.html#studies">Work</a><a href="index.html#experience">Experience</a><a href="https://www.linkedin.com/in/daynep/" target="_blank">LinkedIn</a><a href="mailto:dayne@dayne.design">Email</a></div>
+  <span class="footer-copy">Medford, Oregon &middot; 2026</span>
+</footer>
+
+<div id="mobileMenu">
+  <a class="mobile-link" href="index.html#studies">Work</a>
+  <a class="mobile-link" href="index.html#experience">Experience</a>
+  <a class="mobile-link" href="index.html#fish-quiz">Play</a>
+  <a class="mobile-link mobile-link-cta" href="mailto:dayne@dayne.design">Say hello</a>
+</div>
+
+</body>
+</html>

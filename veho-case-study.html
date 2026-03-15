@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exception Handling – Dayne Petera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:    #ffffff;
+  --off:      #f7f9fc;
+  --sky:      #4a9edd;
+  --sky-lt:   #d6eaf8;
+  --sky-mid:  #2176ae;
+  --stone:    #c8d4dc;
+  --slate:    #8099b0;
+  --muted:    #6a7f90;
+  --ink:      #1c2b3a;
+  --earth:    #b5a898;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans:  'DM Sans', sans-serif;
+  --mono:  'DM Mono', monospace;
+  --radius: 999px;
+  --radius-card: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background: var(--off);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9001;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 4rem;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--stone);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 2px 24px rgba(28,43,58,0.07); }
+.nav-logo { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.55rem; }
+.nav-logo-img { width: 28px; height: 28px; border-radius: 50%; }
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+.nav-links a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--sky); }
+.nav-cta { background: var(--sky); color: #fff !important; padding: 0.5rem 1.2rem; border-radius: var(--radius); font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+.nav-cta:hover { background: var(--sky-mid); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.study-hero {
+  margin-top: 64px;
+  padding: 5rem 5rem 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--stone);
+}
+.study-back {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-bottom: 2.5rem; transition: color 0.2s;
+}
+.study-back:hover { color: var(--sky); }
+.study-back svg { width: 12px; height: 12px; }
+.study-label { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky); margin-bottom: 0.8rem; }
+.study-title {
+  font-family: var(--serif); font-size: clamp(3rem, 5vw, 5.5rem);
+  font-weight: 900; line-height: 1.0; color: var(--ink);
+  letter-spacing: -0.02em; margin-bottom: 1.5rem;
+}
+.study-tagline { font-size: 1.15rem; color: var(--muted); max-width: 560px; line-height: 1.7; margin-bottom: 3rem; }
+
+/* meta row */
+.study-meta {
+  display: flex; gap: 3rem; flex-wrap: wrap;
+  padding: 2rem 0;
+  border-top: 1px solid var(--stone);
+}
+.meta-item {}
+.meta-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); margin-bottom: 0.3rem; }
+.meta-value { font-size: 0.9rem; color: var(--ink); font-weight: 500; }
+.meta-value small { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+
+/* hero image */
+.hero-img-wrap {
+  margin: 0 -5rem;
+  margin-top: 2rem;
+  overflow: hidden;
+  height: 680px;
+  position: relative;
+}
+.hero-img-wrap img { width: 100vw; height: 100vh; object-fit: cover; object-position: center 38%; display: block; }
+
+/* impact overlay */
+.impact-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex; gap: 0; flex-wrap: wrap;
+  background: rgba(15, 25, 35, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 0;
+}
+.impact-pill {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding: 1.25rem 2rem;
+  flex: 1; min-width: 140px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.impact-pill:last-child { border-right: none; }
+.impact-pill:hover { background: rgba(255,255,255,0.06); }
+.impact-num { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; color: #fff; line-height: 1; }
+.impact-desc { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+/* ── BODY LAYOUT ── */
+.study-body {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 3rem;
+  align-items: start;
+}
+
+/* ── CONTENT ── */
+.study-content {}
+
+.content-section {
+  margin-bottom: 5rem;
+  opacity: 1; transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.content-section.animate { opacity: 0; transform: translateY(20px); }
+.content-section.animate.visible { opacity: 1; transform: translateY(0); }
+
+.section-eyebrow {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--sky); margin-bottom: 0.7rem;
+}
+.section-heading {
+  font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700; line-height: 1.15; color: var(--ink);
+  margin-bottom: 1.2rem; letter-spacing: -0.01em;
+}
+.section-heading em { font-style: italic; color: var(--sky-mid); }
+
+.body-text {
+  font-size: 1rem; color: var(--muted); line-height: 1.85;
+  margin-bottom: 1.2rem;
+}
+.body-text strong { color: var(--ink); font-weight: 600; }
+
+/* sub-sections */
+.subsection { margin-top: 2.5rem; }
+.subsection-title {
+  font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
+  font-style: italic; color: var(--ink); margin-bottom: 0.8rem;
+}
+
+/* callout */
+.callout {
+  background: var(--sky-lt); border-left: 3px solid var(--sky);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  padding: 1.2rem 1.5rem; margin: 1.8rem 0;
+}
+.callout p { font-size: 0.95rem; color: var(--sky-mid); line-height: 1.7; margin: 0; }
+.callout strong { color: var(--ink); }
+
+/* lists */
+.study-list { list-style: none; margin: 1rem 0 1.5rem; }
+.study-list li {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  font-size: 0.95rem; color: var(--muted); line-height: 1.7;
+  padding: 0.5rem 0; border-bottom: 1px solid rgba(200,212,220,0.4);
+}
+.study-list li:last-child { border-bottom: none; }
+.study-list li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--sky); flex-shrink: 0; margin-top: 0.6rem;
+}
+
+/* tool chips */
+.tool-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+.tool-chip {
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 0.35rem 0.85rem;
+  background: var(--white); border: 1px solid var(--stone);
+  border-radius: var(--radius); color: var(--muted);
+}
+
+/* divider */
+.content-divider {
+  height: 1px; background: var(--stone);
+  margin: 3rem 0; border: none;
+}
+
+/* images */
+.study-img {
+  width: 100%; border-radius: var(--radius-card);
+  border: 1px solid var(--stone); display: block;
+  margin: 1.5rem 0;
+  transition: box-shadow 0.3s;
+  cursor: zoom-in;
+}
+.study-img:hover { box-shadow: 0 12px 40px rgba(28,43,58,0.12); }
+.img-caption {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--slate); text-align: center;
+  margin-top: -0.8rem; margin-bottom: 1.5rem;
+}
+.img-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.img-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+
+/* results metrics */
+.results-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+  margin: 1.5rem 0;
+}
+.result-card {
+  background: var(--white); border: 1px solid var(--stone);
+  border-radius: var(--radius-card); padding: 1.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.result-card:hover { border-color: var(--sky); transform: translateY(-2px); }
+.result-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 900; color: var(--sky); line-height: 1; margin-bottom: 0.4rem; }
+.result-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* learnings */
+.learning-list { list-style: none; margin: 1rem 0; }
+.learning-list li {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1rem 0; border-bottom: 1px solid rgba(200,212,220,0.4);
+  font-size: 0.95rem; color: var(--muted); line-height: 1.7;
+}
+.learning-list li:last-child { border-bottom: none; }
+.learning-num {
+  font-family: var(--mono); font-size: 0.6rem; color: var(--sky);
+  background: var(--sky-lt); border-radius: 50%;
+  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 0.1rem; letter-spacing: 0;
+}
+
+/* partners */
+.partner-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+.partner-link {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.9rem; color: var(--muted); text-decoration: none;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(200,212,220,0.4);
+  transition: color 0.2s;
+}
+.partner-link:hover { color: var(--sky); }
+.partner-link::after { content: '↗'; font-size: 0.75rem; margin-left: auto; opacity: 0.5; }
+
+/* ── TOC SIDEBAR ── */
+.study-toc {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+}
+.toc-label {
+  font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--slate); margin-bottom: 1rem;
+}
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 0; }
+.toc-link {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--slate);
+  text-decoration: none; padding: 0.45rem 0;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  transition: color 0.2s, border-color 0.2s;
+  line-height: 1.3;
+}
+.toc-link:hover { color: var(--sky); border-left-color: var(--sky-lt); }
+.toc-link.active { color: var(--sky-mid); border-left-color: var(--sky); font-weight: 500; }
+
+/* toc progress */
+.toc-progress {
+  height: 2px; background: var(--stone); border-radius: 1px;
+  margin-bottom: 1.2rem; overflow: hidden;
+}
+.toc-progress-fill {
+  height: 100%; background: var(--sky); border-radius: 1px;
+  width: 0%; transition: width 0.1s;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.5);
+  padding: 3rem 5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-logo { font-family: var(--serif); font-size: 1rem; color: white; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+.footer-logo img { width: 24px; height: 24px; border-radius: 50%; }
+.footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+.footer-links a { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--sky); }
+.footer-copy { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.06em; color: #ffffff; }
+
+/* ── LIGHTBOX ── */
+
+#lightbox {
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(10,18,26,0.92);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+#lightbox.open { display: flex; }
+
+#lightbox img {
+  max-width: min(90vw, 1400px);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  cursor: zoom-out;
+  animation: lbIn 0.2s ease;
+}
+@keyframes lbIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+#lightbox-close {
+  position: fixed; top: 1.25rem; right: 1.5rem;
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: white; font-size: 1.1rem; line-height: 36px; text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#lightbox-close:hover { background: rgba(255,255,255,0.22); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.hero-animate { opacity: 0; animation: fadeUp 0.7s forwards; }
+.hero-animate:nth-child(1) { animation-delay: 0.1s; }
+.hero-animate:nth-child(2) { animation-delay: 0.2s; }
+.hero-animate:nth-child(3) { animation-delay: 0.3s; }
+.hero-animate:nth-child(4) { animation-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .study-hero { padding: 4rem 2rem 0; }
+  .hero-img-wrap { margin: 0 -2rem; max-height: 480px; }
+  .impact-pill { padding: 1rem 1.25rem; }
+  .impact-num { font-size: 1.4rem; }
+  .study-body { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 0; }
+  .study-toc { display: none; }
+  footer { padding: 2rem; flex-direction: column; text-align: center; }
+  .img-3col { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .study-meta { gap: 1.5rem; }
+  .impact-pill { flex-direction: column; gap: 0.2rem; }
+  .img-2col { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: 1fr; }
+}
+
+
+
+.nav-hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 8px; z-index: 9002;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform 0.3s, opacity 0.2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background:#fff; }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background:#fff; }
+
+#mobileMenu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  min-width: 100vw; min-height: 100vh;
+  background: #1c2b3a;
+  z-index: 9000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+#mobileMenu.open { display: flex; }
+
+.mobile-link {
+  font-family: var(--serif); font-size: 3rem; font-weight: 900;
+  color: #fff; text-decoration: none; line-height: 1.2;
+}
+.mobile-link:hover { color: var(--sky); }
+.mobile-link-cta {
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--sky) !important;
+  margin-top: 1rem; padding: 0.8rem 2rem;
+  border: 1px solid var(--sky); border-radius: 999px;
+  text-decoration: none;
+}
+
+@media (max-width: 960px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="index.html">
+    <img src="https://dayne.design/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera" class="nav-logo-img">
+    Dayne Petera
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#studies">Work</a></li>
+    <li><a href="index.html#experience">Experience</a></li>
+    <li><a href="index.html#fish-quiz">Play</a></li>
+    <li><a class="nav-cta" href="mailto:dayne@dayne.design">Say hello</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<!-- HERO -->
+<section class="study-hero">
+  <div class="hero-animate">
+    <a class="study-back" href="index.html#studies">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L4 6l4 4"/></svg>
+      All Work
+    </a>
+  </div>
+  <div class="hero-animate">
+    <div class="study-label">Case Study · Veho</div>
+    <h1 class="study-title">Exception Handling</h1>
+    <p class="study-tagline">Transforming a slow, manual triage process into a guided wizard — reducing package exception time from 8 minutes to under 1.</p>
+  </div>
+  <div class="study-meta hero-animate">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Product Designer<small>Discovery · UX · Prototyping · UI · QA</small></div></div>
+    <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">1–2 Months<small>Nov 2023 – Jan 2024</small></div></div>
+    <div class="meta-item"><div class="meta-label">Company</div><div class="meta-value">Veho Tech, Inc.<small>In-house · Logistics</small></div></div>
+    <div class="meta-item"><div class="meta-label">Platform</div><div class="meta-value">Android · Zebra TC21/22<small>React Native</small></div></div>
+  </div>
+  <div class="hero-img-wrap hero-animate">
+    <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/showcase.reg_.png?fit=1568%2C847&ssl=1" alt="Exception Handling hero">
+    <div class="impact-bar">
+      <div class="impact-pill"><span class="impact-num">87%</span><span class="impact-desc">Reduction in triage time (8 min → 1 min)</span></div>
+      <div class="impact-pill"><span class="impact-num">62 → 70</span><span class="impact-desc">Internal SUS score post-release</span></div>
+      <div class="impact-pill"><span class="impact-num">13 → 1</span><span class="impact-desc">Manual events replaced by wizard</span></div>
+      <div class="impact-pill"><span class="impact-num">6,000+</span><span class="impact-desc">Misreported packages addressed weekly</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="study-body">
+  <main class="study-content">
+    <section class="content-section" id="about">
+      <div class="section-eyebrow">Background</div>
+      <h2 class="section-heading">About the <em>project</em></h2>
+      <p class="body-text">My first six months at Veho were spent building a comprehensive chain of custody program for Internal Ground Operations. With that foundation in place, the focus shifted to the team's biggest pain point: making package exception handling faster and easier within the facilities app they already relied on.</p>
+      <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/05/main-feature-hero.png?resize=640%2C298&ssl=1" alt="Exception handling screens" class="study-img">
+      <p class="img-caption">Select screens from the Facilities Mobile App</p>
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="problem">
+      <div class="section-eyebrow">The Problem</div>
+      <h2 class="section-heading">Broken data at <em>scale</em></h2>
+      <p class="body-text">Exception handling at Veho relied on anecdotal information and a manual process that led to return issues with clients. During peak operations (Black Friday through New Year's), Veho hit over 900,000 packages delivered per week. Even at 1% abandoned or returned, that's 9,000 packages needing a return reason — and over 6,000 were being logged as "Access Issues" when that wasn't the case.</p>
+      <p class="body-text">The root cause: the default return reason in the app was labeled "Access Issues," making it the path of least resistance. The data was fundamentally broken.</p>
+      <div class="callout"><p>13 manual package events, some with up to 12 sub-reasons. Average triage time: <strong>8 minutes per package</strong> — including support notifications, event application, backend updates, and physical handling.</p></div>
+      <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/full_decision_tree.png?resize=640%2C1001&ssl=1" alt="Full decision tree" class="study-img">
+      <p class="img-caption">Full exception handling decision tree</p>
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="personas">
+      <div class="section-eyebrow">Research</div>
+      <h2 class="section-heading">Understanding the <em>people</em></h2>
+      <p class="body-text">As one of my first large projects at Veho, I conducted interviews with over 20 users across 7 different roles and 7 different markets to create 5 lightweight personas for Ground Operations. For this project, we focused primarily on Supervisor Sam, Larry the Lead, and Alexis the Associate.</p>
+      <div class="img-2col">
+        <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/sam-the-supervisor-1.png?resize=640%2C533&ssl=1" alt="Sam the Supervisor persona" class="study-img" style="margin:0">
+        <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/larry-the-lead-1.png?resize=640%2C533&ssl=1" alt="Larry the Lead persona" class="study-img" style="margin:0">
+      </div>
+      <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/alexis-the-associate-1.png?resize=640%2C533&ssl=1" alt="Alexis the Associate persona" class="study-img">
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="process">
+      <div class="section-eyebrow">Process</div>
+      <h2 class="section-heading">From decision tree to <em>wizard</em></h2>
+      <p class="body-text">We started with the Damaged Package flow — the most important first iteration since it would need to be built twice: once for packages found damaged by Ground Ops staff, and once for packages returned damaged by drivers. This gave us a scalable framework for all future flows.</p>
+      <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/damaged-1.png?resize=640%2C221&ssl=1" alt="Damaged package decision tree" class="study-img">
+      <p class="img-caption">Damaged package decision tree</p>
+      <div class="subsection">
+        <div class="subsection-title">Iteration</div>
+        <p class="body-text">Working at a startup means moving fast. I had roughly two weeks to get designs vetted by my design team, signed off by stakeholders, and tested with users. The Veho component library gave us a strong foundation, but this was the most complex interaction pattern the FMA had seen — an opportunity to raise the bar.</p>
+        <div class="img-2col">
+          <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/choices-progression.png?resize=640%2C288&ssl=1" alt="Selection UI iterations" class="study-img" style="margin:0">
+          <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/submit-progression.png?resize=640%2C288&ssl=1" alt="Confirmation UI iterations" class="study-img" style="margin:0">
+        </div>
+        <p class="img-caption">Selection and confirmation UI iterations</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-title">Usability Testing</div>
+        <p class="body-text">6 moderated interviews with a Figma prototype. Users loved the guided approach — "If the app just told them what to do, that would be a great step in the right direction." Key feedback included: package info could be more prominent, iconography could be toned down, and the entry point was hard to find.</p>
+        <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/problem-solve.gif?resize=365%2C657&ssl=1" alt="Exception handling flow demo" class="study-img">
+        <p class="img-caption">Exception handling wizard flow</p>
+      </div>
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="final">
+      <div class="section-eyebrow">Final Product</div>
+      <h2 class="section-heading">Guided by <em>design</em></h2>
+      <img src="https://i0.wp.com/dayne.design/wp-content/uploads/2024/02/showcase.png?resize=640%2C237&ssl=1" alt="Exception handling happy path" class="study-img">
+      <p class="img-caption">Problem solving workflow – happy path</p>
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="results">
+      <div class="section-eyebrow">Results</div>
+      <h2 class="section-heading">Measurable <em>impact</em></h2>
+      <div class="results-grid">
+        <div class="result-card"><div class="result-num">87%</div><div class="result-label">Reduction in triage time — 8 minutes down to under 1</div></div>
+        <div class="result-card"><div class="result-num">62 → 70</div><div class="result-label">Internal SUS score improvement post-release</div></div>
+        <div class="result-card"><div class="result-num">13 → 1</div><div class="result-label">Manual package events replaced by a single guided wizard</div></div>
+        <div class="result-card"><div class="result-num">6,000+</div><div class="result-label">Misreported packages addressed weekly through accurate data capture</div></div>
+      </div>
+    </section>
+
+    <hr class="content-divider">
+
+    <section class="content-section" id="next">
+      <div class="section-eyebrow">Next Steps</div>
+      <h2 class="section-heading">What comes <em>next</em></h2>
+      <ul class="study-list">
+        <li>Monitor for feedback and surface issues from live warehouse usage</li>
+        <li>Build out the next largest flow: Returned to Veho (which also contains the Damaged Package flow)</li>
+        <li>Build a dashboard of Problem Solve containers in the Facility Management Console</li>
+        <li>Explore more elegant solutions for displaying package info within the wizard</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- TOC SIDEBAR -->
+  <aside class="study-toc">
+    <div class="toc-progress"><div class="toc-progress-fill" id="tocProgress"></div></div>
+    <div class="toc-label">On this page</div>
+    <ul class="toc-list">
+      <li><a class="toc-link" href="#about">Background</a></li>
+      <li><a class="toc-link" href="#problem">The Problem</a></li>
+      <li><a class="toc-link" href="#personas">Personas</a></li>
+      <li><a class="toc-link" href="#process">Process</a></li>
+      <li><a class="toc-link" href="#final">Final Product</a></li>
+      <li><a class="toc-link" href="#results">Results</a></li>
+      <li><a class="toc-link" href="#next">Next Steps</a></li>
+    </ul>
+  </aside>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+<footer>
+  <a class="footer-logo" href="index.html">
+    <img src="https://dayne.design/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera">
+    Dayne Petera
+  </a>
+  <div class="footer-links">
+    <a href="index.html#studies">Work</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="https://www.linkedin.com/in/daynep/" target="_blank">LinkedIn</a>
+    <a href="mailto:dayne@dayne.design">Email</a>
+  </div>
+  <span class="footer-copy">Medford, Oregon · 2026</span>
+</footer>
+<script>
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+
+// Scroll progress bar
+const progressFill = document.getElementById('tocProgress');
+function updateProgress() {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = total > 0 ? (window.scrollY / total * 100) : 0;
+  progressFill.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+document.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightbox-close');
+document.querySelectorAll('.study-img').forEach(img => {
+  img.addEventListener('click', () => {
+    const fullSrc = img.src.replace(/[?&](resize|fit)=[\d,]+/g, '').replace(/\?$|&$/, '') + '?ssl=1';
+    lightboxImg.src = fullSrc;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('open');
+    
+  });
+});
+function closeLightbox() { lightbox.classList.remove('open'); lightboxImg.src = '';  }
+lightbox.addEventListener('click', e => { if (e.target !== lightboxImg) closeLightbox(); });
+lightboxClose.addEventListener('click', closeLightbox);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+// Active ToC link
+const tocObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+document.querySelectorAll('.content-section').forEach(s => tocObserver.observe(s));
+
+/* ── MOBILE NAV ── */
+window.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('navHamburger');
+  var menu = document.getElementById('mobileMenu');
+  var nav = document.getElementById('mainNav');
+  if (!btn || !menu) return;
+
+  function openMenu() {
+    menu.classList.add('open');
+    btn.classList.add('open');
+    nav.style.background = '#1c2b3a';
+    nav.style.borderBottomColor = 'transparent';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    nav.style.background = '';
+    nav.style.borderBottomColor = '';
+  }
+
+  btn.addEventListener('click', function() {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  menu.querySelectorAll('.mobile-link').forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+});
+</script>
+
+<!-- MOBILE MENU -->
+
+<div id="mobileMenu">
+  <a class="mobile-link" href="index.html#studies">Work</a>
+  <a class="mobile-link" href="index.html#experience">Experience</a>
+  <a class="mobile-link" href="index.html#fish-quiz">Play</a>
+  <a class="mobile-link mobile-link-cta" href="mailto:dayne@dayne.design">Say hello</a>
+</div>
+
+</body>
+</html>
