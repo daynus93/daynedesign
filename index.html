@@ -1367,15 +1367,15 @@ footer { background: var(--ink); color: white; padding: 2rem 5rem; display: flex
 /* Result */
 #quiz-result { animation: quizIn 0.4s ease; }
 .quiz-fish-card {
-  display: grid; grid-template-columns: 280px 1fr; gap: 2.5rem;
+  display: grid; grid-template-columns: 1fr;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: var(--radius-card); overflow: hidden;
   margin-bottom: 1.5rem;
 }
-.quiz-fish-img-wrap { overflow: hidden; }
+.quiz-fish-img-wrap { overflow: hidden; aspect-ratio: 16/9; }
 .quiz-fish-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.quiz-fish-info { padding: 2rem 2rem 2rem 0; }
+.quiz-fish-info { padding: 1.75rem 2rem; }
 .quiz-fish-latin {
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--sky); margin-bottom: 0.4rem;
@@ -1404,8 +1404,6 @@ footer { background: var(--ink); color: white; padding: 2rem 5rem; display: flex
 }
 .quiz-retake:hover { border-color: var(--sky); color: var(--sky); }
 @media (max-width: 640px) {
-  .quiz-fish-card { grid-template-columns: 1fr; }
-  .quiz-fish-img-wrap { max-height: 220px; }
   .quiz-fish-info { padding: 1.5rem; }
 }
 </style>
