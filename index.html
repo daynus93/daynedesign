@@ -559,7 +559,8 @@ footer { background: var(--ink); color: white; padding: 2rem 5rem; display: flex
   .hero, .principles, .exp-strip, .skills-section, .contact-section { grid-template-columns: 1fr; }
   .hero { padding: 0 2rem; padding-top: 72px; }
   .hero-deco { display: none; }
-  .hero-left, .principles, .studies, .exp-strip, .skills-section, .contact-section, .interactive-section { padding: 4rem 2rem; }
+  .hero-left { padding: 4rem 0; }
+  .principles, .studies, .exp-strip, .skills-section, .contact-section, .interactive-section { padding: 4rem 2rem; }
   .studies-grid { grid-template-columns: 1fr 1fr; }
   .principles-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
@@ -665,7 +666,7 @@ footer { background: var(--ink); color: white; padding: 2rem 5rem; display: flex
     </p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#studies">View my work →</a>
-      <a class="btn btn-outline" href="https://dayne.design/wp-content/uploads/2026/01/petera-resume-professional.pdf" target="_blank">Download résumé</a>
+      <a class="btn btn-outline" href="https://dayne.design/wp-content/uploads/2026/03/Petera-Product-Design-Resume.pdf" target="_blank">Download résumé</a>
     </div>
   </div>
 </section>
@@ -1201,9 +1202,11 @@ footer { background: var(--ink); color: white; padding: 2rem 5rem; display: flex
   font-family: var(--sans); font-size: 0.95rem; color: rgba(255,255,255,0.75);
   cursor: pointer; transition: all 0.18s ease;
 }
-.quiz-opt:hover {
-  border-color: var(--sky); background: rgba(74,158,221,0.12);
-  color: #fff; transform: translateX(4px);
+@media (hover: hover) {
+  .quiz-opt:hover {
+    border-color: var(--sky); background: rgba(74,158,221,0.12);
+    color: #fff; transform: translateX(4px);
+  }
 }
 .quiz-opt.selected {
   border-color: var(--sky); background: rgba(74,158,221,0.18);
@@ -1276,28 +1279,28 @@ document.addEventListener('DOMContentLoaded', function() {
     a: {
       name: 'Rainbow Trout',
       latin: 'Oncorhynchus mykiss',
-      img: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&q=85',
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Close_up_of_rainbow_trout_fish_underwater_oncorhynchus_mykiss.jpg/960px-Close_up_of_rainbow_trout_fish_underwater_oncorhynchus_mykiss.jpg',
       desc: `You run on instinct and momentum. When others are still reading the brief, you're already in the water. You burn bright, pivot fast, and somehow land on your feet every time. Life's too short to wait for perfect conditions.`,
       traits: ['High energy', 'Quick to act', 'Adaptable', 'Born optimist']
     },
     b: {
       name: 'Steelhead',
       latin: 'Oncorhynchus mykiss irideus',
-      img: 'https://images.unsplash.com/photo-1650742311765-81ebac362561?w=800&q=85',
+      img: 'https://upload.wikimedia.org/wikipedia/commons/1/10/Man_holding_a_steelhead_%28Oncorhynchus_mykiss%29_cropped.jpg',
       desc: `Rare, patient, and worth the wait. You go deep where others stay shallow — and you come back with something nobody else found. You don't need to be the loudest in the room. You just need to be right.`,
       traits: ['Independent', 'Quietly confident', 'Loves the deep end', 'Hard to rattle']
     },
     c: {
       name: 'Cutthroat Trout',
       latin: 'Oncorhynchus clarkii',
-      img: 'https://images.unsplash.com/photo-1485833077593-4278bba3f11f?w=800&q=85',
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Trout_cutthroat_fish_oncorhynchus_clarkii_clarkii.jpg/960px-Trout_cutthroat_fish_oncorhynchus_clarkii_clarkii.jpg',
       desc: `The one everybody wants on the trip. You make the people around you better without even trying. Warm, sharp, and always good for a laugh — you're the reason a room has energy. People follow you because they want to, not because they have to.`,
       traits: ['Natural connector', 'High EQ', 'Brings the fun', 'Genuinely caring']
     },
     d: {
       name: 'Brown Trout',
       latin: 'Salmo trutta',
-      img: 'https://images.unsplash.com/photo-1703695791784-d7660adf6025?w=800&q=85',
+      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Brown_Trout_%28Salmo_trutta%29_%2853678765394%29.jpg/960px-Brown_Trout_%28Salmo_trutta%29_%2853678765394%29.jpg',
       desc: `Deliberate, selective, and built different. You take your time — but when you commit, it's for real. You've been around long enough to know what's worth your energy, and you have the receipts to prove it. Solid as a river rock.`,
       traits: ['Methodical', 'Deeply loyal', 'High standards', 'Plays the long game']
     }
@@ -1391,7 +1394,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div><span class="cl-label">GitHub</span><span class="cl-value">github.com/daynus93</span></div>
       <span class="cl-arrow">→</span>
     </a>
-    <a class="contact-link" href="https://dayne.design/wp-content/uploads/2026/01/petera-resume-professional.pdf" target="_blank">
+    <a class="contact-link" href="https://dayne.design/wp-content/uploads/2026/03/Petera-Product-Design-Resume.pdf" target="_blank">
       <div><span class="cl-label">Résumé</span><span class="cl-value">Download PDF</span></div>
       <span class="cl-arrow">→</span>
     </a>
