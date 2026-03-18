@@ -153,6 +153,14 @@
   border-radius: var(--radius); color: var(--muted);
 }
 
+/* figma embed */
+.figma-embed-wrap {
+  position: relative; width: 100%; aspect-ratio: 16/9;
+  border: 1px solid var(--stone); border-radius: var(--radius-card);
+  overflow: hidden; margin: 1.5rem 0;
+}
+.figma-embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
 /* divider */
 .content-divider {
   height: 1px; background: var(--stone);
@@ -401,6 +409,10 @@
       </div>
       <div class="subsection">
         <div class="subsection-title">Testing & Iteration</div>
+        <div class="figma-embed-wrap">
+          <iframe src="https://embed.figma.com/slides/w2RMH8aSMnoO3r2bjwCOju/Software-Stack-Usability-Deck---Dec-24?node-id=8-26&embed-host=share" allowfullscreen></iframe>
+        </div>
+        <p class="img-caption">Round 1 usability testing deck — Dec 2024</p>
         <p class="body-text">Post-launch usability sessions and surveys surfaced that editing and replacing tools was buried in dropdown menus, and navigation positioning wasn't obvious. We added inline hover states for editing, making actions more discoverable without cluttering the interface.</p>
         <img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2026/02/new-edit-ux.gif?resize=640%2C367&ssl=1" alt="New edit UX" class="study-img">
         <p class="img-caption">New hover-state edit experience</p>
