@@ -76,13 +76,15 @@ nav.scrolled{box-shadow:0 2px 24px rgba(28,43,58,0.07);}
 .toc-link.active{color:var(--sky-mid);border-left-color:var(--sky);font-weight:500;}
 .toc-progress{height:2px;background:var(--stone);border-radius:1px;margin-bottom:1.2rem;overflow:hidden;}
 .toc-progress-fill{height:100%;background:var(--sky);border-radius:1px;width:0%;transition:width 0.1s;}
-footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
-.footer-logo{font-family:var(--serif);font-size:1rem;color:white;text-decoration:none;display:flex;align-items:center;gap:0.5rem;}
-.footer-logo img{width:24px;height:24px;border-radius:50%;}
-.footer-links{display:flex;gap:2rem;flex-wrap:wrap;}
-.footer-links a{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
-.footer-links a:hover{color:var(--sky);}
-.footer-copy{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.06em;color:#ffffff;}
+footer {
+  background: var(--ink); color: white;
+  padding: 2rem 5rem; display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { font-family: var(--serif); font-size: 1rem; font-weight: 700; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--sky); }
+.footer-right { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; color: var(--slate); text-transform: uppercase; }
 #lightbox{display:none;position:fixed;inset:0;z-index:10000;background:rgba(10,18,26,0.92);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:2rem;}
 #lightbox.open{display:flex;}
 #lightbox img{max-width:min(90vw,1400px);max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 32px 80px rgba(0,0,0,0.6);cursor:zoom-out;animation:lbIn 0.2s ease;}
@@ -289,9 +291,13 @@ footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:3rem 5rem;displ
 
 <div id="lightbox"><span id="lightbox-close">&#x2715;</span><img id="lightbox-img" src="" alt=""></div>
 <footer>
-  <a class="footer-logo" href="index.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera">Dayne Petera</a>
-  <div class="footer-links"><a href="index.html#studies">Work</a><a href="index.html#experience">Experience</a><a href="https://www.linkedin.com/in/daynep/" target="_blank">LinkedIn</a><a href="mailto:dayne@dayne.design">Email</a></div>
-  <span class="footer-copy">Medford, Oregon &middot; 2026</span>
+  <div class="footer-logo"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/02/dp_logo_overlap.png" alt="Dayne Petera" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:0.5rem;">Dayne Petera</div>
+  <div class="footer-links">
+    <a href="mailto:dayne@dayne.design">Email</a>
+    <a href="https://www.linkedin.com/in/daynep/" target="_blank">LinkedIn</a>
+    <a href="https://github.com/daynus93" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-right">Built with Claude · Medford, Oregon · 2026</div>
 </footer>
 
 <script>
