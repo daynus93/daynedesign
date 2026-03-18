@@ -2031,6 +2031,404 @@ function openAllStudies() {
   schedule(INTERVAL);
 })();
 
+/* ── GALAGA EASTER EGG ── */
+function triggerGalaga() {
+  if (window.innerWidth < 900 || 'ontouchstart' in window) return;
+  if (document.getElementById('galaga-wrap')) return;
+
+  var overlay = document.createElement('div');
+  overlay.id = 'galaga-wrap';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#000d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+
+  var lbl = document.createElement('div');
+  lbl.style.cssText = 'font-family:"DM Mono",monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(74,158,221,0.45);margin-bottom:0.75rem;user-select:none;';
+  lbl.textContent = 'GALAGA · HIRE ME EDITION · [ESC TO CLOSE]';
+  overlay.appendChild(lbl);
+
+  var CW = 740, CH = 620;
+  var canvas = document.createElement('canvas');
+  canvas.width = CW; canvas.height = CH;
+  canvas.style.cssText = 'display:block;outline:none;';
+  canvas.setAttribute('tabindex', '0');
+
+  /* rounded frame: wrapper clips canvas content to border-radius */
+  var canvasWrap = document.createElement('div');
+  canvasWrap.style.cssText = 'border-radius:16px;overflow:hidden;border:1px solid rgba(74,158,221,0.2);max-width:90vw;line-height:0;';
+  canvasWrap.appendChild(canvas);
+  overlay.appendChild(canvasWrap);
+  document.body.appendChild(overlay);
+  canvas.focus();
+
+  var ctx = canvas.getContext('2d');
+  var raf, running = true, gameState = 'countdown';
+  var score = 0, lives = 3, dyingTimer = 0;
+  var level = 1, speedMult = 1;
+  var countStart = Date.now();
+  var shakeFrames = 0, shakeAmt = 0;
+  function triggerShake() { shakeFrames = 20; shakeAmt = 8; }
+
+  /* stars */
+  var stars = Array.from({length: 70}, function(_, i) {
+    return { x: Math.random()*CW, y: Math.random()*CH, r: i<50?0.7:1.4, speed: i<50?0.25:0.55, t: Math.random()*Math.PI*2 };
+  });
+
+  /* particles */
+  var parts = [];
+  function burst(x, y, col) {
+    for (var i = 0; i < 9; i++) {
+      var a = (i/9)*Math.PI*2, s = 1.5 + Math.random()*2.5;
+      parts.push({ x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:1, dec:0.03+Math.random()*0.02, col:col, r:2.5 });
+    }
+  }
+
+  /* player */
+  var PL = { x: CW/2, y: CH-55, w: 28, h: 22, spd: 5, inv: 0 };
+  var pB = [], eB = [], sCD = 0;
+
+  /* formation — mutable per level */
+  var COLS, ROWS, CGAP, FBX;
+  var RGAP = 48, FTY = 58, FSPD = 0.45;
+  var fOff = 0, fDir = 1;
+
+  var EMETA = [
+    { col:'#9b59b6', acc:'#6c3483', pts:30 },
+    { col:'#e67e22', acc:'#d35400', pts:20 },
+    { col:'#27ae60', acc:'#1e8449', pts:10 }
+  ];
+
+  var enemies = [];
+  var dT = 90, sT = 75;
+
+  function setupLevel() {
+    speedMult = 1 + (level - 1) * 0.25;
+    COLS = (level === 1) ? 8 : 10;
+    ROWS = (level === 3) ? 4 : 3;
+    CGAP = (level === 1) ? 64 : 56;
+    FBX  = (CW - (COLS - 1) * CGAP) / 2;
+    enemies = [];
+    for (var r = 0; r < ROWS; r++)
+      for (var c = 0; c < COLS; c++)
+        enemies.push({ row:r, col:c, x:0, y:0, alive:true, type:Math.min(r,2), div:false, vx:0, vy:0 });
+    pB = []; eB = []; sCD = 0; fOff = 0; fDir = 1; dT = 90; sT = 75;
+    PL.x = CW/2; PL.inv = 0;
+    countStart = Date.now();
+    gameState = 'countdown';
+  }
+
+  function nextLevel() { level++; setupLevel(); }
+  function resetGame() { score = 0; lives = 3; dyingTimer = 0; level = 1; setupLevel(); }
+
+  setupLevel();
+
+  var keys = {};
+
+  function onKD(e) {
+    keys[e.key] = true;
+    if (e.key === 'Escape') quit();
+    if (e.key === ' ' && gameState === 'over')       { e.preventDefault(); resetGame(); return; }
+    if (e.key === ' ' && gameState === 'won')        { e.preventDefault(); resetGame(); return; }
+    if (e.key === ' ' && gameState === 'levelclear') { e.preventDefault(); nextLevel(); return; }
+    if ([' ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
+  }
+  function onKU(e) { keys[e.key] = false; }
+  document.addEventListener('keydown', onKD);
+  document.addEventListener('keyup', onKU);
+
+  function quit() {
+    running = false; cancelAnimationFrame(raf);
+    document.removeEventListener('keydown', onKD);
+    document.removeEventListener('keyup', onKU);
+    overlay.style.transition = 'opacity 0.35s';
+    overlay.style.opacity = '0';
+    setTimeout(function() { overlay.remove(); }, 400);
+  }
+
+  function drawShape(type, x, y) {
+    var m = EMETA[type];
+    ctx.save(); ctx.translate(x, y);
+    if (type === 0) {
+      ctx.fillStyle = m.col; ctx.beginPath(); ctx.arc(0,0,13,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = m.acc; ctx.beginPath(); ctx.arc(0,0,8,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#4a9edd'; ctx.beginPath(); ctx.arc(0,0,3.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = m.col;
+      ctx.beginPath(); ctx.ellipse(-16,3,6,4,0.4,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(16,3,6,4,-0.4,0,Math.PI*2); ctx.fill();
+    } else if (type === 1) {
+      ctx.fillStyle = m.col;
+      ctx.beginPath(); ctx.ellipse(-9,0,10,6,-0.3,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(9,0,10,6,0.3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = m.acc;
+      ctx.beginPath(); ctx.ellipse(-9,0,6,4,-0.3,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(9,0,6,4,0.3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.arc(0,0,5,0,Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillStyle = m.col;
+      ctx.beginPath(); ctx.moveTo(0,-11); ctx.lineTo(13,2); ctx.lineTo(0,9); ctx.lineTo(-13,2); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = m.acc;
+      ctx.beginPath(); ctx.moveTo(0,-6); ctx.lineTo(7,2); ctx.lineTo(0,5); ctx.lineTo(-7,2); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = m.col; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(-5,-7); ctx.lineTo(-9,-14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(5,-7); ctx.lineTo(9,-14); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawShip(x, y, alpha) {
+    ctx.save(); ctx.globalAlpha = (alpha !== undefined ? alpha : 1); ctx.translate(x, y);
+    ctx.fillStyle = '#4a9edd';
+    ctx.beginPath();
+    ctx.moveTo(0,-PL.h/2); ctx.lineTo(PL.w/2,PL.h/2-5); ctx.lineTo(PL.w/2-7,PL.h/2); ctx.lineTo(-PL.w/2+7,PL.h/2); ctx.lineTo(-PL.w/2,PL.h/2-5);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.ellipse(0,-3,5,7,0,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function update() {
+    stars.forEach(function(s) { s.y += s.speed; s.t += 0.05; if (s.y > CH) { s.y = 0; s.x = Math.random()*CW; } });
+    parts.forEach(function(p) { p.x+=p.vx; p.y+=p.vy; p.vx*=0.9; p.vy*=0.9; p.life-=p.dec; p.r=Math.max(0,p.r-0.08); });
+    parts = parts.filter(function(p) { return p.life > 0; });
+
+    if (gameState === 'countdown') {
+      if (fOff + FBX < 18) fDir = 1;
+      if (fOff + FBX + (COLS-1)*CGAP > CW-18) fDir = -1;
+      fOff += fDir * FSPD * speedMult;
+      var nowC = Date.now();
+      enemies.forEach(function(e) {
+        e.x = FBX + e.col*CGAP + fOff;
+        e.y = FTY + e.row*RGAP + Math.sin(nowC*0.0015 + e.col*0.7)*4;
+      });
+      if (nowC - countStart >= 3500) gameState = 'playing';
+      return;
+    }
+
+    if (gameState === 'dying') {
+      if (--dyingTimer <= 0) { gameState = 'playing'; PL.x = CW/2; PL.inv = 150; eB = []; }
+      return;
+    }
+    if (gameState !== 'playing') return;
+
+    /* player movement */
+    if (keys['ArrowLeft'] || keys['a'] || keys['A']) PL.x -= PL.spd;
+    if (keys['ArrowRight'] || keys['d'] || keys['D']) PL.x += PL.spd;
+    PL.x = Math.max(16, Math.min(CW-16, PL.x));
+    if (PL.inv > 0) PL.inv--;
+
+    /* player shoot */
+    if (sCD > 0) sCD--;
+    if ((keys[' '] || keys['ArrowUp'] || keys['w'] || keys['W']) && sCD <= 0) {
+      pB.push({ x: PL.x, y: PL.y - PL.h/2 }); sCD = 16;
+    }
+    pB.forEach(function(b) { b.y -= 9; });
+    pB = pB.filter(function(b) { return b.y > -20; });
+
+    /* formation movement */
+    if (fOff + FBX < 18) fDir = 1;
+    if (fOff + FBX + (COLS-1)*CGAP > CW-18) fDir = -1;
+    fOff += fDir * FSPD * speedMult;
+
+    var now = Date.now();
+    enemies.forEach(function(e) {
+      if (!e.alive) return;
+      if (!e.div) {
+        e.x = FBX + e.col*CGAP + fOff;
+        e.y = FTY + e.row*RGAP + Math.sin(now*0.0015 + e.col*0.7)*4;
+      } else {
+        e.x += e.vx; e.y += e.vy; e.vy += 0.055;
+        if (e.y > CH+50) { e.div = false; e.x = FBX + e.col*CGAP + fOff; e.y = FTY + e.row*RGAP; }
+      }
+    });
+
+    /* dive trigger */
+    if (--dT <= 0) {
+      dT = 75 + Math.random()*110;
+      var pool = enemies.filter(function(e) { return e.alive && !e.div; });
+      if (pool.length) {
+        var e = pool[Math.floor(Math.random()*pool.length)];
+        e.div = true;
+        var ang = Math.atan2(PL.y-e.y, PL.x-e.x), spd = (1.5 + Math.random()*1) * speedMult;
+        e.vx = Math.cos(ang)*spd; e.vy = Math.sin(ang)*spd;
+      }
+    }
+
+    /* enemy shoot */
+    if (--sT <= 0) {
+      sT = 50 + Math.random()*65;
+      var pool2 = enemies.filter(function(e) { return e.alive && !e.div; });
+      if (pool2.length) {
+        var sh = pool2[Math.floor(Math.random()*pool2.length)];
+        var ang2 = Math.atan2(PL.y-sh.y, PL.x-sh.x);
+        var bspd = 1.75 * speedMult;
+        eB.push({ x:sh.x, y:sh.y+10, vx:Math.cos(ang2)*bspd, vy:Math.sin(ang2)*bspd });
+      }
+    }
+    eB.forEach(function(b) { b.x += b.vx; b.y += b.vy; });
+    eB = eB.filter(function(b) { return b.y < CH+20 && b.x > -20 && b.x < CW+20; });
+
+    /* player bullets vs enemies */
+    pB = pB.filter(function(pb) {
+      for (var i = 0; i < enemies.length; i++) {
+        var e = enemies[i];
+        if (!e.alive) continue;
+        if (Math.abs(pb.x-e.x) < 16 && Math.abs(pb.y-e.y) < 16) {
+          e.alive = false; burst(e.x, e.y, EMETA[e.type].col); score += EMETA[e.type].pts; return false;
+        }
+      }
+      return true;
+    });
+
+    /* enemy hits vs player */
+    if (PL.inv <= 0) {
+      var hit = false;
+      eB = eB.filter(function(b) {
+        if (Math.abs(b.x-PL.x) < 13 && Math.abs(b.y-PL.y) < 14) { hit = true; return false; }
+        return true;
+      });
+      if (!hit) enemies.forEach(function(e) {
+        if (!e.alive || !e.div || hit) return;
+        if (Math.abs(e.x-PL.x) < 20 && Math.abs(e.y-PL.y) < 20) { e.alive = false; burst(e.x, e.y, EMETA[e.type].col); hit = true; }
+      });
+      if (hit) {
+        burst(PL.x, PL.y, '#4a9edd'); burst(PL.x, PL.y, '#fff');
+        triggerShake();
+        lives--;
+        if (lives <= 0) gameState = 'over';
+        else { gameState = 'dying'; dyingTimer = 80; }
+      }
+    }
+
+    if (enemies.every(function(e) { return !e.alive; })) {
+      gameState = (level < 3) ? 'levelclear' : 'won';
+    }
+  }
+
+  function draw() {
+    ctx.fillStyle = '#000d1a'; ctx.fillRect(0, 0, CW, CH);
+
+    ctx.save();
+    if (shakeFrames > 0) {
+      shakeFrames--;
+      shakeAmt *= 0.82;
+      ctx.translate((Math.random()-0.5)*shakeAmt*2, (Math.random()-0.5)*shakeAmt*2);
+    }
+
+    /* stars */
+    stars.forEach(function(s) {
+      ctx.globalAlpha = Math.max(0.1, 0.4 + Math.sin(s.t)*0.35);
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    /* particles */
+    parts.forEach(function(p) {
+      ctx.globalAlpha = p.life * 0.9; ctx.fillStyle = p.col;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    /* enemies */
+    enemies.forEach(function(e) { if (e.alive) drawShape(e.type, e.x, e.y); });
+
+    /* player bullets */
+    ctx.shadowColor = '#4a9edd'; ctx.shadowBlur = 8; ctx.fillStyle = '#7ec8f0';
+    pB.forEach(function(b) { ctx.fillRect(b.x-2, b.y-8, 4, 16); });
+
+    /* enemy bullets */
+    ctx.shadowColor = '#e74c3c'; ctx.shadowBlur = 6; ctx.fillStyle = '#ff6b6b';
+    eB.forEach(function(b) { ctx.fillRect(b.x-2, b.y-5, 4, 10); });
+    ctx.shadowBlur = 0;
+
+    /* player ship */
+    if (gameState !== 'dying' && gameState !== 'countdown' && (PL.inv === 0 || Math.floor(Date.now()/80) % 2 === 0)) drawShip(PL.x, PL.y);
+    if (gameState === 'countdown') drawShip(PL.x, PL.y, 0.5);
+
+    /* HUD */
+    ctx.font = '13px "DM Mono",monospace'; ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.textAlign = 'left';
+    ctx.fillText('SCORE  ' + String(score).padStart(5,'0'), 14, 22);
+    ctx.textAlign = 'center';
+    ctx.fillText('LEVEL  ' + level, CW/2, 22);
+    ctx.fillStyle = '#4a9edd';
+    for (var i = 0; i < lives; i++) {
+      var lx = CW-20-i*22, ly = 18;
+      ctx.beginPath(); ctx.moveTo(lx, ly-8); ctx.lineTo(lx+8, ly+4); ctx.lineTo(lx-8, ly+4); ctx.closePath(); ctx.fill();
+    }
+
+    /* countdown overlay */
+    if (gameState === 'countdown') {
+      ctx.fillStyle = 'rgba(0,5,15,0.62)'; ctx.fillRect(0, 0, CW, CH);
+      if (level > 1) {
+        ctx.fillStyle = '#f39c12'; ctx.font = 'bold 14px "DM Mono",monospace';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+        ctx.fillText('LEVEL ' + level, CW/2, CH/2 - 82);
+      }
+      var elapsed = Date.now() - countStart;
+      var digit, dcolor;
+      if      (elapsed < 1000) { digit = '3'; dcolor = '#ffffff'; }
+      else if (elapsed < 2000) { digit = '2'; dcolor = '#ffffff'; }
+      else if (elapsed < 3000) { digit = '1'; dcolor = '#ffffff'; }
+      else                     { digit = 'GO!'; dcolor = '#4a9edd'; }
+      var beatMs = (digit === 'GO!') ? (elapsed - 3000) : (elapsed % 1000);
+      var sz = (digit === 'GO!') ? (1 + beatMs/500*0.25) : (1 + Math.max(0, (200 - beatMs)/200)*0.5);
+      ctx.save();
+      ctx.translate(CW/2, CH/2 - 20);
+      ctx.scale(sz, sz);
+      ctx.shadowColor = dcolor; ctx.shadowBlur = 28;
+      ctx.fillStyle = dcolor;
+      ctx.font = 'bold 88px "DM Mono",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(digit, 0, 0);
+      ctx.restore();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.font = '11px "DM Mono",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('ARROW KEYS OR WASD TO MOVE   ·   SPACE TO SHOOT', CW/2, CH/2 + 58);
+    }
+
+    /* level clear overlay */
+    if (gameState === 'levelclear') {
+      ctx.fillStyle = 'rgba(0,5,15,0.8)'; ctx.fillRect(0,0,CW,CH);
+      ctx.shadowColor = '#f39c12'; ctx.shadowBlur = 30;
+      ctx.fillStyle = '#f39c12'; ctx.font = 'bold 44px "DM Mono",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('LEVEL ' + level + ' CLEAR!', CW/2, CH/2 - 18); ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '12px "DM Mono",monospace';
+      ctx.fillText('SCORE ' + score + '   ·   SPACE FOR LEVEL ' + (level+1) + '   ·   ESC TO CLOSE', CW/2, CH/2 + 18);
+    }
+
+    /* game over overlay */
+    if (gameState === 'over') {
+      ctx.fillStyle = 'rgba(0,0,0,0.72)'; ctx.fillRect(0, 0, CW, CH);
+      ctx.shadowColor = '#e74c3c'; ctx.shadowBlur = 30;
+      ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 44px "DM Mono",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('GAME OVER', CW/2, CH/2-22); ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '12px "DM Mono",monospace';
+      ctx.fillText('SCORE ' + score + '   ·   SPACE TO REPLAY   ·   ESC TO CLOSE', CW/2, CH/2+18);
+    }
+
+    /* final win overlay */
+    if (gameState === 'won') {
+      ctx.fillStyle = 'rgba(0,5,15,0.78)'; ctx.fillRect(0, 0, CW, CH);
+      ctx.shadowColor = '#4a9edd'; ctx.shadowBlur = 30;
+      ctx.fillStyle = '#4a9edd'; ctx.font = 'bold 44px "DM Mono",monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('YOU WIN!', CW/2, CH/2-30); ctx.shadowBlur = 0;
+      ctx.fillStyle = '#27ae60'; ctx.font = 'bold 15px "DM Mono",monospace';
+      ctx.fillText("You've saved the galaxy! Now please hire me...", CW/2, CH/2+8);
+      ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = '11px "DM Mono",monospace';
+      ctx.fillText('SCORE ' + score + '   ·   SPACE TO PLAY AGAIN   ·   ESC TO CLOSE', CW/2, CH/2+36);
+    }
+
+    ctx.restore();
+  }
+
+  (function loop() {
+    if (!running) return;
+    update(); draw(); raf = requestAnimationFrame(loop);
+  })();
+}
+
 /* ── BADGE EASTER EGG ── */
 (function() {
   var badge = document.querySelector('.hero-badge');
