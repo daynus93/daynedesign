@@ -246,6 +246,7 @@
   transition: background 0.2s;
 }
 .study-card:hover .study-chip { background: var(--sky); }
+.study-chip svg { width: 1.1em; height: 1.1em; flex-shrink: 0; }
 
 /* extra cards */
 .study-card.extra { display: none; }
@@ -347,11 +348,13 @@
 .drawer-co-tag  { font-size: 0.78rem; color: rgba(255,255,255,0.38); margin-top: 0.1rem; }
 .drawer-visit {
   margin-left: auto; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 0.35rem;
   font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--sky); text-decoration: none;
-  padding: 0.38rem 0.85rem; border: 1px solid rgba(74,158,221,0.35); border-radius: var(--radius);
+  padding: 0.38rem 0.85rem; border: 1px solid var(--sky); border-radius: var(--radius);
   transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
+.drawer-visit svg { width: 1.2em; height: 1.2em; flex-shrink: 0; }
 .drawer-visit:hover { background: var(--sky); border-color: var(--sky); color: white; }
 
 /* accomplishments list */
@@ -568,7 +571,7 @@
       A decade crafting user-centered experiences across SaaS, logistics, edtech, and mobile. I care more about the outcome than the artifact.
     </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#studies">View my work →</a>
+      <a class="btn btn-primary" href="#studies">View my work <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></a>
       <a class="btn btn-outline" href="assets/Petera-Product-Design-Resume.pdf" target="_blank">Download résumé</a>
     </div>
   </div>
@@ -618,7 +621,7 @@
         <div class="study-platform">Trainual · Web &amp; Desktop</div>
         <div class="study-title">HRIS Sync</div>
         <div class="study-desc">Rebuilt a broken integration. Client adoption jumped from 5% → 35% within one month of launch.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -628,7 +631,7 @@
         <div class="study-platform">Lessen · iOS &amp; Android</div>
         <div class="study-title">Lessen Pro</div>
         <div class="study-desc">4.9★ across both app stores. 940 downloads and 400+ work orders weekly within 3 months.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -638,7 +641,7 @@
         <div class="study-platform">Veho · Web &amp; Mobile</div>
         <div class="study-title">Exception Handling</div>
         <div class="study-desc">Reduced package triage time by 87%, from 8 minutes down to under 1.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -648,7 +651,7 @@
         <div class="study-platform">Trainual · Web &amp; Desktop</div>
         <div class="study-title">Software &amp; Tools</div>
         <div class="study-desc">Centralized software tracking hub. Supports 7,000+ unique entries across customer orgs.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -658,7 +661,7 @@
         <div class="study-platform">Lessen · Design System</div>
         <div class="study-title">Rivet</div>
         <div class="study-desc">100+ components with 1:1 design-to-code parity. Reuse hit 40%+ across product teams.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -668,7 +671,7 @@
         <div class="study-platform">StrongMind · iOS &amp; Android</div>
         <div class="study-title">StrongMind App</div>
         <div class="study-desc">Student + parent mobile app. Boosted seat time by 5% and course completion by 12%.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -679,7 +682,7 @@
         <div class="study-platform">StrongMind · Web</div>
         <div class="study-title">LoudMouth</div>
         <div class="study-desc">Delivered 2 million+ personalized messages to 50,000+ students and parents, with a 98% opt-in rate.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -689,7 +692,7 @@
         <div class="study-platform">Pearson · EdTech LMS</div>
         <div class="study-title">Realize LMS</div>
         <div class="study-desc">Pearson's flagship K–12 LMS used by over 6.5 million students. My first professional product design role.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -699,7 +702,7 @@
         <div class="study-platform">StrongMind · Design Sprint</div>
         <div class="study-title">SPRINT</div>
         <div class="study-desc">A 5-day Google Ventures Design Sprint to answer: how do you engage the disengaged learner?</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -709,7 +712,7 @@
         <div class="study-platform">Pearson · Design System</div>
         <div class="study-title">K12 Style Guide</div>
         <div class="study-desc">A living design system built to drive consistency and developer efficiency across all Pearson K–12 products.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -719,7 +722,7 @@
         <div class="study-platform">Pearson · iPad</div>
         <div class="study-title">Scout</div>
         <div class="study-desc">Observational assessment tool for teachers to track student progress and attach media, all from an iPad.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -729,7 +732,7 @@
         <div class="study-platform">Pearson · Hackathon</div>
         <div class="study-title">DRIVE Portal</div>
         <div class="study-desc">Winner of the 2016 Pearson hackathon, a parent-student portal keeping students, parents, and teachers connected.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -739,7 +742,7 @@
         <div class="study-platform">Pearson · Web</div>
         <div class="study-title">EasyBridge</div>
         <div class="study-desc">Pearson's school rostering and administration tool used by every K–12 customer across the platform ecosystem.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -749,7 +752,7 @@
         <div class="study-platform">Hackathon · iOS</div>
         <div class="study-title">Vlogger</div>
         <div class="study-desc">A 24-hour hackathon app putting a human face on online teaching, helping students see their teacher as a real person.</div>
-        <span class="study-chip">View study →</span>
+        <span class="study-chip">View study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
       </div>
     </a>
 
@@ -793,7 +796,7 @@
               <div class="drawer-co-name">Trainual</div>
               <div class="drawer-co-tag">SaaS · Business playbook &amp; onboarding platform</div>
             </div>
-            <a class="drawer-visit" href="https://trainual.com" target="_blank">Visit ↗</a>
+            <a class="drawer-visit" href="https://trainual.com" target="_blank">Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
           </div>
           <div class="drawer-section-label">Key accomplishments</div>
           <ul class="drawer-list">
@@ -836,7 +839,7 @@
               <div class="drawer-co-name">Veho</div>
               <div class="drawer-co-tag">Startup · Shipping &amp; logistics disruption</div>
             </div>
-            <a class="drawer-visit" href="https://shipveho.com" target="_blank">Visit ↗</a>
+            <a class="drawer-visit" href="https://shipveho.com" target="_blank">Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
           </div>
           <div class="drawer-section-label">Key accomplishments</div>
           <ul class="drawer-list">
@@ -879,7 +882,7 @@
               <div class="drawer-co-name">Lessen</div>
               <div class="drawer-co-tag">Startup · Rental property services at scale · $2B valuation</div>
             </div>
-            <a class="drawer-visit" href="https://lessen.com" target="_blank">Visit ↗</a>
+            <a class="drawer-visit" href="https://lessen.com" target="_blank">Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
           </div>
           <div class="drawer-section-label">Key accomplishments</div>
           <ul class="drawer-list">
@@ -920,7 +923,7 @@
               <div class="drawer-co-name">StrongMind</div>
               <div class="drawer-co-tag">EdTech · Democratizing education through innovative learning</div>
             </div>
-            <a class="drawer-visit" href="https://strongmind.com" target="_blank">Visit ↗</a>
+            <a class="drawer-visit" href="https://strongmind.com" target="_blank">Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
           </div>
           <div class="drawer-section-label">Key accomplishments</div>
           <ul class="drawer-list">
@@ -962,7 +965,7 @@
               <div class="drawer-co-name">Pearson Education</div>
               <div class="drawer-co-tag">Global EdTech · K-12 Learning Services</div>
             </div>
-            <a class="drawer-visit" href="https://pearson.com/en-us.html" target="_blank">Visit ↗</a>
+            <a class="drawer-visit" href="https://pearson.com/en-us.html" target="_blank">Visit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
           </div>
           <div class="drawer-section-label">Key accomplishments</div>
           <ul class="drawer-list">
@@ -1119,8 +1122,8 @@
           </div>
         </div>
         <div class="quiz-result-actions">
-          <button class="quiz-retake" id="retakeBtn"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:8px"><path d="M1.5 6a4.5 4.5 0 1 0 1.1-2.9"/><path d="M1.5 1.5v3h3"/></svg>Try again</button>
-          <button class="quiz-retake" id="viewStatsBtn"><svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" style="vertical-align:-1px;margin-right:8px"><rect x="0" y="7" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="8" rx="0.5"/><rect x="9" y="1" width="3" height="11" rx="0.5"/></svg>View stats</button>
+          <button class="quiz-retake" id="retakeBtn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 6a4.5 4.5 0 1 0 1.1-2.9"/><path d="M1.5 1.5v3h3"/></svg>Try again</button>
+          <button class="quiz-retake" id="viewStatsBtn"><svg viewBox="0 0 12 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="8" rx="0.5"/><rect x="9" y="1" width="3" height="11" rx="0.5"/></svg>View stats</button>
         </div>
         <div id="statsPanel"></div>
       </div>
@@ -1220,14 +1223,15 @@
   border-radius: var(--radius); color: var(--sky);
 }
 .quiz-retake {
-  display: block; margin: 0 auto;
+  display: inline-flex; align-items: center; gap: 0.5rem;
   font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
   text-transform: uppercase; padding: 0.7rem 1.75rem;
-  background: transparent; border: 1px solid rgba(255,255,255,0.2);
-  border-radius: var(--radius); color: rgba(255,255,255,0.4);
+  background: transparent; border: 1px solid var(--sky);
+  border-radius: var(--radius); color: var(--sky);
   cursor: pointer; transition: all 0.2s;
 }
-.quiz-retake:hover { border-color: var(--sky); color: var(--sky); }
+.quiz-retake:hover { background: var(--sky); border-color: var(--sky); color: white; }
+.quiz-retake svg { width: 1em; height: 1em; flex-shrink: 0; }
 @media (max-width: 640px) {
   .quiz-fish-info { padding: 1.5rem; }
 }
@@ -1350,7 +1354,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('quiz-questions').style.display = 'block';
     document.getElementById('quiz-result').style.display = 'none';
     document.getElementById('statsPanel').style.display = 'none';
-    document.getElementById('viewStatsBtn').innerHTML = '<svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor" style="vertical-align:-1px;margin-right:8px"><rect x="0" y="7" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="8" rx="0.5"/><rect x="9" y="1" width="3" height="11" rx="0.5"/></svg>View stats';
+    document.getElementById('viewStatsBtn').innerHTML = '<svg viewBox="0 0 12 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="0.5"/><rect x="4.5" y="4" width="3" height="8" rx="0.5"/><rect x="9" y="1" width="3" height="11" rx="0.5"/></svg>View stats';
     updateProgress(0);
   });
 
