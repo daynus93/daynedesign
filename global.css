@@ -19,6 +19,21 @@
   --radius-card: 16px;
 }
 
+/* ── SKIP LINK ── */
+.skip-link {
+  position: absolute; top: -100%; left: 1rem;
+  background: var(--sky); color: #fff;
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.6rem 1.2rem; border-radius: var(--radius);
+  text-decoration: none; z-index: 99999;
+  transition: top 0.15s;
+}
+.skip-link:focus { top: 1rem; }
+
+/* ── FOCUS STYLES ── */
+:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 4px; }
+a.nav-cta:focus-visible, .btn:focus-visible, .mobile-link-cta:focus-visible, .skip-link:focus-visible { border-radius: var(--radius); }
+
 /* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -265,6 +280,14 @@ footer {
 .hero-loader-text {
   font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .hero-animate { opacity: 1; }
+  .hero-img-wrap img { opacity: 1; }
+  .hero-img-wrap.loaded img { opacity: 1; }
 }
 
 /* ── RESPONSIVE ── */
