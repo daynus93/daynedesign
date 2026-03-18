@@ -2356,14 +2356,22 @@ function triggerGalaga() {
     resetTimer = setTimeout(resetBadge, 5000);
   }
   badge.addEventListener('click', function() {
+    var isMobile = window.innerWidth < 900 || 'ontouchstart' in window;
     clicks++;
-    if (clicks === 11) {
+    if (!isMobile && clicks === 11) {
       if (resetTimer) clearTimeout(resetTimer);
       triggerGalaga();
       resetBadge();
       return;
     }
-    if (clicks < phrases.length) setBadge(phrases[clicks]);
+    if (isMobile && clicks === 12) {
+      resetBadge();
+      return;
+    }
+    var text;
+    if (isMobile && clicks === 11) text = "What do you mean the easter egg doesn't work on mobile?";
+    else if (clicks < phrases.length) text = phrases[clicks];
+    if (text) setBadge(text);
     armTimer();
   });
 })();
