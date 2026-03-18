@@ -760,7 +760,7 @@
   </div>
 
   <div class="show-more-row reveal">
-    <button class="btn btn-outline" id="showMoreBtn" onclick="toggleStudies()">See all studies ↓</button>
+    <button class="btn btn-outline" id="showMoreBtn" onclick="toggleStudies()">See all studies <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v10M4 8l4 4 4-4"/></svg></button>
   </div>
 </section>
 
@@ -1684,7 +1684,9 @@ function toggleStudies() {
   const extras = document.querySelectorAll('.study-card.extra');
   const btn = document.getElementById('showMoreBtn');
   document.getElementById('studiesCount').textContent = expanded ? 'Showing 14 of 14' : 'Showing 6 of 14';
-  btn.textContent = expanded ? 'Show less ↑' : 'See all studies ↓';
+  btn.innerHTML = expanded
+    ? 'Show less <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14V4M4 8l4-4 4 4"/></svg>'
+    : 'See all studies <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v10M4 8l4 4 4-4"/></svg>';
   extras.forEach((card, i) => {
     if (expanded) {
       card.classList.add('shown');
