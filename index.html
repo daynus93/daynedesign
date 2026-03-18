@@ -492,7 +492,8 @@
 .contact-link:hover .cl-arrow { transform: translateX(4px); color: var(--sky); }
 .cl-label { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.1rem; }
 .cl-value { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; }
-.cl-arrow { margin-left: auto; font-size: 1.1rem; transition: transform 0.2s, color 0.2s; color: var(--muted); }
+.cl-arrow { margin-left: auto; font-size: 1.1rem; transition: transform 0.2s, color 0.2s; color: var(--muted); display: flex; }
+.cl-arrow svg { width: 1em; height: 1em; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1300px) {
@@ -1453,19 +1454,19 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   <div class="contact-links reveal-stagger">
     <a class="contact-link" href="mailto:dayne@dayne.design">
       <div><span class="cl-label">Email</span><span class="cl-value">dayne@dayne.design</span></div>
-      <span class="cl-arrow">→</span>
+      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
     </a>
     <a class="contact-link" href="https://www.linkedin.com/in/daynep/" target="_blank">
       <div><span class="cl-label">LinkedIn</span><span class="cl-value">linkedin.com/in/daynep</span></div>
-      <span class="cl-arrow">→</span>
+      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
     </a>
     <a class="contact-link" href="https://github.com/daynus93" target="_blank">
       <div><span class="cl-label">GitHub</span><span class="cl-value">github.com/daynus93</span></div>
-      <span class="cl-arrow">→</span>
+      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
     </a>
     <a class="contact-link" href="assets/Petera-Product-Design-Resume.pdf" target="_blank">
       <div><span class="cl-label">Résumé</span><span class="cl-value">Download PDF</span></div>
-      <span class="cl-arrow">→</span>
+      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h10M8 4l4 4-4 4"/></svg></span>
     </a>
   </div>
 </section>
