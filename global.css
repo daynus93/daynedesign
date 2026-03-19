@@ -302,6 +302,6 @@ footer {
   nav { padding: 1rem 1.5rem; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
-  footer { padding: 2rem; flex-direction: column; text-align: center; }
+  footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
   .hero-img-wrap { margin: 0 -2rem; max-height: 480px; }
 }
