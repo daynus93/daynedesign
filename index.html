@@ -1516,9 +1516,29 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
 
 <script>
 /* NAV */
-window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
-});
+(function() {
+  const nav = document.getElementById('mainNav');
+  let navScrolled = false;
+  window.addEventListener('scroll', () => {
+    const should = window.scrollY > 60;
+    if (should === navScrolled) return;
+    if (should) {
+      nav.classList.remove('attaching');
+      nav.classList.add('scrolled', 'detaching');
+      navScrolled = true;
+      nav.addEventListener('animationend', function h(e) {
+        if (e.animationName === 'nav-detach') { nav.classList.remove('detaching'); nav.removeEventListener('animationend', h); }
+      });
+    } else {
+      nav.classList.remove('detaching', 'scrolled');
+      nav.classList.add('attaching');
+      navScrolled = false;
+      nav.addEventListener('animationend', function h(e) {
+        if (e.animationName === 'nav-attach') { nav.classList.remove('attaching'); nav.removeEventListener('animationend', h); }
+      });
+    }
+  }, { passive: true });
+}());
 
 /* ── HERO MOUSE-TRACKED GRADIENT ── */
 (function() {
