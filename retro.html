@@ -16,8 +16,13 @@
     * { box-sizing: border-box; }
 
     body {
-      background-color: #000d1a;
-      color: #BBBBCC;
+      background-color: #e4eff8;
+      background-image:
+        radial-gradient(circle, rgba(74,158,221,0.28) 1px, transparent 1px),
+        radial-gradient(circle, rgba(74,158,221,0.12) 1px, transparent 1px);
+      background-size: 18px 18px, 6px 6px;
+      background-position: 0 0, 3px 3px;
+      color: #1c2b3a;
       font-family: Verdana, Arial, sans-serif;
       font-size: 11px;
       cursor: none;
@@ -25,24 +30,18 @@
       padding: 0;
     }
 
-    canvas#stars {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 0;
-    }
-
     #page-wrap { position: relative; z-index: 1; padding: 10px 0 30px; }
 
-    a { color: #6699CC; }
-    a:visited { color: #9966BB; }
-    a:hover { color: #FFCC44; text-decoration: none; }
+    a { color: #4a9edd; }
+    a:visited { color: #6a80a0; }
+    a:hover { color: #2176ae; text-decoration: none; }
 
     /* ── ANIMATIONS ── */
     @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
     .blink { animation: blink 1.2s step-start infinite; }
 
     @keyframes slowglow {
-      0%,100%{color:#4488CC} 50%{color:#88BBEE}
+      0%,100%{color:#2176ae} 50%{color:#4a9edd}
     }
     .rainbow { animation: slowglow 3s ease-in-out infinite; }
 
@@ -59,20 +58,20 @@
     #main-table {
       width: 780px; max-width: 98vw;
       margin: 0 auto;
-      border: 2px solid #1a3a5c;
-      background: #000d1a;
+      border: 2px solid #4a9edd;
+      background: #f7f9fc;
     }
 
     /* ── HEADER ── */
     #site-header {
-      background: linear-gradient(180deg, #001a3a 0%, #000d1a 100%);
-      border-bottom: 2px solid #1a3a6a;
+      background: linear-gradient(180deg, #d6eaf8 0%, #edf4fb 100%);
+      border-bottom: 2px solid #4a9edd;
       padding: 16px 10px 12px;
       text-align: center;
     }
 
     .site-subtitle {
-      color: #6699CC;
+      color: #2176ae;
       font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -82,9 +81,9 @@
 
     .avail-badge {
       display: inline-block;
-      background: #001a33;
-      border: 1px solid #336699;
-      color: #6699CC;
+      background: #d6eaf8;
+      border: 1px solid #4a9edd;
+      color: #1c2b3a;
       font-size: 10px;
       font-family: Verdana, Arial, sans-serif;
       padding: 2px 10px;
@@ -95,132 +94,145 @@
 
     /* ── MARQUEE BAR ── */
     .marquee-bar {
-      background: #000d22;
-      border-top: 1px solid #1a3355;
-      border-bottom: 1px solid #1a3355;
+      background: #1c2b3a;
+      border-top: 1px solid #2a3d52;
+      border-bottom: 1px solid #2a3d52;
       padding: 3px 0;
       font-family: Verdana, Arial, sans-serif;
       font-size: 10px;
-      color: #5577AA;
+      color: #8099b0;
     }
 
     /* ── NAV ── */
     #navbar {
-      background: #C0C0C0;
-      border-bottom: 2px solid #336699;
+      background: #1c2b3a;
+      border-bottom: 2px solid #2a3d52;
       padding: 5px;
       text-align: center;
     }
 
     .nav-btn {
       display: inline-block;
-      background: #C0C0C0;
-      border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      background: #2a4a6a;
+      border: 2px solid; border-color: #5a8ab8 #1a3050 #1a3050 #5a8ab8;
       padding: 3px 14px; margin: 2px;
       font-family: Verdana, Arial, sans-serif; font-size: 11px; font-weight: bold;
-      color: #000000; text-decoration: none; cursor: none;
+      color: #d6eaf8; text-decoration: none; cursor: none;
     }
     .nav-btn:hover {
-      background: #003366; color: #FFFFFF !important;
-      border-color: #808080 #FFFFFF #FFFFFF #808080;
+      background: #4a9edd; color: #ffffff !important;
+      border-color: #1a3050 #5a8ab8 #5a8ab8 #1a3050;
     }
-    .nav-btn:visited { color: #000000; }
+    .nav-btn:visited { color: #d6eaf8; }
 
     /* ── SECTIONS ── */
-    .section { padding: 16px; border-bottom: 1px solid #111e33; }
+    .section { padding: 16px; border-bottom: 1px solid #c8d4dc; }
 
     .section-title {
-      font-size: 13px; font-weight: bold; color: #5599DD;
+      font-size: 13px; font-weight: bold; color: #2176ae;
       font-family: Verdana, Arial, sans-serif;
       letter-spacing: 2px; text-transform: uppercase;
-      border-bottom: 1px solid #1a3a6a;
+      border-bottom: 1px solid #4a9edd;
       margin-bottom: 12px; padding-bottom: 4px;
     }
 
     hr.neon { border: none; margin: 10px 0; }
-    hr.cyan  { border-top: 1px solid #1a3a6a; }
-    hr.yellow{ border-top: 1px solid #3a5a1a; }
-    hr.pink  { border-top: 1px solid #3a1a4a; }
-    hr.green { border-top: 1px solid #1a3a2a; }
+    hr.cyan  { border-top: 1px solid #4a9edd; }
+    hr.yellow{ border-top: 1px solid #c8d4dc; }
+    hr.pink  { border-top: 1px solid #c8d4dc; }
+    hr.green { border-top: 1px solid #c8d4dc; }
 
     /* ── PORTFOLIO TABLE ── */
     .port-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
-    .port-table td { border: 1px solid #111e33; padding: 7px 8px; vertical-align: top; }
-    .port-table tr:hover td { background: #001122; }
-    .port-num { color: #FFCC44; font-family: Verdana,Arial,sans-serif; font-size: 14px; font-weight: bold; text-align: center; width: 36px; }
-    .port-title { color: #6699CC; font-weight: bold; font-size: 11px; }
-    .port-co { color: #556677; font-size: 9px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-    .port-stat { color: #558877; font-size: 10px; font-family: Verdana,Arial,sans-serif; margin-top: 3px; }
-    .port-link { color: #5588BB; font-size: 10px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; }
-    .port-link:hover { color: #FFCC44 !important; }
+    .port-table td { border: 1px solid #c8d4dc; padding: 7px 8px; vertical-align: top; }
+    .port-table tr:hover td { background: #d6eaf8; }
+    .port-num { color: #4a9edd; font-family: Verdana,Arial,sans-serif; font-size: 14px; font-weight: bold; text-align: center; width: 36px; }
+    .port-title { color: #1c2b3a; font-weight: bold; font-size: 11px; }
+    .port-co { color: #8099b0; font-size: 9px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+    .port-stat { color: #6a80a0; font-size: 10px; font-family: Verdana,Arial,sans-serif; margin-top: 3px; }
+    .port-link { color: #4a9edd; font-size: 10px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; }
+    .port-link:hover { color: #2176ae !important; }
 
     /* ── SKILLS ── */
     .skill-row { margin: 7px 0; }
-    .skill-label { display: inline-block; width: 140px; color: #AABBCC; font-size: 10px; font-family: Verdana,Arial,sans-serif; }
-    .skill-bar-outer { display: inline-block; width: 160px; height: 11px; background: #001122; border: 1px solid #1a3355; vertical-align: middle; }
-    .skill-bar-inner { height: 100%; background: linear-gradient(90deg, #1a4488, #4488CC); }
-    .skill-pct { color: #557799; font-size: 9px; font-family: Verdana,Arial,sans-serif; margin-left: 6px; }
+    .skill-label { display: inline-block; width: 140px; color: #1c2b3a; font-size: 10px; font-family: Verdana,Arial,sans-serif; }
+    .skill-bar-outer { display: inline-block; width: 160px; height: 11px; background: #d6eaf8; border: 1px solid #c8d4dc; vertical-align: middle; }
+    .skill-bar-inner { height: 100%; background: linear-gradient(90deg, #2176ae, #4a9edd); }
+    .skill-pct { color: #8099b0; font-size: 9px; font-family: Verdana,Arial,sans-serif; margin-left: 6px; }
 
     /* ── EXPERIENCE ── */
-    .exp-row { margin: 8px 0; padding: 8px 10px; background: #000d22; border-left: 3px solid #2a4a7a; }
-    .exp-co { color: #FFCC44; font-weight: bold; font-size: 11px; font-family: Verdana,Arial,sans-serif; }
-    .exp-role { color: #6699CC; font-size: 10px; margin: 2px 0; }
-    .exp-dates { color: #445566; font-size: 9px; font-family: Verdana,Arial,sans-serif; }
-    .exp-bullets { color: #AABBCC; font-size: 10px; margin: 5px 0 0 14px; line-height: 1.7; }
+    .exp-row { margin: 8px 0; padding: 8px 10px; background: #edf4fb; border-left: 3px solid #4a9edd; }
+    .exp-co { color: #2176ae; font-weight: bold; font-size: 11px; font-family: Verdana,Arial,sans-serif; }
+    .exp-role { color: #4a9edd; font-size: 10px; margin: 2px 0; }
+    .exp-dates { color: #8099b0; font-size: 9px; font-family: Verdana,Arial,sans-serif; }
+    .exp-bullets { color: #1c2b3a; font-size: 10px; margin: 5px 0 0 14px; line-height: 1.7; }
 
     /* ── CONTACT ── */
     .contact-btn {
       display: inline-block; margin: 4px;
-      background: #C0C0C0; border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      background: #2a4a6a; border: 2px solid; border-color: #5a8ab8 #1a3050 #1a3050 #5a8ab8;
       padding: 5px 18px; font-family: Verdana,Arial,sans-serif; font-size: 11px; font-weight: bold;
-      color: #000000 !important; text-decoration: none; cursor: none;
+      color: #d6eaf8 !important; text-decoration: none; cursor: none;
     }
     .contact-btn:hover {
-      background: #003366; color: #FFFFFF !important;
-      border-color: #808080 #FFFFFF #FFFFFF #808080;
+      background: #4a9edd; color: #ffffff !important;
+      border-color: #1a3050 #5a8ab8 #5a8ab8 #1a3050;
     }
 
     /* ── UNDER CONSTRUCTION ── */
     .construction {
       text-align: center; padding: 10px;
-      background: #001122;
-      border: 1px solid #1a3a6a;
+      background: #edf4fb;
+      border: 1px solid #c8d4dc;
       margin: 12px 0;
     }
 
     /* ── FOOTER ── */
     #site-footer {
-      background: #000d22; border-top: 2px solid #1a3355;
+      background: #d6eaf8; border-top: 2px solid #c8d4dc;
       padding: 14px; text-align: center;
-      font-size: 10px; color: #445566;
+      font-size: 10px; color: #8099b0;
       font-family: Verdana, Arial, sans-serif;
     }
 
     .counter {
       font-family: Verdana, Arial, sans-serif;
-      background: #000000; color: #4488CC;
-      border: 2px inset #1a3355;
+      background: #1c2b3a; color: #4a9edd;
+      border: 2px inset #4a9edd;
       padding: 2px 10px; font-size: 14px; letter-spacing: 4px;
     }
 
     .badge {
       display: inline-block;
-      border: 1px solid #1a3355;
+      border: 1px solid #c8d4dc;
       padding: 2px 6px; margin: 3px;
-      font-size: 9px; color: #445566;
+      font-size: 9px; color: #8099b0;
       font-family: Verdana, Arial, sans-serif;
       letter-spacing: 1px;
     }
 
     .back-btn {
       display: inline-block; margin: 8px 4px;
-      background: #C0C0C0; border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      background: #2a4a6a; border: 2px solid; border-color: #5a8ab8 #1a3050 #1a3050 #5a8ab8;
       padding: 4px 18px; font-family: Verdana,Arial,sans-serif; font-size: 11px; font-weight: bold;
-      color: #000000; text-decoration: none; cursor: none;
+      color: #d6eaf8; text-decoration: none; cursor: none;
     }
     .back-btn:hover {
-      background: #003366; color: #FFFFFF !important;
-      border-color: #808080 #FFFFFF #FFFFFF #808080;
+      background: #4a9edd; color: #ffffff !important;
+      border-color: #1a3050 #5a8ab8 #5a8ab8 #1a3050;
+    }
+
+    /* ── MUSIC TOGGLE ── */
+    #music-toggle {
+      display: inline-block;
+      background: #2a4a6a; border: 2px solid; border-color: #5a8ab8 #1a3050 #1a3050 #5a8ab8;
+      padding: 3px 14px; margin: 2px;
+      font-family: Verdana, Arial, sans-serif; font-size: 11px; font-weight: bold;
+      color: #d6eaf8; cursor: none; user-select: none;
+    }
+    #music-toggle:hover {
+      background: #4a9edd; color: #ffffff;
+      border-color: #1a3050 #5a8ab8 #5a8ab8 #1a3050;
     }
 
     /* ── RETRO CURSOR ── */
@@ -238,7 +250,6 @@
 </head>
 <body>
 
-<canvas id="stars"></canvas>
 <div id="retro-cur"></div>
 
 <!-- TOP MARQUEE -->
@@ -259,7 +270,7 @@
     <div style="margin:8px 0;">
       <span class="avail-badge blink">● Available for Work</span>
     </div>
-    <div style="color:#445566;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;">
+    <div style="color:#8099b0;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;">
       Medford, Oregon &nbsp;·&nbsp; 10+ Years Experience
     </div>
   </div>
@@ -272,6 +283,7 @@
     <a class="nav-btn" href="#experience">[ EXPERIENCE ]</a>
     <a class="nav-btn" href="#contact">[ CONTACT ]</a>
     <a class="nav-btn" href="index.html">[ ← MODERN SITE ]</a>
+    <span id="music-toggle">[ ♪ MUSIC: OFF ]</span>
   </div>
 
   <!-- MARQUEE SKILLS -->
@@ -287,29 +299,29 @@
     <table cellpadding="0" cellspacing="0" width="100%"><tr>
       <td style="padding-right:16px;vertical-align:top;width:58%;">
         <p style="line-height:1.75;margin-bottom:8px;">
-          Hi, I'm <strong style="color:#AABBDD;">Dayne Petera</strong>, a Senior Product Designer with
-          <strong style="color:#6699CC;">10+ years</strong> of experience crafting user-centered digital experiences.
+          Hi, I'm <strong style="color:#1c2b3a;">Dayne Petera</strong>, a Senior Product Designer with
+          <strong style="color:#2176ae;">10+ years</strong> of experience crafting user-centered digital experiences.
           I've worked across SaaS, logistics, edtech, and mobile, and I care more about the
-          <em style="color:#AABBCC;">outcome</em> than the artifact.
+          <em style="color:#4a9edd;">outcome</em> than the artifact.
         </p>
         <p style="line-height:1.75;margin-bottom:8px;">
-          Currently based in <strong style="color:#AABBDD;">Medford, Oregon</strong> and
-          <span class="blink" style="color:#6699CC;"><strong>actively looking for work.</strong></span>
+          Currently based in <strong style="color:#1c2b3a;">Medford, Oregon</strong> and
+          <span class="blink" style="color:#4a9edd;"><strong>actively looking for work.</strong></span>
         </p>
-        <p style="line-height:1.75;color:#445566;font-size:10px;">
+        <p style="line-height:1.75;color:#8099b0;font-size:10px;">
           * No design systems were harmed in the making of my career.<br>
           * Yes, this website was built on purpose.
         </p>
       </td>
       <td style="vertical-align:top;text-align:center;">
-        <div style="border:1px solid #1a3a6a;background:#000d22;padding:12px;display:inline-block;">
-          <div style="color:#FFCC44;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;margin-bottom:8px;">Quick Info</div>
+        <div style="border:1px solid #4a9edd;background:#edf4fb;padding:12px;display:inline-block;">
+          <div style="color:#4a9edd;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;margin-bottom:8px;">Quick Info</div>
           <table cellpadding="4" style="font-family:Verdana,Arial,sans-serif;font-size:10px;width:100%;">
-            <tr><td style="color:#445566;">Role:</td><td style="color:#6699CC;">Sr. Product Designer</td></tr>
-            <tr><td style="color:#445566;">Exp:</td><td style="color:#6699CC;">10+ years</td></tr>
-            <tr><td style="color:#445566;">Location:</td><td style="color:#6699CC;">Medford, OR</td></tr>
-            <tr><td style="color:#445566;">Email:</td><td><a href="mailto:dayne@dayne.design">dayne@dayne.design</a></td></tr>
-            <tr><td style="color:#445566;">Status:</td><td><span class="blink" style="color:#6699CC;">● Available</span></td></tr>
+            <tr><td style="color:#8099b0;">Role:</td><td style="color:#1c2b3a;">Sr. Product Designer</td></tr>
+            <tr><td style="color:#8099b0;">Exp:</td><td style="color:#1c2b3a;">10+ years</td></tr>
+            <tr><td style="color:#8099b0;">Location:</td><td style="color:#1c2b3a;">Medford, OR</td></tr>
+            <tr><td style="color:#8099b0;">Email:</td><td><a href="mailto:dayne@dayne.design">dayne@dayne.design</a></td></tr>
+            <tr><td style="color:#8099b0;">Status:</td><td><span class="blink" style="color:#4a9edd;">● Available</span></td></tr>
           </table>
         </div>
       </td>
@@ -321,9 +333,9 @@
     <table cellpadding="0" cellspacing="0" width="100%"><tr valign="top">
 
       <!-- LEFT: PORTFOLIO -->
-      <td style="width:55%;padding-right:12px;border-right:2px dashed #222255;">
+      <td style="width:55%;padding-right:12px;border-right:2px dashed #c8d4dc;">
         <div class="section-title"><span class="sparkle">·</span>&nbsp;Portfolio</div>
-        <div style="color:#445566;font-size:10px;margin-bottom:10px;">14 case studies — click to view</div>
+        <div style="color:#8099b0;font-size:10px;margin-bottom:10px;">14 case studies — click to view</div>
         <table class="port-table">
           <tr>
             <td class="port-num">01</td>
@@ -414,7 +426,7 @@
           <div class="skill-row"><span class="skill-label">AI Tooling</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:85%"></div></div><span class="skill-pct">85%</span></div>
           <div class="skill-row"><span class="skill-label">Product Definition</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:88%"></div></div><span class="skill-pct">88%</span></div>
           <hr class="neon cyan" style="margin-top:12px;">
-          <div style="margin-top:5px;font-size:9px;font-family:'Courier New',monospace;color:#888888;">// CONFIDENCE UNITS™. NOT FDA APPROVED.</div>
+          <div style="margin-top:5px;font-size:9px;font-family:'Courier New',monospace;color:#8099b0;">// CONFIDENCE UNITS™. NOT FDA APPROVED.</div>
         </div>
 
         <!-- EXPERIENCE -->
@@ -485,7 +497,7 @@
   <div class="section" id="contact">
     <div class="section-title"><span class="sparkle">·</span>&nbsp;Contact</div>
     <center>
-      <p style="color:#6699CC;margin-bottom:14px;">
+      <p style="color:#1c2b3a;margin-bottom:14px;">
         Feel free to reach out. I'm friendly and respond quickly.
       </p>
       <a class="contact-btn" href="mailto:dayne@dayne.design">[ Email ]</a>
@@ -494,10 +506,10 @@
       <br><br>
       <div class="construction">
         <span class="spin" style="font-size:14px;">🔧</span>
-        <span style="color:#445566;font-size:10px;">&nbsp;Guestbook coming soon&nbsp;</span>
+        <span style="color:#8099b0;font-size:10px;">&nbsp;Guestbook coming soon&nbsp;</span>
         <span class="spin" style="font-size:14px;animation-direction:reverse;">🔧</span>
         <br>
-        <span style="color:#334455;font-size:9px;">(probably not though)</span>
+        <span style="color:#8099b0;font-size:9px;">(probably not though)</span>
       </div>
     </center>
   </div>
@@ -515,7 +527,7 @@
     </div>
     <hr class="neon cyan">
     <div style="margin:8px 0;font-size:9px;letter-spacing:1px;">
-      &copy; 2001–<span class="blink">2026</span> Dayne Petera. All rights reserved. Designed in Dreamweaver 4.<br>
+      &copy; 1993–<span class="blink">2026</span> Dayne Petera. All rights reserved. Designed in Dreamweaver 4.<br>
       No cookies. No tracking. No regrets.
     </div>
     <div style="margin-top:12px;">
@@ -534,29 +546,251 @@
 </div>
 
 <script type="text/javascript">
-/* ── STARFIELD ── */
+/* ── FLYING TOASTERS ── */
 (function() {
-  var canvas = document.getElementById('stars');
+  var canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99998;';
+  document.body.appendChild(canvas);
   var ctx = canvas.getContext('2d');
   function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
-  var stars = Array.from({length: 200}, function() {
-    return { x: Math.random(), y: Math.random(), r: Math.random()*1.5+0.3, t: Math.random()*Math.PI*2, speed: Math.random()*0.012+0.003 };
-  });
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    stars.forEach(function(s) {
-      s.t += s.speed;
-      var op = 0.3 + 0.7*(0.5+0.5*Math.sin(s.t));
-      ctx.beginPath();
-      ctx.arc(s.x*canvas.width, s.y*canvas.height, s.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(255,255,255,'+op+')';
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
+
+  var toasters = [];
+  var rafId = null;
+
+  function drawToaster(x, y, wing) {
+    ctx.save();
+    ctx.translate(x, y);
+
+    // Wings (drawn behind body)
+    ctx.fillStyle = '#d6eaf8';
+    ctx.strokeStyle = '#8099b0';
+    ctx.lineWidth = 1;
+    if (wing === 0) {
+      // Wings up
+      ctx.beginPath(); ctx.moveTo(-16,2); ctx.lineTo(-38,-18); ctx.lineTo(-26,8); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(16,2);  ctx.lineTo(38,-18);  ctx.lineTo(26,8);  ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else {
+      // Wings down
+      ctx.beginPath(); ctx.moveTo(-16,4); ctx.lineTo(-38,20);  ctx.lineTo(-24,-4); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(16,4);  ctx.lineTo(38,20);   ctx.lineTo(24,-4);  ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
+
+    // Toaster body
+    ctx.fillStyle = '#4a9edd';
+    ctx.strokeStyle = '#2176ae';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    if (ctx.roundRect) { ctx.roundRect(-16,-10,32,26,3); } else { ctx.rect(-16,-10,32,26); }
+    ctx.fill(); ctx.stroke();
+
+    // Shine
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.beginPath();
+    if (ctx.roundRect) { ctx.roundRect(-13,-8,8,22,2); } else { ctx.rect(-13,-8,8,22); }
+    ctx.fill();
+
+    // Toast slots
+    ctx.fillStyle = '#1c2b3a';
+    ctx.fillRect(-8,-8,5,10);
+    ctx.fillRect(3,-8,5,10);
+
+    // Toast peeking out
+    ctx.fillStyle = '#c8943a';
+    ctx.fillRect(-7,-16,4,9);
+    ctx.fillRect(4,-16,4,9);
+    // Crust
+    ctx.fillStyle = '#7a4a18';
+    ctx.fillRect(-7,-17,4,2);
+    ctx.fillRect(4,-17,4,2);
+    // Browned spots on toast
+    ctx.fillStyle = 'rgba(100,50,0,0.4)';
+    ctx.fillRect(-6,-14,2,2); ctx.fillRect(-4,-11,2,2);
+    ctx.fillRect(5,-13,2,2);  ctx.fillRect(6,-10,1,2);
+
+    // Feet
+    ctx.fillStyle = '#2176ae';
+    ctx.fillRect(-12,16,5,4);
+    ctx.fillRect(7,16,5,4);
+
+    // Cord
+    ctx.strokeStyle = '#8099b0';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0,16); ctx.lineTo(0,20); ctx.lineTo(-6,22); ctx.stroke();
+
+    ctx.restore();
   }
-  draw();
+
+  function spawnToaster() {
+    var fromLeft = Math.random() > 0.5;
+    var speed = 1.4 + Math.random() * 1.2;
+    toasters.push({
+      x: fromLeft ? -60 : canvas.width + 60,
+      y: 60 + Math.random() * (canvas.height - 160),
+      dx: fromLeft ? speed : -speed,
+      dy: (Math.random() - 0.5) * 0.6,
+      wing: 0,
+      wingTimer: 0
+    });
+    if (!rafId) rafId = requestAnimationFrame(tick);
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    toasters = toasters.filter(function(t) {
+      t.x += t.dx;
+      t.y += t.dy;
+      t.wingTimer++;
+      if (t.wingTimer >= 10) { t.wing = 1 - t.wing; t.wingTimer = 0; }
+      drawToaster(t.x, t.y, t.wing);
+      return t.x > -120 && t.x < canvas.width + 120 && t.y > -80 && t.y < canvas.height + 80;
+    });
+    if (toasters.length > 0) {
+      rafId = requestAnimationFrame(tick);
+    } else {
+      rafId = null;
+    }
+  }
+
+  function scheduleNext() {
+    // 1–3 toasters at a time, every 18–40 seconds
+    var delay = 18000 + Math.random() * 22000;
+    setTimeout(function() {
+      var count = Math.random() < 0.3 ? 2 : 1;
+      for (var i = 0; i < count; i++) {
+        setTimeout(spawnToaster, i * (600 + Math.random() * 800));
+      }
+      scheduleNext();
+    }, delay);
+  }
+
+  // First toaster after 4–9 seconds
+  setTimeout(function() { spawnToaster(); scheduleNext(); }, 4000 + Math.random() * 5000);
+})();
+
+/* ── 8-BIT CHIPTUNE PLAYER ── */
+(function() {
+  if (!window.AudioContext && !window.webkitAudioContext) return;
+  var ACtx = window.AudioContext || window.webkitAudioContext;
+  var ctx = null, masterGain = null;
+  var loopTimer = null, started = false, muted = true;
+  var nextStart = 0;
+  var btn = document.getElementById('music-toggle');
+
+  var BPM = 126, beat = 60 / BPM;
+
+  // Original 8-bit adventure composition in A minor (32 beats = ~15.2s loop)
+  var N = {
+    A2:110.00, E2:82.41, C3:130.81, D3:146.83, E3:164.81, G2:98.00, F2:87.31,
+    A4:440.00, B4:493.88, C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99, A5:880.00
+  };
+
+  var melody = [
+    // Bars 1-2: opening ascent
+    [N.E5,0.5],[N.D5,0.25],[N.C5,0.25],[N.D5,0.5],[N.E5,0.5],
+    [N.A5,1.0],[N.G5,0.5],[N.E5,0.5],
+    // Bars 3-4: variation with rest
+    [N.E5,0.5],[N.D5,0.25],[N.C5,0.25],[N.D5,0.5],[N.B4,0.5],
+    [N.C5,1.5],[0,0.5],
+    // Bars 5-6: tension
+    [N.G5,0.5],[N.A5,0.5],[N.G5,0.5],[N.E5,0.5],
+    [N.F5,0.5],[N.E5,0.25],[N.D5,0.25],[N.C5,0.5],[N.D5,0.5],
+    // Bars 7-8: resolution
+    [N.E5,0.5],[N.D5,0.5],[N.C5,0.5],[N.B4,0.5],
+    [N.A4,2.0],
+    // Bars 9-10: build
+    [N.F5,0.5],[N.E5,0.5],[N.D5,0.5],[N.C5,0.5],
+    [N.D5,0.5],[N.E5,0.5],[N.F5,0.5],[N.G5,0.5],
+    // Bars 11-12: peak
+    [N.A5,0.5],[N.G5,0.5],[N.F5,0.5],[N.E5,0.5],
+    [N.D5,0.5],[N.C5,0.5],[N.B4,1.0],
+    // Bars 13-14: restatement
+    [N.E5,0.5],[N.D5,0.25],[N.C5,0.25],[N.D5,0.5],[N.E5,0.5],
+    [N.A5,1.0],[N.G5,0.5],[N.E5,0.5],
+    // Bars 15-16: final close
+    [N.C5,0.5],[N.D5,0.5],[N.E5,0.5],[N.G5,0.5],
+    [N.A4,2.0]
+  ];
+
+  var bass = [
+    [N.A2,2.0],[N.A2,2.0],
+    [N.C3,1.0],[N.E2,1.0],[N.C3,2.0],
+    [N.F2,2.0],[N.C3,2.0],
+    [N.E2,2.0],[N.A2,2.0],
+    [N.F2,2.0],[N.G2,2.0],
+    [N.A2,2.0],[N.E2,2.0],
+    [N.A2,2.0],[N.E2,2.0],
+    [N.A2,2.0],[N.A2,2.0]
+  ];
+
+  function scheduleNotes(notes, type, gainVal, startTime) {
+    var t = startTime;
+    notes.forEach(function(note) {
+      var freq = note[0], dur = note[1] * beat;
+      if (freq > 0 && dur > 0.04) {
+        var osc = masterGain.context.createOscillator();
+        var g = masterGain.context.createGain();
+        osc.connect(g); g.connect(masterGain);
+        osc.type = type;
+        osc.frequency.value = freq;
+        g.gain.setValueAtTime(gainVal, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + dur - 0.03);
+        osc.start(t); osc.stop(t + dur);
+      }
+      t += note[1] * beat;
+    });
+    return t;
+  }
+
+  function schedule() {
+    if (muted) return;
+    var startAt = Math.max(ctx.currentTime + 0.05, nextStart);
+    var endTime = scheduleNotes(melody, 'square', 0.09, startAt);
+    scheduleNotes(bass, 'triangle', 0.06, startAt);
+    nextStart = endTime;
+    var msUntil = (endTime - ctx.currentTime - 0.3) * 1000;
+    loopTimer = setTimeout(schedule, Math.max(msUntil, 100));
+  }
+
+  function startMusic() {
+    if (!ctx) {
+      ctx = new ACtx();
+      masterGain = ctx.createGain();
+      masterGain.gain.value = 0.6;
+      masterGain.connect(ctx.destination);
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    muted = false;
+    nextStart = 0;
+    schedule();
+    btn.textContent = '[ ♪ MUSIC: ON ]';
+  }
+
+  function stopMusic() {
+    muted = true;
+    clearTimeout(loopTimer);
+    if (ctx) ctx.suspend();
+    btn.textContent = '[ ♪ MUSIC: OFF ]';
+  }
+
+  btn.addEventListener('click', function() {
+    if (!muted) stopMusic(); else startMusic();
+  });
+
+  // Auto-start on first user interaction (browser requires gesture for AudioContext)
+  function onFirstInteract() {
+    if (muted && !started) {
+      started = true;
+      startMusic();
+    }
+    document.removeEventListener('click', onFirstInteract);
+    document.removeEventListener('keydown', onFirstInteract);
+    document.removeEventListener('scroll', onFirstInteract);
+  }
+  document.addEventListener('click', onFirstInteract);
+  document.addEventListener('keydown', onFirstInteract);
+  document.addEventListener('scroll', onFirstInteract);
 })();
 
 /* ── RETRO CURSOR + TRAIL ── */
@@ -584,7 +818,7 @@
   }
 
   document.addEventListener('mouseover', function(e) {
-    var el = e.target.closest('a, button, .nav-btn, .contact-btn, .back-btn, .port-link');
+    var el = e.target.closest('a, button, .nav-btn, .contact-btn, .back-btn, .port-link, #music-toggle');
     currentURI = el ? pointerURI : arrowURI;
     cur.style.backgroundImage = 'url("' + currentURI + '")';
   });

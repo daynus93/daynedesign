@@ -20,6 +20,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 <link rel="stylesheet" href="global.css">
+<script>
+/* Scroll restoration — must be in <head> so manual mode is set before load fires */
+history.scrollRestoration = 'manual';
+window.addEventListener('beforeunload', function() {
+  sessionStorage.setItem('idx_scroll', window.scrollY);
+});
+window.addEventListener('load', function() {
+  var saved = sessionStorage.getItem('idx_scroll');
+  sessionStorage.removeItem('idx_scroll');
+  var nav = performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'reload' && saved) {
+    var pos = parseInt(saved, 10);
+    if (pos > 0) {
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, pos);
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          document.documentElement.style.scrollBehavior = '';
+        });
+      });
+    }
+  }
+});
+</script>
 <style>
 /* ── SCROLL REVEAL ── */
 /* Default: fully visible. JS adds .js-reveal class to body when observer is supported,
@@ -1518,16 +1542,10 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     <a href="https://www.linkedin.com/in/daynep/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     <a href="https://github.com/dayne-train" target="_blank" rel="noopener noreferrer">GitHub</a>
   </div>
-  <div class="footer-right"><a href="https://maps.app.goo.gl/c1PoGoBUCVr2QkoL8" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">Medford, Oregon</a> · <span style="position:relative;display:inline-block;" id="yearMenuWrap"><button id="yearBtn" onclick="toggleYearMenu(event)" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:2px;text-decoration-style:dotted;">2026</button><div id="yearMenu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:#1c2b3a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.35rem;min-width:190px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.4);"></div></span></div>
+  <div class="footer-right"><a href="https://maps.app.goo.gl/c1PoGoBUCVr2QkoL8" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">Medford, Oregon</a> · <span style="position:relative;display:inline-block;" id="yearMenuWrap"><button id="yearBtn" onclick="toggleYearMenu(event)" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:none;">2026</button><div id="yearMenu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:#1c2b3a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.35rem;min-width:190px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.4);"></div></span></div>
 </footer>
 
 <script>
-/* Instant scroll restore on refresh — disable smooth scroll until browser finishes restoring position */
-document.documentElement.style.scrollBehavior = 'auto';
-window.addEventListener('load', function() {
-  setTimeout(function() { document.documentElement.style.scrollBehavior = ''; }, 50);
-});
-
 /* NAV */
 (function() {
   const nav = document.getElementById('mainNav');
