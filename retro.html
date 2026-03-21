@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Dayne Petera">
+  <meta name="generator" content="Macromedia Dreamweaver 4">
+  <meta name="description" content="Dayne Petera - Senior Product Designer - Portfolio">
+  <title>Dayne Petera :: Product Designer :: Portfolio</title>
+  <style type="text/css">
+    /* ================================================
+       Dayne Petera's Portfolio
+       Designed in Dreamweaver 4
+       Best viewed at 1024x768 in Internet Explorer 6
+       ================================================ */
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: #000d1a;
+      color: #BBBBCC;
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 11px;
+      cursor: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas#stars {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+
+    #page-wrap { position: relative; z-index: 1; padding: 10px 0 30px; }
+
+    a { color: #6699CC; }
+    a:visited { color: #9966BB; }
+    a:hover { color: #FFCC44; text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+    .blink { animation: blink 1.2s step-start infinite; }
+
+    @keyframes slowglow {
+      0%,100%{color:#4488CC} 50%{color:#88BBEE}
+    }
+    .rainbow { animation: slowglow 3s ease-in-out infinite; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 2s linear infinite; display: inline-block; }
+
+    @keyframes sparkle {
+      0%,100%{opacity:0.4;transform:scale(0.9)}
+      50%{opacity:1;transform:scale(1.15)}
+    }
+    .sparkle { animation: sparkle 2s ease-in-out infinite; display: inline-block; }
+
+    /* ── LAYOUT ── */
+    #main-table {
+      width: 780px; max-width: 98vw;
+      margin: 0 auto;
+      border: 2px solid #1a3a5c;
+      background: #000d1a;
+    }
+
+    /* ── HEADER ── */
+    #site-header {
+      background: linear-gradient(180deg, #001a3a 0%, #000d1a 100%);
+      border-bottom: 2px solid #1a3a6a;
+      padding: 16px 10px 12px;
+      text-align: center;
+    }
+
+    .site-subtitle {
+      color: #6699CC;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-family: Verdana, Arial, sans-serif;
+      margin: 6px 0;
+    }
+
+    .avail-badge {
+      display: inline-block;
+      background: #001a33;
+      border: 1px solid #336699;
+      color: #6699CC;
+      font-size: 10px;
+      font-family: Verdana, Arial, sans-serif;
+      padding: 2px 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 6px 0;
+    }
+
+    /* ── MARQUEE BAR ── */
+    .marquee-bar {
+      background: #000d22;
+      border-top: 1px solid #1a3355;
+      border-bottom: 1px solid #1a3355;
+      padding: 3px 0;
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 10px;
+      color: #5577AA;
+    }
+
+    /* ── NAV ── */
+    #navbar {
+      background: #C0C0C0;
+      border-bottom: 2px solid #336699;
+      padding: 5px;
+      text-align: center;
+    }
+
+    .nav-btn {
+      display: inline-block;
+      background: #C0C0C0;
+      border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      padding: 3px 14px; margin: 2px;
+      font-family: Verdana, Arial, sans-serif; font-size: 11px; font-weight: bold;
+      color: #000000; text-decoration: none; cursor: none;
+    }
+    .nav-btn:hover {
+      background: #003366; color: #FFFFFF !important;
+      border-color: #808080 #FFFFFF #FFFFFF #808080;
+    }
+    .nav-btn:visited { color: #000000; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 16px; border-bottom: 1px solid #111e33; }
+
+    .section-title {
+      font-size: 13px; font-weight: bold; color: #5599DD;
+      font-family: Verdana, Arial, sans-serif;
+      letter-spacing: 2px; text-transform: uppercase;
+      border-bottom: 1px solid #1a3a6a;
+      margin-bottom: 12px; padding-bottom: 4px;
+    }
+
+    hr.neon { border: none; margin: 10px 0; }
+    hr.cyan  { border-top: 1px solid #1a3a6a; }
+    hr.yellow{ border-top: 1px solid #3a5a1a; }
+    hr.pink  { border-top: 1px solid #3a1a4a; }
+    hr.green { border-top: 1px solid #1a3a2a; }
+
+    /* ── PORTFOLIO TABLE ── */
+    .port-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+    .port-table td { border: 1px solid #111e33; padding: 7px 8px; vertical-align: top; }
+    .port-table tr:hover td { background: #001122; }
+    .port-num { color: #FFCC44; font-family: Verdana,Arial,sans-serif; font-size: 14px; font-weight: bold; text-align: center; width: 36px; }
+    .port-title { color: #6699CC; font-weight: bold; font-size: 11px; }
+    .port-co { color: #556677; font-size: 9px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+    .port-stat { color: #558877; font-size: 10px; font-family: Verdana,Arial,sans-serif; margin-top: 3px; }
+    .port-link { color: #5588BB; font-size: 10px; font-family: Verdana,Arial,sans-serif; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; }
+    .port-link:hover { color: #FFCC44 !important; }
+
+    /* ── SKILLS ── */
+    .skill-row { margin: 7px 0; }
+    .skill-label { display: inline-block; width: 140px; color: #AABBCC; font-size: 10px; font-family: Verdana,Arial,sans-serif; }
+    .skill-bar-outer { display: inline-block; width: 160px; height: 11px; background: #001122; border: 1px solid #1a3355; vertical-align: middle; }
+    .skill-bar-inner { height: 100%; background: linear-gradient(90deg, #1a4488, #4488CC); }
+    .skill-pct { color: #557799; font-size: 9px; font-family: Verdana,Arial,sans-serif; margin-left: 6px; }
+
+    /* ── EXPERIENCE ── */
+    .exp-row { margin: 8px 0; padding: 8px 10px; background: #000d22; border-left: 3px solid #2a4a7a; }
+    .exp-co { color: #FFCC44; font-weight: bold; font-size: 11px; font-family: Verdana,Arial,sans-serif; }
+    .exp-role { color: #6699CC; font-size: 10px; margin: 2px 0; }
+    .exp-dates { color: #445566; font-size: 9px; font-family: Verdana,Arial,sans-serif; }
+    .exp-bullets { color: #AABBCC; font-size: 10px; margin: 5px 0 0 14px; line-height: 1.7; }
+
+    /* ── CONTACT ── */
+    .contact-btn {
+      display: inline-block; margin: 4px;
+      background: #C0C0C0; border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      padding: 5px 18px; font-family: Verdana,Arial,sans-serif; font-size: 11px; font-weight: bold;
+      color: #000000 !important; text-decoration: none; cursor: none;
+    }
+    .contact-btn:hover {
+      background: #003366; color: #FFFFFF !important;
+      border-color: #808080 #FFFFFF #FFFFFF #808080;
+    }
+
+    /* ── UNDER CONSTRUCTION ── */
+    .construction {
+      text-align: center; padding: 10px;
+      background: #001122;
+      border: 1px solid #1a3a6a;
+      margin: 12px 0;
+    }
+
+    /* ── FOOTER ── */
+    #site-footer {
+      background: #000d22; border-top: 2px solid #1a3355;
+      padding: 14px; text-align: center;
+      font-size: 10px; color: #445566;
+      font-family: Verdana, Arial, sans-serif;
+    }
+
+    .counter {
+      font-family: Verdana, Arial, sans-serif;
+      background: #000000; color: #4488CC;
+      border: 2px inset #1a3355;
+      padding: 2px 10px; font-size: 14px; letter-spacing: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid #1a3355;
+      padding: 2px 6px; margin: 3px;
+      font-size: 9px; color: #445566;
+      font-family: Verdana, Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .back-btn {
+      display: inline-block; margin: 8px 4px;
+      background: #C0C0C0; border: 2px solid; border-color: #FFFFFF #808080 #808080 #FFFFFF;
+      padding: 4px 18px; font-family: Verdana,Arial,sans-serif; font-size: 11px; font-weight: bold;
+      color: #000000; text-decoration: none; cursor: none;
+    }
+    .back-btn:hover {
+      background: #003366; color: #FFFFFF !important;
+      border-color: #808080 #FFFFFF #FFFFFF #808080;
+    }
+
+    /* ── RETRO CURSOR ── */
+    #retro-cur {
+      position: fixed; width: 20px; height: 24px;
+      pointer-events: none; z-index: 999999;
+      background-repeat: no-repeat; background-size: contain;
+    }
+    .retro-ghost {
+      position: fixed; width: 20px; height: 24px;
+      pointer-events: none;
+      background-repeat: no-repeat; background-size: contain;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div id="retro-cur"></div>
+
+<!-- TOP MARQUEE -->
+<div class="marquee-bar">
+  <marquee scrollamount="3">:: Dayne Petera :: Senior Product Designer :: Medford, Oregon :: 10+ Years Experience :: Currently Available for Work :: Best viewed in Internet Explorer 6 at 1024x768 ::</marquee>
+</div>
+
+<div id="page-wrap">
+<table id="main-table" cellpadding="0" cellspacing="0">
+<tr><td>
+
+  <!-- HEADER -->
+  <div id="site-header">
+    <div style="margin-bottom:6px;">
+      <span class="rainbow" style="font-size:clamp(22px,5vw,36px);font-weight:bold;font-family:Verdana,Arial,sans-serif;letter-spacing:2px;">Dayne Petera</span>
+    </div>
+    <div class="site-subtitle">Senior Product Designer</div>
+    <div style="margin:8px 0;">
+      <span class="avail-badge blink">● Available for Work</span>
+    </div>
+    <div style="color:#445566;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;">
+      Medford, Oregon &nbsp;·&nbsp; 10+ Years Experience
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div id="navbar">
+    <a class="nav-btn" href="#about">[ ABOUT ]</a>
+    <a class="nav-btn" href="#portfolio">[ PORTFOLIO ]</a>
+    <a class="nav-btn" href="#skills">[ SKILLS ]</a>
+    <a class="nav-btn" href="#experience">[ EXPERIENCE ]</a>
+    <a class="nav-btn" href="#contact">[ CONTACT ]</a>
+    <a class="nav-btn" href="index.html">[ ← MODERN SITE ]</a>
+  </div>
+
+  <!-- MARQUEE SKILLS -->
+  <div class="marquee-bar">
+    <marquee scrollamount="2" direction="right">
+      :: Product Design :: Figma / FigJam :: Design Systems :: Visual Design :: Rapid Prototyping :: Usability Research :: HTML/CSS :: AI Tooling :: Product Definition :: Whiteboarding ::
+    </marquee>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section" id="about">
+    <div class="section-title"><span class="sparkle">·</span>&nbsp;About Me</div>
+    <table cellpadding="0" cellspacing="0" width="100%"><tr>
+      <td style="padding-right:16px;vertical-align:top;width:58%;">
+        <p style="line-height:1.75;margin-bottom:8px;">
+          Hi, I'm <strong style="color:#AABBDD;">Dayne Petera</strong>, a Senior Product Designer with
+          <strong style="color:#6699CC;">10+ years</strong> of experience crafting user-centered digital experiences.
+          I've worked across SaaS, logistics, edtech, and mobile, and I care more about the
+          <em style="color:#AABBCC;">outcome</em> than the artifact.
+        </p>
+        <p style="line-height:1.75;margin-bottom:8px;">
+          Currently based in <strong style="color:#AABBDD;">Medford, Oregon</strong> and
+          <span class="blink" style="color:#6699CC;"><strong>actively looking for work.</strong></span>
+        </p>
+        <p style="line-height:1.75;color:#445566;font-size:10px;">
+          * No design systems were harmed in the making of my career.<br>
+          * Yes, this website was built on purpose.
+        </p>
+      </td>
+      <td style="vertical-align:top;text-align:center;">
+        <div style="border:1px solid #1a3a6a;background:#000d22;padding:12px;display:inline-block;">
+          <div style="color:#FFCC44;font-size:10px;font-family:Verdana,Arial,sans-serif;letter-spacing:1px;margin-bottom:8px;">Quick Info</div>
+          <table cellpadding="4" style="font-family:Verdana,Arial,sans-serif;font-size:10px;width:100%;">
+            <tr><td style="color:#445566;">Role:</td><td style="color:#6699CC;">Sr. Product Designer</td></tr>
+            <tr><td style="color:#445566;">Exp:</td><td style="color:#6699CC;">10+ years</td></tr>
+            <tr><td style="color:#445566;">Location:</td><td style="color:#6699CC;">Medford, OR</td></tr>
+            <tr><td style="color:#445566;">Email:</td><td><a href="mailto:dayne@dayne.design">dayne@dayne.design</a></td></tr>
+            <tr><td style="color:#445566;">Status:</td><td><span class="blink" style="color:#6699CC;">● Available</span></td></tr>
+          </table>
+        </div>
+      </td>
+    </tr></table>
+  </div>
+
+  <!-- PORTFOLIO + SIDEBAR -->
+  <div class="section" id="portfolio" style="padding-bottom:0;">
+    <table cellpadding="0" cellspacing="0" width="100%"><tr valign="top">
+
+      <!-- LEFT: PORTFOLIO -->
+      <td style="width:55%;padding-right:12px;border-right:2px dashed #222255;">
+        <div class="section-title"><span class="sparkle">·</span>&nbsp;Portfolio</div>
+        <div style="color:#445566;font-size:10px;margin-bottom:10px;">14 case studies — click to view</div>
+        <table class="port-table">
+          <tr>
+            <td class="port-num">01</td>
+            <td><div class="port-title">HRIS SYNC</div><div class="port-co">Trainual · Web &amp; Desktop</div><div class="port-stat">&gt; Client adoption 5% → 35% in one month</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="hris-sync.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">02</td>
+            <td><div class="port-title">LESSEN PRO</div><div class="port-co">Lessen · iOS &amp; Android</div><div class="port-stat">&gt; 4.9★ · 940 downloads · 400+ orders/wk</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="lessen-pro.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">03</td>
+            <td><div class="port-title">EXCEPTION HANDLING</div><div class="port-co">Veho · Web &amp; Mobile</div><div class="port-stat">&gt; 8 min → under 1 min (87% faster!!)</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="veho.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">04</td>
+            <td><div class="port-title">SOFTWARE &amp; TOOLS</div><div class="port-co">Trainual · Web &amp; Desktop</div><div class="port-stat">&gt; 7,000+ entries across customer orgs</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="software-tools.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">05</td>
+            <td><div class="port-title">RIVET DESIGN SYSTEM</div><div class="port-co">Lessen · Design System</div><div class="port-stat">&gt; 100+ components · 70% reuse</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="rivet.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">06</td>
+            <td><div class="port-title">STRONGMIND APP</div><div class="port-co">StrongMind · iOS &amp; Android</div><div class="port-stat">&gt; +5% seat time · +12% completion</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="strongmind.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">07</td>
+            <td><div class="port-title">LOUDMOUTH</div><div class="port-co">StrongMind · Web</div><div class="port-stat">&gt; 2M+ messages · 98% opt-in rate</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="loudmouth.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">08</td>
+            <td><div class="port-title">REALIZE LMS</div><div class="port-co">Pearson · EdTech LMS</div><div class="port-stat">&gt; 8M+ daily students</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="realize.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">09</td>
+            <td><div class="port-title">SPRINT</div><div class="port-co">StrongMind · Design Sprint</div><div class="port-stat">&gt; SXSW EDU 2020 finalist</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="sprint.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">10</td>
+            <td><div class="port-title">K12 STYLE GUIDE</div><div class="port-co">Pearson · Design System</div><div class="port-stat">&gt; All Pearson K–12 products</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="k12.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">11</td>
+            <td><div class="port-title">SCOUT</div><div class="port-co">Pearson · iPad</div><div class="port-stat">&gt; Teacher assessment tool</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="scout.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">12</td>
+            <td><div class="port-title">DRIVE PORTAL</div><div class="port-co">Pearson · Hackathon</div><div class="port-stat">&gt; 🏆 2016 Pearson Hackathon winner</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="drive.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">13</td>
+            <td><div class="port-title">EASYBRIDGE</div><div class="port-co">Pearson · Web</div><div class="port-stat">&gt; Every K–12 customer</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="easybridge.html">[ VIEW ]</a></td>
+          </tr>
+          <tr>
+            <td class="port-num">14</td>
+            <td><div class="port-title">VLOGGER</div><div class="port-co">Hackathon · iOS</div><div class="port-stat">&gt; 24-hour hackathon</div></td>
+            <td style="text-align:right;vertical-align:middle;"><a class="port-link" href="vlogger.html">[ VIEW ]</a></td>
+          </tr>
+        </table>
+      </td>
+
+      <!-- RIGHT: SKILLS + EXPERIENCE -->
+      <td style="width:45%;padding-left:14px;vertical-align:top;">
+
+        <!-- SKILLS -->
+        <div id="skills" style="margin-bottom:16px;">
+          <div class="section-title"><span class="sparkle">·</span>&nbsp;Skills</div>
+          <div class="skill-row"><span class="skill-label">Product Design</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:98%"></div></div><span class="skill-pct">98%</span></div>
+          <div class="skill-row"><span class="skill-label">Figma / FigJam</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:99%"></div></div><span class="skill-pct">99%</span></div>
+          <div class="skill-row"><span class="skill-label">Design Systems</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:95%"></div></div><span class="skill-pct">95%</span></div>
+          <div class="skill-row"><span class="skill-label">Visual Design</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:92%"></div></div><span class="skill-pct">92%</span></div>
+          <div class="skill-row"><span class="skill-label">Rapid Prototyping</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:97%"></div></div><span class="skill-pct">97%</span></div>
+          <div class="skill-row"><span class="skill-label">Usability Research</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:90%"></div></div><span class="skill-pct">90%</span></div>
+          <div class="skill-row"><span class="skill-label">HTML / CSS</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:78%"></div></div><span class="skill-pct">78%</span></div>
+          <div class="skill-row"><span class="skill-label">AI Tooling</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:85%"></div></div><span class="skill-pct">85%</span></div>
+          <div class="skill-row"><span class="skill-label">Product Definition</span><div class="skill-bar-outer"><div class="skill-bar-inner" style="width:88%"></div></div><span class="skill-pct">88%</span></div>
+          <hr class="neon cyan" style="margin-top:12px;">
+          <div style="margin-top:5px;font-size:9px;font-family:'Courier New',monospace;color:#888888;">// CONFIDENCE UNITS™. NOT FDA APPROVED.</div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div id="experience">
+          <div class="section-title"><span class="sparkle">·</span>&nbsp;Work History</div>
+
+          <div class="exp-row">
+            <div class="exp-co">TRAINUAL</div>
+            <div class="exp-role">Senior Product Designer</div>
+            <div class="exp-dates">JUL 2024 – JAN 2026</div>
+            <ul class="exp-bullets">
+              <li>HRIS Sync adoption: 5% → 35% in one month</li>
+              <li>Software &amp; Tools hub: 7,000+ entries</li>
+              <li>SOC 2 + AI-enabled workflows</li>
+            </ul>
+          </div>
+
+          <div class="exp-row">
+            <div class="exp-co">VEHO</div>
+            <div class="exp-role">Senior Product Designer</div>
+            <div class="exp-dates">APR 2023 – JAN 2024</div>
+            <ul class="exp-bullets">
+              <li>Ground ops lead across 30+ facilities</li>
+              <li>87% triage time reduction</li>
+              <li>Component library + 5 persona sets</li>
+            </ul>
+          </div>
+
+          <div class="exp-row">
+            <div class="exp-co">LESSEN</div>
+            <div class="exp-role">Senior Product Designer</div>
+            <div class="exp-dates">NOV 2020 – JAN 2023</div>
+            <ul class="exp-bullets">
+              <li>Lessen Pro: 4.9★, 940 downloads in 3 months</li>
+              <li>Rivet: 100+ components, 70% reuse</li>
+              <li>$40M → $2B valuation · Promoted!!!</li>
+            </ul>
+          </div>
+
+          <div class="exp-row">
+            <div class="exp-co">STRONGMIND</div>
+            <div class="exp-role">UI/UX Designer</div>
+            <div class="exp-dates">MAY 2017 – NOV 2020</div>
+            <ul class="exp-bullets">
+              <li>Student app design lead</li>
+              <li>+5% seat time · +12% completion</li>
+              <li>SXSW EDU 2020 finalist</li>
+            </ul>
+          </div>
+
+          <div class="exp-row">
+            <div class="exp-co">PEARSON EDUCATION</div>
+            <div class="exp-role">UI/UX Designer</div>
+            <div class="exp-dates">MAY 2015 – MAY 2017</div>
+            <ul class="exp-bullets">
+              <li>Realize: 8M+ daily students</li>
+              <li>Scout iPad tool design lead</li>
+              <li>🏆 Won 2016 Pearson Hackathon</li>
+            </ul>
+          </div>
+        </div>
+
+      </td>
+    </tr></table>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section" id="contact">
+    <div class="section-title"><span class="sparkle">·</span>&nbsp;Contact</div>
+    <center>
+      <p style="color:#6699CC;margin-bottom:14px;">
+        Feel free to reach out. I'm friendly and respond quickly.
+      </p>
+      <a class="contact-btn" href="mailto:dayne@dayne.design">[ Email ]</a>
+      <a class="contact-btn" href="https://www.linkedin.com/in/daynep/" target="_blank" rel="noopener">[ LinkedIn ]</a>
+      <a class="contact-btn" href="https://github.com/dayne-train" target="_blank" rel="noopener">[ GitHub ]</a>
+      <br><br>
+      <div class="construction">
+        <span class="spin" style="font-size:14px;">🔧</span>
+        <span style="color:#445566;font-size:10px;">&nbsp;Guestbook coming soon&nbsp;</span>
+        <span class="spin" style="font-size:14px;animation-direction:reverse;">🔧</span>
+        <br>
+        <span style="color:#334455;font-size:9px;">(probably not though)</span>
+      </div>
+    </center>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="site-footer">
+    <div style="margin-bottom:8px;">
+      You are visitor number: <span class="counter">001,337</span>
+    </div>
+    <div style="margin:8px 0;">
+      <span class="badge">Best viewed: IE 6.0</span>
+      <span class="badge">Resolution: 1024x768</span>
+      <span class="badge">No Flash required</span>
+      <span class="badge">Cookie free</span>
+    </div>
+    <hr class="neon cyan">
+    <div style="margin:8px 0;font-size:9px;letter-spacing:1px;">
+      &copy; 2001–<span class="blink">2026</span> Dayne Petera. All rights reserved. Designed in Dreamweaver 4.<br>
+      No cookies. No tracking. No regrets.
+    </div>
+    <div style="margin-top:12px;">
+      <a class="back-btn" href="index.html">[ ← BACK TO MODERN SITE ]</a>
+    </div>
+  </div>
+
+</td></tr></table>
+</div>
+
+<!-- BOTTOM MARQUEE -->
+<div class="marquee-bar" style="margin-top:10px;">
+  <marquee scrollamount="2">
+    :: Thanks for visiting :: Add me on AIM :: Sign my guestbook :: dayne@dayne.design :: Available for work :: Tell your friends ::
+  </marquee>
+</div>
+
+<script type="text/javascript">
+/* ── STARFIELD ── */
+(function() {
+  var canvas = document.getElementById('stars');
+  var ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  var stars = Array.from({length: 200}, function() {
+    return { x: Math.random(), y: Math.random(), r: Math.random()*1.5+0.3, t: Math.random()*Math.PI*2, speed: Math.random()*0.012+0.003 };
+  });
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(function(s) {
+      s.t += s.speed;
+      var op = 0.3 + 0.7*(0.5+0.5*Math.sin(s.t));
+      ctx.beginPath();
+      ctx.arc(s.x*canvas.width, s.y*canvas.height, s.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,'+op+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── RETRO CURSOR + TRAIL ── */
+(function() {
+  var arrowSVG   = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24"><polygon points="0,0 0,20 5,15 8,23 11,21 8,13 14,13" fill="white" stroke="black" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  var pointerSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24"><path d="M6 1C6 1 5 1 5 2L5 14L3 12C3 12 2 11 1 12C0 13 1 14 1 14L6 21C6 21 8 24 12 24C16 24 18 21 18 18L18 10C18 10 18 9 17 9C16 9 16 10 16 10L16 14C16 14 15 13 14 13L14 8C14 8 14 7 13 7C12 7 12 8 12 8L12 13C12 13 11 12 10 12L10 3C10 3 10 2 9 2C8 2 8 3 8 3L8 13C8 13 7 12 6 12L6 2C6 2 6 1 6 1Z" fill="white" stroke="black" stroke-width="1" stroke-linejoin="round"/></svg>';
+  var arrowURI   = 'data:image/svg+xml,' + encodeURIComponent(arrowSVG);
+  var pointerURI = 'data:image/svg+xml,' + encodeURIComponent(pointerSVG);
+
+  var cur = document.getElementById('retro-cur');
+  cur.style.backgroundImage = 'url("' + arrowURI + '")';
+
+  var trailCount = 7, trail = [], positions = [], currentURI = arrowURI;
+
+  for (var t = 0; t < trailCount; t++) {
+    var g = document.createElement('div');
+    g.className = 'retro-ghost';
+    g.style.opacity = (0.55 - t * 0.07).toFixed(2);
+    g.style.transformOrigin = 'top left';
+    g.style.transform = 'scale(' + (1 - t * 0.06).toFixed(2) + ')';
+    g.style.zIndex = 999990 - t;
+    g.style.display = 'none';
+    document.body.appendChild(g);
+    trail.push(g);
+  }
+
+  document.addEventListener('mouseover', function(e) {
+    var el = e.target.closest('a, button, .nav-btn, .contact-btn, .back-btn, .port-link');
+    currentURI = el ? pointerURI : arrowURI;
+    cur.style.backgroundImage = 'url("' + currentURI + '")';
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top  = e.clientY + 'px';
+    positions.unshift({ x: e.clientX, y: e.clientY, uri: currentURI });
+    if (positions.length > trailCount * 5) positions.length = trailCount * 5;
+    trail.forEach(function(g, i) {
+      var p = positions[(i + 1) * 4];
+      if (!p) return;
+      g.style.display = 'block';
+      g.style.left = p.x + 'px';
+      g.style.top  = p.y + 'px';
+      g.style.backgroundImage = 'url("' + p.uri + '")';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
