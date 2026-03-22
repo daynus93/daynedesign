@@ -131,7 +131,6 @@ window.addEventListener('load', function() {
     rgba(74,158,221,0.22) 0%,
     rgba(74,158,221,0.07) 45%,
     transparent 70%);
-  transition: background 0.08s linear;
   will-change: background;
 }
 
@@ -1716,35 +1715,78 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
 (function() {
   const hero = document.getElementById('heroSection');
   const orb  = document.getElementById('heroOrb');
+  const deco = hero ? hero.querySelector('.hero-deco') : null;
   if (!hero || !orb) return;
 
-  let tx = 62, ty = 40;
+  let mouseX = 62, mouseY = 40;
   let cx = 62, cy = 40;
-  let idleT = 0, idling = true;
+  let wx = 62, wy = 40;
+  let idleT = 0, blend = 0, hovering = false;
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
+  let maskRadius = 0, curMaskRadius = 0;
+
 
   function tick() {
-    if (idling) {
-      idleT += 0.005;
-      tx = 55 + Math.sin(idleT * 1.1) * 25;
-      ty = 38 + Math.cos(idleT * 0.7) * 20;
+    blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.032 : 0.018);
+
+    idleT += 0.004;
+    const ix = 55 + Math.sin(idleT * 0.9) * 22;
+    const iy = 38 + Math.cos(idleT * 0.6) * 18;
+    const tx = ix + (mouseX - ix) * blend;
+    const ty = iy + (mouseY - iy) * blend;
+
+    cx += (tx - cx) * 0.005;
+    cy += (ty - cy) * 0.005;
+    wx += (cx - wx) * 0.028;
+    wy += (cy - wy) * 0.028;
+
+    const t = performance.now() * 0.001;
+    const s1x = cx + Math.cos(t * 0.38) * 12;
+    const s1y = cy + Math.sin(t * 0.38) * 6;
+    const s2x = cx + Math.cos(t * 0.38 + Math.PI) * 8;
+    const s2y = cy + Math.sin(t * 0.38 + Math.PI) * 4;
+
+    const dark  = document.documentElement.classList.contains('dark');
+    const scale = dark ? 0.38 : 1;
+    const breath = (0.19 + Math.sin(t * 0.9) * 0.04) * scale;
+
+    if (deco) {
+      const hr = hero.getBoundingClientRect();
+      const dr = deco.getBoundingClientRect();
+      // Convert orb % position (relative to hero) into px coords relative to deco
+      const orbPxX = (cx / 100) * hr.width  + hr.left - dr.left;
+      const orbPxY = (cy / 100) * hr.height + hr.top  - dr.top;
+      curMaskRadius += (maskRadius - curMaskRadius) * 0.08;
+      const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${orbPxX.toFixed(1)}px ${orbPxY.toFixed(1)}px, black 0%, transparent 100%)`;
+      deco.style.webkitMaskImage = mask;
+      deco.style.maskImage       = mask;
     }
-    cx = lerp(cx, tx, 0.06);
-    cy = lerp(cy, ty, 0.06);
-    orb.style.background = `radial-gradient(ellipse 62% 64% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, rgba(74,158,221,0.22) 0%, rgba(74,158,221,0.07) 45%, transparent 70%)`;
+
+    orb.style.background = [
+      `radial-gradient(ellipse 58% 60% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, rgba(74,158,221,${breath.toFixed(3)}) 0%, rgba(74,158,221,${(0.05*scale).toFixed(3)}) 52%, transparent 72%)`,
+      // s1 — notably brighter
+      `radial-gradient(ellipse 20% 22% at ${s1x.toFixed(2)}% ${s1y.toFixed(2)}%, rgba(74,158,221,${(0.20*scale).toFixed(3)}) 0%, transparent 100%)`,
+      // s2 — dim
+      `radial-gradient(ellipse 14% 16% at ${s2x.toFixed(2)}% ${s2y.toFixed(2)}%, rgba(74,158,221,${(0.07*scale).toFixed(3)}) 0%, transparent 100%)`,
+      `radial-gradient(ellipse 80% 82% at ${wx.toFixed(2)}% ${wy.toFixed(2)}%, rgba(74,158,221,${(0.08*scale).toFixed(3)}) 0%, transparent 65%)`
+    ].join(', ');
+
     requestAnimationFrame(tick);
   }
   tick();
 
-  hero.addEventListener('mouseenter', () => { idling = false; });
+  hero.addEventListener('mouseenter', () => { hovering = true; });
   hero.addEventListener('mousemove', e => {
-    idling = false;
+    hovering = true;
     const r = hero.getBoundingClientRect();
-    tx = ((e.clientX - r.left) / r.width)  * 100;
-    ty = ((e.clientY - r.top)  / r.height) * 100;
+    mouseX = (e.clientX - r.left) / r.width  * 100;
+    mouseY = (e.clientY - r.top)  / r.height * 100;
+    if (deco) maskRadius = 220;
   });
-  hero.addEventListener('mouseleave', () => { idling = true; });
+  hero.addEventListener('mouseleave', () => {
+    hovering = false;
+    maskRadius = 0;
+  });
 })();
 
 /* Rotating words */
