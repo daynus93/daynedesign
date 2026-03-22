@@ -218,20 +218,20 @@ window.addEventListener('load', function() {
 .principle-card {
   background: var(--surface); border-radius: var(--radius-card);
   padding: 2rem; border: 1px solid var(--stone);
-  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+  transition: box-shadow 0.4s cubic-bezier(0.85,0,0.15,1), transform 0.4s cubic-bezier(0.85,0,0.15,1), border-color 0.4s cubic-bezier(0.85,0,0.15,1);
   position: relative; overflow: hidden;
 }
 .principle-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: var(--sky);
   transform: scaleX(0); transform-origin: left;
-  transition: transform 0.35s cubic-bezier(.22,.68,0,1.2);
+  transition: transform 0.4s cubic-bezier(0.85,0,0.15,1);
 }
-.principle-card:hover::before { transform: scaleX(1); }
-.principle-card:hover { box-shadow: 0 12px 40px rgba(74,158,221,0.16); transform: translateY(-4px); border-color: rgba(74,158,221,0.3); }
+.principle-card:hover::before { transform: scaleX(1); transition: transform 0.4s cubic-bezier(0.85,0,0.15,1); }
+.principle-card:hover { box-shadow: 0 12px 40px rgba(74,158,221,0.16); transform: translateY(-4px); border-color: rgba(74,158,221,0.3); transition: box-shadow 0.4s cubic-bezier(0.85,0,0.15,1), transform 0.4s cubic-bezier(0.85,0,0.15,1), border-color 0.4s cubic-bezier(0.85,0,0.15,1); }
 .principle-num { font-family: var(--mono); font-size: 0.65rem; color: var(--sky); letter-spacing: 0.1em; margin-bottom: 0.9rem; }
-.principle-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; font-style: italic; margin-bottom: 0.6rem; color: var(--ink); transition: color 0.3s; }
-.principle-card:hover h3 { color: var(--sky); }
+.principle-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; font-style: italic; margin-bottom: 0.6rem; color: var(--ink); transition: color 0.4s cubic-bezier(0.85,0,0.15,1); }
+.principle-card:hover h3 { color: var(--sky); transition: color 0.4s cubic-bezier(0.85,0,0.15,1); }
 .principle-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
 
 /* ── CASE STUDIES ── */
@@ -614,9 +614,9 @@ window.addEventListener('load', function() {
 @media (max-width: 720px) {
   .principles-grid { grid-template-columns: 1fr; }
   .principle-card:hover { box-shadow: none; transform: none; }
-  .principle-card.active::before { transform: scaleX(1); }
-  .principle-card.active { box-shadow: 0 12px 40px rgba(74,158,221,0.16); border-color: rgba(74,158,221,0.3); }
-  .principle-card.active h3 { color: var(--sky); }
+  .principle-card.active::before { transform: scaleX(1); transition: transform 0.4s cubic-bezier(0.85,0,0.15,1); }
+  .principle-card.active { box-shadow: 0 12px 40px rgba(74,158,221,0.16); border-color: rgba(74,158,221,0.3); transition: box-shadow 0.4s cubic-bezier(0.85,0,0.15,1), border-color 0.4s cubic-bezier(0.85,0,0.15,1); }
+  .principle-card.active h3 { color: var(--sky); transition: color 0.4s cubic-bezier(0.85,0,0.15,1); }
 }
 @media (max-width: 740px) {
   .quote-card { padding: 1.4rem; }
