@@ -81,7 +81,7 @@
 @media(max-width:600px){.study-meta{gap:1.5rem;}.img-2col{grid-template-columns:1fr;}}
 </style>
 <script>
-(function(){var s=localStorage.getItem('darkMode');var d=s!==null?s==='true':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');})();
+(function(){try{var s=localStorage.getItem('darkMode');var d=s!==null?s==='true':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();
 </script>
 </head>
 <body>

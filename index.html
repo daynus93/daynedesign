@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="global.css">
 <script>
 /* Dark mode — apply before paint to avoid flash */
-(function(){var s=localStorage.getItem('darkMode');var d=s!==null?s==='true':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');})();
+(function(){try{var s=localStorage.getItem('darkMode');var d=s!==null?s==='true':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();
 </script>
 <script>
 /* Scroll restoration — must be in <head> so manual mode is set before load fires */
@@ -1719,40 +1719,70 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   const deco = hero ? hero.querySelector('.hero-deco') : null;
   if (!hero || !orb) return;
 
+  // Target, current position, velocity
   let tx = 62, ty = 40;
   let cx = 62, cy = 40;
+  let vx = 0,  vy = 0;
+
+  // Wake: lags behind current position, not target
+  let wakeX = 62, wakeY = 40;
 
   let maskX = -200, maskY = -200;
   let curMaskX = -200, curMaskY = -200;
   let maskRadius = 0, curMaskRadius = 0;
-  let isOver = false;
   let raf;
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
+  // Spring constants — stiffness pulls toward target, damping kills energy
+  const STIFFNESS = 0.07;
+  const DAMPING   = 0.82;
 
   let idleT = 0;
   let idling = true;
 
   function updateIdle() {
     if (!idling) return;
-    idleT += 0.008;
+    idleT += 0.006;
     tx = 55 + Math.sin(idleT * 1.1) * 25;
     ty = 38 + Math.cos(idleT * 0.7) * 20;
   }
 
   function tick() {
     updateIdle();
-    cx  = lerp(cx,  tx,  0.09);
-    cy  = lerp(cy,  ty,  0.09);
-    orb.style.background = `radial-gradient(ellipse 62% 64% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, rgba(74,158,221,0.22) 0%, rgba(74,158,221,0.07) 45%, transparent 70%)`;
+
+    // Spring physics: accelerate toward target, damp velocity
+    vx += (tx - cx) * STIFFNESS;
+    vy += (ty - cy) * STIFFNESS;
+    vx *= DAMPING;
+    vy *= DAMPING;
+    cx += vx;
+    cy += vy;
+
+    // Wake drifts slowly toward current position — creates trail behind motion
+    wakeX = lerp(wakeX, cx, 0.038);
+    wakeY = lerp(wakeY, cy, 0.038);
+
+    // Subtle size pulse based on speed
+    const speed   = Math.sqrt(vx * vx + vy * vy);
+    const stretch = Math.min(speed * 2.2, 14);
+    const orbW    = (62 + stretch).toFixed(1);
+    const orbH    = (64 + stretch * 0.4).toFixed(1);
+
+    orb.style.background = [
+      // Main orb — bright, leads the motion
+      `radial-gradient(ellipse ${orbW}% ${orbH}% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, rgba(74,158,221,0.22) 0%, rgba(74,158,221,0.07) 45%, transparent 70%)`,
+      // Wake — dimmer, larger, dissolves behind where we came from
+      `radial-gradient(ellipse 76% 78% at ${wakeX.toFixed(2)}% ${wakeY.toFixed(2)}%, rgba(74,158,221,0.09) 0%, transparent 65%)`
+    ].join(', ');
+
     if (deco) {
-      curMaskX = lerp(curMaskX, maskX, 0.1);
-      curMaskY = lerp(curMaskY, maskY, 0.1);
+      curMaskX      = lerp(curMaskX,      maskX,      0.1);
+      curMaskY      = lerp(curMaskY,      maskY,      0.1);
       curMaskRadius = lerp(curMaskRadius, maskRadius, 0.08);
       const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${curMaskX.toFixed(1)}px ${curMaskY.toFixed(1)}px, black 0%, transparent 100%)`;
       deco.style.webkitMaskImage = mask;
-      deco.style.maskImage = mask;
+      deco.style.maskImage       = mask;
     }
     raf = requestAnimationFrame(tick);
   }
@@ -1766,15 +1796,15 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     tx = ((e.clientX - r.left) / r.width)  * 100;
     ty = ((e.clientY - r.top)  / r.height) * 100;
     if (deco) {
-      const dr = deco.getBoundingClientRect();
-      maskX = e.clientX - dr.left;
-      maskY = e.clientY - dr.top;
+      const dr  = deco.getBoundingClientRect();
+      maskX      = e.clientX - dr.left;
+      maskY      = e.clientY - dr.top;
       maskRadius = 220;
     }
   });
 
   hero.addEventListener('mouseleave', () => {
-    idling = true;
+    idling     = true;
     maskRadius = 0;
   });
 })();
