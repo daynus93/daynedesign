@@ -427,7 +427,7 @@ footer {
 @media (max-width: 960px) {
   /* Nav box stays full-width/fixed — ::before is the animated pill background */
   nav {
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.75rem;
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -451,7 +451,7 @@ footer {
   }
   nav.scrolled {
     top: 0; left: 0; right: 0;
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.75rem;
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
