@@ -276,6 +276,9 @@
 }
 
 </style>
+<script>
+(function(){var s=localStorage.getItem('darkMode');var d=s!==null?s==='true':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');})();
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -301,12 +304,26 @@
       </div>
     </li>
     <li><a href="index.html#experience">Experience</a></li>
-    <li><a href="index.html#fish-quiz">Play</a></li>
+        <li><a href="index.html#fish-quiz">Play</a></li>
     <li><a class="nav-cta" href="mailto:dayne@dayne.design">Say hello</a></li>
+    <li class="nav-sep" aria-hidden="true"></li>
+    <li>
+      <button id="darkToggle" class="dark-toggle" aria-label="Toggle dark mode">
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
+  
+  <div class="nav-mobile-right">
+    <button class="mobile-dark-btn dark-toggle" aria-label="Toggle dark mode" style="display:none">
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
     <span></span><span></span><span></span>
-  </button>
+    </button>
+  </div>
 </nav>
 <!-- HERO -->
 <section class="study-hero">
@@ -754,10 +771,13 @@ window.addEventListener('DOMContentLoaded', function() {
   if (!btn || !menu) return;
 
   function openMenu() {
+    nav.style.transition = 'none';
+    nav.style.background = document.documentElement.classList.contains('dark') ? 'rgba(4,16,52,0.93)' : '#1c2b3a';
+    nav.style.borderBottomColor = 'transparent';
     menu.classList.add('open');
     btn.classList.add('open');
-    nav.style.background = '#1c2b3a';
-    nav.style.borderBottomColor = 'transparent';
+    var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
+    requestAnimationFrame(function() { nav.style.transition = ''; });
   }
   var mobileWorkBtn = document.getElementById('mobileWorkBtn');
   var mobileWorkSub = document.getElementById('mobileWorkSub');
@@ -765,6 +785,7 @@ window.addEventListener('DOMContentLoaded', function() {
   function closeMenu() {
     menu.classList.remove('open');
     btn.classList.remove('open');
+    var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'none';
     nav.style.background = '';
     nav.style.borderBottomColor = '';
     if (mobileWorkSub) mobileWorkSub.classList.remove('open');
@@ -810,6 +831,8 @@ window.addEventListener('DOMContentLoaded', function() {
   dropPanel.addEventListener('click', function(e) { e.stopPropagation(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrop(); });
 })();
+/* ── DARK TOGGLE ── */
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.dark-toggle').forEach(function(b){b.addEventListener('click',function(){var d=document.documentElement.classList.toggle('dark');localStorage.setItem('darkMode',d);var _m=document.getElementById('mobileMenu'),_n=document.getElementById('mainNav');if(_m&&_m.classList.contains('open')&&_n)_n.style.background=d?'rgba(4,16,52,0.93)':'#1c2b3a';});});});
 </script>
 
 <!-- MOBILE MENU -->
