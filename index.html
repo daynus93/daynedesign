@@ -1835,34 +1835,41 @@ if ('IntersectionObserver' in window) {
 /* Principle cards — scroll-active on mobile */
 (function() {
   var mq = window.matchMedia('(max-width: 720px)');
-  var cards = document.querySelectorAll('.principle-card');
-  var observer;
-  function setupObserver() {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.principle-card'));
+  var raf;
+
+  function update() {
+    var vh = window.innerHeight;
+    var zoneTop = vh * 0.45;
+    var zoneBot = vh * 0.58;
+    var best = null, bestOverlap = 0;
+    cards.forEach(function(c) {
+      var r = c.getBoundingClientRect();
+      var overlap = Math.max(0, Math.min(r.bottom, zoneBot) - Math.max(r.top, zoneTop));
+      if (overlap > bestOverlap) { bestOverlap = overlap; best = c; }
+    });
+    cards.forEach(function(c) {
+      c.classList.toggle('active', c === best);
+    });
+  }
+
+  function onScroll() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(update);
+  }
+
+  function setup() {
     if (mq.matches) {
-      if (observer) return;
-      observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) {
-            cards.forEach(function(c) { c.classList.remove('active'); });
-            e.target.classList.add('active');
-          } else {
-            e.target.classList.remove('active');
-          }
-        });
-      }, { threshold: 0, rootMargin: '-38% 0px -38% 0px' });
-      var lastCard = cards[cards.length - 1];
-      cards.forEach(function(c) { observer.observe(c); });
-      // Last card has no sibling to trigger its deactivation — use a tighter top inset so it clears earlier
-      var lastObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) { if (!e.isIntersecting) e.target.classList.remove('active'); });
-      }, { threshold: 0, rootMargin: '-52% 0px -38% 0px' });
-      lastObserver.observe(lastCard);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      update();
     } else {
-      if (observer) { cards.forEach(function(c) { observer.unobserve(c); c.classList.remove('active'); }); observer = null; }
+      window.removeEventListener('scroll', onScroll);
+      cards.forEach(function(c) { c.classList.remove('active'); });
     }
   }
-  setupObserver();
-  mq.addEventListener('change', setupObserver);
+
+  setup();
+  mq.addEventListener('change', setup);
 })();
 
 /* ── MOBILE NAV ── */
