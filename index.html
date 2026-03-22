@@ -2866,24 +2866,17 @@ function triggerGalaga() {
 
   var MEDFORD = { lat: 42.3265, lon: -122.8756 };
   var CITIES = [
-    { label: 'New York, NY',       lat: 40.7128,  lon: -74.0060   },
-    { label: 'San Francisco, CA',  lat: 37.7749,  lon: -122.4194  },
-    { label: 'Seattle, WA',        lat: 47.6062,  lon: -122.3321  },
-    { label: 'Phoenix, AZ',        lat: 33.4484,  lon: -112.0740  },
-    { label: 'Moran, WY',          lat: 43.8516,  lon: -110.5194  },
+    { label: 'New York, NY',      miles: 2998 },
+    { label: 'San Francisco, CA', miles: 362  },
+    { label: 'Seattle, WA',       miles: 446  },
+    { label: 'Phoenix, AZ',       miles: 1060 },
+    { label: 'Moran, WY',         miles: 901  },
   ];
 
-  function haversine(lat1, lon1, lat2, lon2) {
-    var R = 3958.8;
-    var dLat = (lat2 - lat1) * Math.PI / 180;
-    var dLon = (lon2 - lon1) * Math.PI / 180;
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-    return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-  }
-
   var btnStyle = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.85);font-family:"DM Sans",sans-serif;font-size:0.8rem;padding:0.45rem 0.75rem;border-radius:7px;cursor:pointer;white-space:nowrap;transition:background 0.15s;text-transform:none;';
+  var rowStyle = 'display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.75rem;gap:1.5rem;';
+  var labelStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;';
+  var miStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.45);font-family:\'DM Mono\',monospace;white-space:nowrap;';
 
   function addHover(el) {
     el.onmouseenter = function() { el.style.background = 'rgba(74,158,221,0.18)'; };
@@ -2892,30 +2885,142 @@ function triggerGalaga() {
 
   function closeMenu() { menu.style.display = 'none'; }
 
-  function buildDistanceRows(userRow) {
+  var distanceCache = {};
+
+  function driveDistance(lat, lon) {
+    var key = lat + ',' + lon;
+    if (distanceCache[key] !== undefined) return Promise.resolve(distanceCache[key]);
+    var url = 'https://router.project-osrm.org/route/v1/driving/'
+      + lon + ',' + lat + ';' + MEDFORD.lon + ',' + MEDFORD.lat
+      + '?overview=false';
+    return fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var miles = Math.round(d.routes[0].distance / 1609.34);
+        distanceCache[key] = miles;
+        return miles;
+      });
+  }
+
+  function buildDistanceView() {
     menu.innerHTML = '';
+    var useKm = false;
+    var valueEls = []; // { el, miles }
 
-    var rows = CITIES.map(function(c) {
-      return { label: c.label, miles: haversine(c.lat, c.lon, MEDFORD.lat, MEDFORD.lon) };
-    });
-    if (userRow) rows.push(userRow);
-
-    rows.forEach(function(r) {
-      var row = document.createElement('div');
-      row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.75rem;gap:1.5rem;';
-      row.innerHTML = '<span style="font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;">' + r.label + '</span>'
-        + '<span style="font-size:0.78rem;color:rgba(255,255,255,0.45);font-family:\'DM Mono\',monospace;white-space:nowrap;">' + r.miles.toLocaleString() + ' mi</span>';
-      menu.appendChild(row);
-    });
-
-    // loading placeholder if no user row yet
-    if (!userRow) {
-      var loading = document.createElement('div');
-      loading.id = 'medford-your-loc';
-      loading.style.cssText = 'padding:0.35rem 0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.35);font-family:"DM Mono",monospace;';
-      loading.textContent = 'Your location: locating\u2026';
-      menu.appendChild(loading);
+    function fmt(miles) {
+      return useKm
+        ? Math.round(miles * 1.60934).toLocaleString() + ' km'
+        : miles.toLocaleString() + ' mi';
     }
+
+    function refreshAll() {
+      valueEls.forEach(function(v) {
+        if (v.miles !== null) v.el.textContent = fmt(v.miles);
+      });
+    }
+
+    // header row
+    var header = document.createElement('div');
+    header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.75rem 0.2rem;gap:1rem;';
+
+    var title = document.createElement('span');
+    title.style.cssText = 'font-size:0.65rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;';
+    title.textContent = 'Driving distance to Medford, OR';
+
+    // sliding toggle: mi | track+thumb | km
+    var toggleWrap = document.createElement('div');
+    toggleWrap.style.cssText = 'display:flex;align-items:center;gap:0.35rem;cursor:pointer;flex-shrink:0;background:rgba(255,255,255,0.06);border-radius:100px;padding:0.2rem 0.45rem;';
+
+    var miLbl = document.createElement('span');
+    miLbl.style.cssText = 'font-size:0.6rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.55);text-transform:none;transition:color 0.2s;';
+    miLbl.textContent = 'mi';
+
+    var track = document.createElement('div');
+    track.style.cssText = 'width:28px;height:16px;border-radius:100px;background:rgba(255,255,255,0.2);position:relative;transition:background 0.25s;flex-shrink:0;';
+
+    var thumb = document.createElement('div');
+    thumb.style.cssText = 'width:12px;height:12px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:transform 0.25s;';
+    track.appendChild(thumb);
+
+    var kmLbl = document.createElement('span');
+    kmLbl.style.cssText = 'font-size:0.6rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.25);text-transform:none;transition:color 0.2s;';
+    kmLbl.textContent = 'km';
+
+    function updateToggleUI() {
+      if (useKm) {
+        track.style.background = '#4a9edd';
+        thumb.style.transform = 'translateX(12px)';
+        miLbl.style.color = 'rgba(255,255,255,0.25)';
+        kmLbl.style.color = 'rgba(255,255,255,0.55)';
+      } else {
+        track.style.background = 'rgba(255,255,255,0.2)';
+        thumb.style.transform = 'translateX(0)';
+        miLbl.style.color = 'rgba(255,255,255,0.55)';
+        kmLbl.style.color = 'rgba(255,255,255,0.25)';
+      }
+    }
+
+    toggleWrap.onclick = function(e) {
+      e.stopPropagation();
+      useKm = !useKm;
+      updateToggleUI();
+      refreshAll();
+    };
+
+    toggleWrap.appendChild(miLbl);
+    toggleWrap.appendChild(track);
+    toggleWrap.appendChild(kmLbl);
+
+    header.appendChild(title);
+    header.appendChild(toggleWrap);
+    menu.appendChild(header);
+
+    // preset city rows
+    CITIES.forEach(function(c) {
+      var row = document.createElement('div');
+      row.style.cssText = rowStyle;
+      var lbl = document.createElement('span');
+      lbl.style.cssText = labelStyle;
+      lbl.textContent = c.label;
+      var val = document.createElement('span');
+      val.style.cssText = miStyle;
+      val.textContent = fmt(c.miles);
+      row.appendChild(lbl);
+      row.appendChild(val);
+      menu.appendChild(row);
+      valueEls.push({ el: val, miles: c.miles });
+    });
+
+    // user location row
+    var userRow = document.createElement('div');
+    userRow.style.cssText = rowStyle;
+    var userLabel = document.createElement('span');
+    userLabel.style.cssText = labelStyle;
+    userLabel.textContent = 'You';
+    var userVal = document.createElement('span');
+    userVal.style.cssText = miStyle;
+    userVal.textContent = 'locating\u2026';
+    userRow.appendChild(userLabel);
+    userRow.appendChild(userVal);
+    menu.appendChild(userRow);
+    var userEntry = { el: userVal, miles: null };
+    valueEls.push(userEntry);
+
+    var ipPromise = distanceCache._ip
+      ? Promise.resolve(distanceCache._ip)
+      : fetch('https://ipapi.co/json/').then(function(r) { return r.json(); }).then(function(d) { distanceCache._ip = d; return d; });
+
+    ipPromise
+      .then(function(d) {
+        var city = [d.city, d.region_code || d.country_code].filter(Boolean).join(', ') || 'You';
+        userLabel.textContent = city + ' (you)';
+        return driveDistance(d.latitude, d.longitude);
+      })
+      .then(function(miles) {
+        userEntry.miles = miles;
+        userVal.textContent = fmt(miles);
+      })
+      .catch(function() { userVal.textContent = '—'; });
   }
 
   function buildMainMenu() {
@@ -2936,18 +3041,7 @@ function triggerGalaga() {
     addHover(howFar);
     howFar.onclick = function(e) {
       e.stopPropagation();
-      buildDistanceRows(null);
-      fetch('https://ipapi.co/json/')
-        .then(function(r) { return r.json(); })
-        .then(function(d) {
-          var miles = haversine(d.latitude, d.longitude, MEDFORD.lat, MEDFORD.lon);
-          var city = [d.city, d.region_code || d.country_code].filter(Boolean).join(', ') || 'Your location';
-          buildDistanceRows({ label: city + ' (you)', miles: miles });
-        })
-        .catch(function() {
-          var el = document.getElementById('medford-your-loc');
-          if (el) el.textContent = 'Your location: unavailable';
-        });
+      buildDistanceView();
     };
     menu.appendChild(howFar);
   }
