@@ -230,7 +230,7 @@ html.dark .mobile-link { color: #fff; }
   text-decoration: none;
 }
 .mobile-link-cta:hover { background: var(--sky); color: white !important; }
-.nav-mobile-right { display: flex; align-items: center; gap: 0.75rem; }
+.nav-mobile-right { display: none; align-items: center; gap: 0.75rem; }
 .mobile-dark-btn.mobile-dark-btn {
   background: none; border: none; cursor: pointer;
   padding: 8px; color: #fff; border-radius: 999px;
@@ -491,6 +491,7 @@ footer {
   }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
+  .nav-mobile-right { display: flex; }
   footer { padding: 2rem; display: flex; flex-direction: column; gap: 1rem; text-align: center; }
   .footer-links { justify-content: center; }
   .hero-img-wrap { margin: 0 -2rem; max-height: 480px; }
