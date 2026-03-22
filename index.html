@@ -1625,7 +1625,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     <a href="https://www.linkedin.com/in/daynep/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     <a href="https://github.com/dayne-train" target="_blank" rel="noopener noreferrer">GitHub</a>
   </div>
-  <div class="footer-right"><a href="https://maps.app.goo.gl/c1PoGoBUCVr2QkoL8" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">Medford, Oregon</a> · <span style="position:relative;display:inline-block;" id="yearMenuWrap"><button id="yearBtn" onclick="toggleYearMenu(event)" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:none;">2026</button><div id="yearMenu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:#1c2b3a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.35rem;min-width:190px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.4);"></div></span></div>
+  <div class="footer-right"><span style="position:relative;display:inline-block;" id="medfordMenuWrap"><button id="medfordBtn" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:none;">Medford, Oregon</button><div id="medfordMenu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:#1c2b3a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.35rem;min-width:210px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.4);"></div></span> ·<span style="position:relative;display:inline-block;" id="yearMenuWrap"><button id="yearBtn" onclick="toggleYearMenu(event)" style="background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-decoration:none;">2026</button><div id="yearMenu" style="display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:#1c2b3a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.35rem;min-width:190px;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.4);"></div></span></div>
 </footer>
 
 <div class="skill-popover" id="skillPopover">
@@ -2855,6 +2855,126 @@ function triggerGalaga() {
       trail.forEach(function(d) { d.el.remove(); });
     }
   };
+})();
+
+/* MEDFORD MENU */
+(function() {
+  var wrap = document.getElementById('medfordMenuWrap');
+  var btn  = document.getElementById('medfordBtn');
+  var menu = document.getElementById('medfordMenu');
+  if (!btn || !menu) return;
+
+  var MEDFORD = { lat: 42.3265, lon: -122.8756 };
+  var CITIES = [
+    { label: 'New York, NY',  lat: 40.7128,  lon: -74.0060  },
+    { label: 'Los Angeles, CA', lat: 34.0522, lon: -118.2437 },
+    { label: 'San Francisco, CA', lat: 37.7749, lon: -122.4194 },
+    { label: 'Phoenix, AZ',   lat: 33.4484,  lon: -112.0740  },
+  ];
+
+  function haversine(lat1, lon1, lat2, lon2) {
+    var R = 3958.8;
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+    return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+  }
+
+  var btnStyle = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.85);font-family:"DM Sans",sans-serif;font-size:0.8rem;padding:0.45rem 0.75rem;border-radius:7px;cursor:pointer;white-space:nowrap;transition:background 0.15s;';
+
+  function addHover(el) {
+    el.onmouseenter = function() { el.style.background = 'rgba(74,158,221,0.18)'; };
+    el.onmouseleave = function() { el.style.background = 'none'; };
+  }
+
+  function closeMenu() { menu.style.display = 'none'; }
+
+  function buildDistanceRows(userRow) {
+    menu.innerHTML = '';
+
+    var rows = CITIES.map(function(c) {
+      return { label: c.label, miles: haversine(c.lat, c.lon, MEDFORD.lat, MEDFORD.lon) };
+    });
+    if (userRow) rows.push(userRow);
+
+    // back button
+    var back = document.createElement('button');
+    back.style.cssText = btnStyle + 'color:rgba(255,255,255,0.4);font-size:0.72rem;';
+    back.textContent = '← Back';
+    addHover(back);
+    back.onclick = function() { buildMainMenu(); };
+    menu.appendChild(back);
+
+    // divider
+    var div = document.createElement('div');
+    div.style.cssText = 'height:1px;background:rgba(255,255,255,0.08);margin:0.2rem 0.35rem;';
+    menu.appendChild(div);
+
+    rows.forEach(function(r) {
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.75rem;gap:1.5rem;';
+      row.innerHTML = '<span style="font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;">' + r.label + '</span>'
+        + '<span style="font-size:0.78rem;color:rgba(255,255,255,0.45);font-family:\'DM Mono\',monospace;white-space:nowrap;">' + r.miles.toLocaleString() + ' mi</span>';
+      menu.appendChild(row);
+    });
+
+    // loading placeholder if no user row yet
+    if (!userRow) {
+      var loading = document.createElement('div');
+      loading.id = 'medford-your-loc';
+      loading.style.cssText = 'padding:0.35rem 0.75rem;font-size:0.72rem;color:rgba(255,255,255,0.35);font-family:"DM Mono",monospace;';
+      loading.textContent = 'Your location: locating\u2026';
+      menu.appendChild(loading);
+    }
+  }
+
+  function buildMainMenu() {
+    menu.innerHTML = '';
+
+    var directions = document.createElement('a');
+    directions.href = 'https://maps.app.goo.gl/c1PoGoBUCVr2QkoL8';
+    directions.target = '_blank';
+    directions.rel = 'noopener noreferrer';
+    directions.style.cssText = btnStyle + 'text-decoration:none;display:block;';
+    directions.textContent = '🗺️ Directions please!';
+    addHover(directions);
+    menu.appendChild(directions);
+
+    var howFar = document.createElement('button');
+    howFar.style.cssText = btnStyle;
+    howFar.textContent = '📏 How far away is Medford?';
+    addHover(howFar);
+    howFar.onclick = function(e) {
+      e.stopPropagation();
+      buildDistanceRows(null);
+      fetch('https://ipapi.co/json/')
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+          var miles = haversine(d.latitude, d.longitude, MEDFORD.lat, MEDFORD.lon);
+          var city = [d.city, d.region_code || d.country_code].filter(Boolean).join(', ') || 'Your location';
+          buildDistanceRows({ label: city + ' (you)', miles: miles });
+        })
+        .catch(function() {
+          var el = document.getElementById('medford-your-loc');
+          if (el) el.textContent = 'Your location: unavailable';
+        });
+    };
+    menu.appendChild(howFar);
+  }
+
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (menu.style.display !== 'none') { closeMenu(); return; }
+    buildMainMenu();
+    menu.style.display = 'block';
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!wrap.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
 })();
 
 /* SKILL CHIPS */
