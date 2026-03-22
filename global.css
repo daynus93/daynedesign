@@ -207,7 +207,7 @@ nav.attaching { animation: nav-attach 0.65s linear forwards; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   box-sizing: border-box;
 }
 #mobileMenu.open { display: flex; }

@@ -347,6 +347,7 @@ window.addEventListener('load', function() {
   display: grid; grid-template-columns: 1fr auto;
   gap: 1rem; align-items: center;
   cursor: pointer;
+  width: 100%; background: none; border: none; text-align: left; color: inherit; font: inherit;
 }
 @media (hover: hover) {
   .exp-row:hover { background: rgba(74,158,221,0.06); }
@@ -919,7 +920,7 @@ window.addEventListener('load', function() {
 
     <!-- TRAINUAL -->
     <div class="exp-row" id="row-trainual">
-      <div class="exp-row-header" onclick="toggleRow('trainual')">
+      <button class="exp-row-header" onclick="toggleRow('trainual')" aria-expanded="false" aria-controls="drawer-trainual">
         <div>
           <div class="exp-company">Trainual</div>
           <div class="exp-role">Senior Product Designer</div>
@@ -929,12 +930,12 @@ window.addEventListener('load', function() {
           <div class="exp-date">Jul 2024 – Jan 2026</div>
           <div class="exp-toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>
         </div>
-      </div>
+      </button>
       <div class="exp-drawer" id="drawer-trainual">
         <div class="exp-drawer-inner">
           <div class="drawer-co-header">
             <div class="drawer-logo">
-              <img src="assets/logos/trainual_logo.png" alt="Trainual" onerror="this.style.display='none';this.parentElement.textContent='T'">
+              <img src="assets/logos/trainual_logo.png" alt="Trainual" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='T'">
             </div>
             <div>
               <div class="drawer-co-name">Trainual</div>
@@ -963,7 +964,7 @@ window.addEventListener('load', function() {
 
     <!-- VEHO -->
     <div class="exp-row" id="row-veho">
-      <div class="exp-row-header" onclick="toggleRow('veho')">
+      <button class="exp-row-header" onclick="toggleRow('veho')" aria-expanded="false" aria-controls="drawer-veho">
         <div>
           <div class="exp-company">Veho</div>
           <div class="exp-role">Senior Product Designer</div>
@@ -972,12 +973,12 @@ window.addEventListener('load', function() {
           <div class="exp-date">Apr 2023 – Jan 2024</div>
           <div class="exp-toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>
         </div>
-      </div>
+      </button>
       <div class="exp-drawer" id="drawer-veho">
         <div class="exp-drawer-inner">
           <div class="drawer-co-header">
             <div class="drawer-logo">
-              <img src="assets/logos/veho_logo.png" alt="Veho" onerror="this.style.display='none';this.parentElement.textContent='V'">
+              <img src="assets/logos/veho_logo.png" alt="Veho" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='V'">
             </div>
             <div>
               <div class="drawer-co-name">Veho</div>
@@ -1006,7 +1007,7 @@ window.addEventListener('load', function() {
 
     <!-- LESSEN -->
     <div class="exp-row" id="row-lessen">
-      <div class="exp-row-header" onclick="toggleRow('lessen')">
+      <button class="exp-row-header" onclick="toggleRow('lessen')" aria-expanded="false" aria-controls="drawer-lessen">
         <div>
           <div class="exp-company">Lessen</div>
           <div class="exp-role">Senior Product Designer</div>
@@ -1015,12 +1016,12 @@ window.addEventListener('load', function() {
           <div class="exp-date">Nov 2020 – Jan 2023</div>
           <div class="exp-toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>
         </div>
-      </div>
+      </button>
       <div class="exp-drawer" id="drawer-lessen">
         <div class="exp-drawer-inner">
           <div class="drawer-co-header">
             <div class="drawer-logo">
-              <img src="assets/logos/lessen_logo.png" alt="Lessen" onerror="this.style.display='none';this.parentElement.textContent='L'">
+              <img src="assets/logos/lessen_logo.png" alt="Lessen" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='L'">
             </div>
             <div>
               <div class="drawer-co-name">Lessen</div>
@@ -1049,7 +1050,7 @@ window.addEventListener('load', function() {
 
     <!-- STRONGMIND -->
     <div class="exp-row" id="row-strongmind">
-      <div class="exp-row-header" onclick="toggleRow('strongmind')">
+      <button class="exp-row-header" onclick="toggleRow('strongmind')" aria-expanded="false" aria-controls="drawer-strongmind">
         <div>
           <div class="exp-company">StrongMind</div>
           <div class="exp-role">UI / UX Designer</div>
@@ -1058,12 +1059,12 @@ window.addEventListener('load', function() {
           <div class="exp-date">May 2017 – Nov 2020</div>
           <div class="exp-toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>
         </div>
-      </div>
+      </button>
       <div class="exp-drawer" id="drawer-strongmind">
         <div class="exp-drawer-inner">
           <div class="drawer-co-header">
             <div class="drawer-logo">
-              <img src="assets/logos/strongmind_logo.png" alt="StrongMind" onerror="this.style.display='none';this.parentElement.textContent='S'">
+              <img src="assets/logos/strongmind_logo.png" alt="StrongMind" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='S'">
             </div>
             <div>
               <div class="drawer-co-name">StrongMind</div>
@@ -1091,7 +1092,7 @@ window.addEventListener('load', function() {
 
     <!-- PEARSON -->
     <div class="exp-row" id="row-pearson">
-      <div class="exp-row-header" onclick="toggleRow('pearson')">
+      <button class="exp-row-header" onclick="toggleRow('pearson')" aria-expanded="false" aria-controls="drawer-pearson">
         <div>
           <div class="exp-company">Pearson Education</div>
           <div class="exp-role">UI / UX Designer</div>
@@ -1100,12 +1101,12 @@ window.addEventListener('load', function() {
           <div class="exp-date">May 2015 – May 2017</div>
           <div class="exp-toggle"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg></div>
         </div>
-      </div>
+      </button>
       <div class="exp-drawer" id="drawer-pearson">
         <div class="exp-drawer-inner">
           <div class="drawer-co-header">
             <div class="drawer-logo">
-              <img src="assets/logos/pearson_logo.png" alt="Pearson" onerror="this.style.display='none';this.parentElement.textContent='P'">
+              <img src="assets/logos/pearson_logo.png" alt="Pearson" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='P'">
             </div>
             <div>
               <div class="drawer-co-name">Pearson Education</div>
@@ -1638,9 +1639,14 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
 (function() {
   const nav = document.getElementById('mainNav');
   let navScrolled = false;
+  let navTicking = false;
   window.addEventListener('scroll', () => {
-    const should = window.scrollY > 60;
-    if (should === navScrolled) return;
+    if (navTicking) return;
+    navTicking = true;
+    requestAnimationFrame(() => {
+      navTicking = false;
+      const should = window.scrollY > 60;
+      if (should === navScrolled) return;
     if (should) {
       nav.classList.remove('attaching');
       nav.classList.add('scrolled', 'detaching');
@@ -1656,6 +1662,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
         if (e.animationName === 'nav-attach') { nav.classList.remove('attaching'); nav.removeEventListener('animationend', h); }
       });
     }
+    }); // end rAF
   }, { passive: true });
 }());
 
@@ -1839,10 +1846,18 @@ function toggleRow(id) {
   const row = document.getElementById('row-' + id);
   if (!row) return;
   const isOpen = row.classList.contains('open');
-  // Close all rows first
-  document.querySelectorAll('.exp-row.open').forEach(r => r.classList.remove('open'));
+  // Close all rows + reset aria-expanded
+  document.querySelectorAll('.exp-row.open').forEach(r => {
+    r.classList.remove('open');
+    const btn = r.querySelector('.exp-row-header');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
   // Open clicked one if it wasn't already open
-  if (!isOpen) row.classList.add('open');
+  if (!isOpen) {
+    row.classList.add('open');
+    const btn = row.querySelector('.exp-row-header');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
 }
 
 /* Show more studies — 3 states: 0=3 shown, 1=6 shown, 2=14 shown */
@@ -2551,24 +2566,30 @@ function triggerGalaga() {
   });
   /* scroll hook — "almost past it" = badge bottom within 60px of viewport top */
   var returnTimer = null;
+  var badgeTicking = false;
   window.addEventListener('scroll', function() {
-    var rect = badge.getBoundingClientRect();
-    var past = rect.bottom < 60;
-    if (past !== scrolledPast) {
-      scrolledPast = past;
-      if (past) {
-        if (returnTimer) { clearTimeout(returnTimer); returnTimer = null; }
-        if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
-        clicks = 0;
-        setBadge('Wait, where are you going?');
-      } else if (clicks === 0) {
-        setBadge('Hello there!');
-        returnTimer = setTimeout(function() {
-          if (clicks === 0) setBadge(phrases[0]);
-          returnTimer = null;
-        }, 3000);
+    if (badgeTicking) return;
+    badgeTicking = true;
+    requestAnimationFrame(function() {
+      badgeTicking = false;
+      var rect = badge.getBoundingClientRect();
+      var past = rect.bottom < 60;
+      if (past !== scrolledPast) {
+        scrolledPast = past;
+        if (past) {
+          if (returnTimer) { clearTimeout(returnTimer); returnTimer = null; }
+          if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
+          clicks = 0;
+          setBadge('Wait, where are you going?');
+        } else if (clicks === 0) {
+          setBadge('Hello there!');
+          returnTimer = setTimeout(function() {
+            if (clicks === 0) setBadge(phrases[0]);
+            returnTimer = null;
+          }, 3000);
+        }
       }
-    }
+    });
   }, { passive: true });
 })();
 
@@ -3095,7 +3116,6 @@ function triggerGalaga() {
         { label: 'StrongMind App', url: 'strongmind.html' },
         { label: 'LoudMouth', url: 'loudmouth.html' },
         { label: 'SPRINT', url: 'sprint.html' },
-        { label: 'Vlogger', url: 'vlogger.html' },
       ]
     },
     'design-systems': {
@@ -3114,7 +3134,6 @@ function triggerGalaga() {
         { label: 'StrongMind App', url: 'strongmind.html' },
         { label: 'LoudMouth', url: 'loudmouth.html' },
         { label: 'Scout', url: 'scout.html' },
-        { label: 'Vlogger', url: 'vlogger.html' },
       ]
     },
     'rapid-prototyping': {
