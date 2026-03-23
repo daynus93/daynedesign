@@ -685,13 +685,9 @@ window.addEventListener('DOMContentLoaded', function() {
   if (!btn || !menu) return;
 
   function openMenu() {
-    nav.style.transition = 'none';
-    nav.style.background = document.documentElement.classList.contains('dark') ? 'rgba(7,15,24,0.95)' : '#1c2b3a';
-    nav.style.borderBottomColor = 'transparent';
     menu.classList.add('open');
     btn.classList.add('open');
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
-    requestAnimationFrame(function() { nav.style.transition = ''; });
   }
   var mobileWorkBtn = document.getElementById('mobileWorkBtn');
   var mobileWorkSub = document.getElementById('mobileWorkSub');
@@ -700,8 +696,6 @@ window.addEventListener('DOMContentLoaded', function() {
     menu.classList.remove('open');
     btn.classList.remove('open');
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'none';
-    nav.style.background = '';
-    nav.style.borderBottomColor = '';
     if (mobileWorkSub) mobileWorkSub.classList.remove('open');
     if (mobileWorkBtn) mobileWorkBtn.setAttribute('aria-expanded', 'false');
   }
@@ -746,7 +740,7 @@ window.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrop(); });
 })();
 /* ── DARK TOGGLE ── */
-document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.dark-toggle').forEach(function(b){b.addEventListener('click',function(){var d=document.documentElement.classList.toggle('dark');localStorage.setItem('darkMode',d);var _m=document.getElementById('mobileMenu'),_n=document.getElementById('mainNav');if(_m&&_m.classList.contains('open')&&_n)_n.style.background=d?'rgba(7,15,24,0.95)':'#1c2b3a';});});});
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.dark-toggle').forEach(function(b){b.addEventListener('click',function(){var d=document.documentElement.classList.toggle('dark');localStorage.setItem('darkMode',d)});});});
 // ── MOBILE TOC PILL ──
 (function(){
   var wrap=document.getElementById('mobileTocWrap'),pill=document.getElementById('mobileTocPill'),menu=document.getElementById('mobileTocMenu'),label=document.getElementById('mobileTocLabel');
