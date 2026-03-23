@@ -148,7 +148,7 @@
           '&lt;!DOCTYPE html&gt;\n&lt;html lang="en"&gt;\n&lt;head&gt;\n  &lt;meta charset="UTF-8"&gt;\n  &lt;title&gt;Dayne Petera — Product Designer&lt;/title&gt;\n  &lt;!-- handcrafted with love --&gt;\n  &lt;!-- no frameworks were harmed --&gt;\n  &lt;!-- just vibes and vanilla JS --&gt;\n&lt;/head&gt;\n&lt;body&gt;\n  &lt;!-- hello curious person 👋 --&gt;\n  ...\n&lt;/body&gt;\n&lt;/html&gt;',
         '</div>',
         '<div style="padding:8px;display:flex;gap:6px;justify-content:space-between;align-items:center;">',
-          '<a href="https://github.com/dayne-train/daynedesign" target="_blank" rel="noopener" style="color:#000080;font-size:0.72rem;">View actual source on GitHub ↗</a>',
+          '<a href="https://github.com/dayne-train/daynedesign" target="_blank" rel="noopener noreferrer" style="color:#000080;font-size:0.72rem;">View actual source on GitHub ↗</a>',
           '<div style="display:flex;gap:6px;">',
             '<button id="goRetroBtn" style="background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:2px 14px;cursor:pointer;font-family:inherit;font-size:0.78rem;">🖥️ Go Retro</button>',
             '<button class="win98-close" style="background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;padding:2px 14px;cursor:pointer;font-family:inherit;font-size:0.78rem;">OK</button>',
