@@ -598,6 +598,7 @@ footer {
 
 /* ── DARK MODE ── */
 html.dark {
+  --white:  #0f1923;
   --off:    #0f1923;
   --ink:    #ddeaf4;
   --stone:  #2a3d50;
