@@ -118,6 +118,7 @@ window.addEventListener('DOMContentLoaded', function() {
   function openMenu() {
     menu.classList.add('open');
     btn.classList.add('open');
+    nav.classList.add('menu-open');
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
@@ -128,6 +129,7 @@ window.addEventListener('DOMContentLoaded', function() {
   function closeMenu() {
     menu.classList.remove('open');
     btn.classList.remove('open');
+    nav.classList.remove('menu-open');
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'none';
