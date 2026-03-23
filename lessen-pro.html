@@ -325,6 +325,13 @@
     </button>
   </div>
 </nav>
+<div id="mobileTocWrap">
+  <button id="mobileTocPill" aria-expanded="false" aria-label="Jump to section">
+    <span id="mobileTocLabel">Overview</span>
+    <svg class="mtoc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+  </button>
+  <div id="mobileTocMenu" role="menu"></div>
+</div>
 <!-- HERO -->
 <section class="study-hero">
   <div class="hero-animate">
@@ -878,6 +885,41 @@ window.addEventListener('DOMContentLoaded', function() {
 })();
 /* ── DARK TOGGLE ── */
 document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('.dark-toggle').forEach(function(b){b.addEventListener('click',function(){var d=document.documentElement.classList.toggle('dark');localStorage.setItem('darkMode',d);var _m=document.getElementById('mobileMenu'),_n=document.getElementById('mainNav');if(_m&&_m.classList.contains('open')&&_n)_n.style.background=d?'rgba(4,16,52,0.93)':'#1c2b3a';});});});
+// ── MOBILE TOC PILL ──
+(function(){
+  var wrap=document.getElementById('mobileTocWrap'),pill=document.getElementById('mobileTocPill'),menu=document.getElementById('mobileTocMenu'),label=document.getElementById('mobileTocLabel');
+  if(!wrap||!pill||!menu)return;
+  var tocLinks=document.querySelectorAll('.toc-link');
+  tocLinks.forEach(function(link){
+    var btn=document.createElement('button');
+    btn.className='mtoc-item';btn.textContent=link.textContent.trim();btn.dataset.target=link.getAttribute('href');
+    menu.appendChild(btn);
+    btn.addEventListener('click',function(){var t=document.querySelector(btn.dataset.target);if(t)t.scrollIntoView({behavior:'smooth'});close();});
+  });
+  if(tocLinks.length&&label)label.textContent=tocLinks[0].textContent.trim();
+  function open(){wrap.classList.add('open');pill.setAttribute('aria-expanded','true');}
+  function close(){wrap.classList.remove('open');pill.setAttribute('aria-expanded','false');}
+  pill.addEventListener('click',function(e){e.stopPropagation();wrap.classList.contains('open')?close():open();});
+  document.addEventListener('click',function(){close();});
+  // Show/hide pill based on hero visibility
+  var hero=document.querySelector('.study-hero');
+  if(hero){
+    new IntersectionObserver(function(entries){
+      if(!entries[0].isIntersecting){wrap.classList.add('visible');}
+      else{wrap.classList.remove('visible');close();}
+    },{threshold:0}).observe(hero);
+  }
+  var tocList=document.querySelector('.toc-list');
+  if(tocList){
+    new MutationObserver(function(){
+      var active=document.querySelector('.toc-link.active');
+      if(active&&label){
+        label.textContent=active.textContent.trim();
+        menu.querySelectorAll('.mtoc-item').forEach(function(item){item.classList.toggle('active',item.dataset.target===active.getAttribute('href'));});
+      }
+    }).observe(tocList,{subtree:true,attributes:true,attributeFilter:['class']});
+  }
+})();
 </script>
 
 <!-- MOBILE MENU -->
