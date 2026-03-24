@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new MutationObserver(function(){
       var active=document.querySelector('.toc-link.active');
       if(active&&label){
-        label.textContent=active.textContent.trim();
+        if(!wrap.dataset.wee)label.textContent=active.textContent.trim();
         menu.querySelectorAll('.mtoc-item').forEach(function(item){item.classList.toggle('active',item.dataset.target===active.getAttribute('href'));});
       }
     }).observe(tocList,{subtree:true,attributes:true,attributeFilter:['class']});
@@ -234,12 +234,10 @@ document.addEventListener('DOMContentLoaded', function() {
     wrap.classList.toggle('back-top-visible',entries[0].isIntersecting);
   },{threshold:0}).observe(related);
 
-  var weeeing=false;
   var scrollTimer=null;
   function stopWee(){
-    if(!weeeing)return;
-    weeeing=false;
-    // restore label from active toc link or first link
+    if(!wrap.dataset.wee)return;
+    delete wrap.dataset.wee;
     var active=document.querySelector('.toc-link.active')||document.querySelector('.toc-link');
     if(label&&active)label.textContent=active.textContent.trim();
   }
@@ -250,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   btn.addEventListener('click',function(){
     window.scrollTo({top:0,behavior:'smooth'});
-    if(label){weeeing=true;label.textContent='Weeeeeeeee!';}
+    if(label){wrap.dataset.wee='1';label.textContent='Weeeeeeeee!';}
     window.addEventListener('scroll',onScroll,{passive:true});
   });
   if(pill){pill.addEventListener('mouseenter',stopWee);}
