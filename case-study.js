@@ -230,8 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var label=document.getElementById('mobileTocLabel');
   var related=document.querySelector('.related-work');
   if(!wrap||!btn)return;
-  var l=document.querySelector('#learnings'), rw=related;
-  var trigger=l&&rw ? (l.compareDocumentPosition(rw)&Node.DOCUMENT_POSITION_FOLLOWING?rw:l) : (l||rw);
+  var trigger=document.querySelector('#learnings')||related;
   if(!trigger)return;
   new IntersectionObserver(function(entries){
     wrap.classList.toggle('back-top-visible',entries[0].isIntersecting);
