@@ -1760,15 +1760,21 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   if (!hero || !orb) return;
 
   let mouseX = 62, mouseY = 40;
-  let cx = 62, cy = 40;
+  let cx = 62, cy = 40, vx = 0, vy = 0;           // main orb + velocity
+  let dmx = 62, dmy = 40;                          // deco mask center — leads the orb
   let wx = 62, wy = 40;
+  // Satellite centers — velocity-spring per body (lighter = higher k, more responsive)
+  let c1x = 62, c1y = 40, v1x = 0, v1y = 0;      // s1 teal
+  let c2x = 62, c2y = 40, v2x = 0, v2y = 0;      // s2 deep blue
+  let c3x = 62, c3y = 40, v3x = 0, v3y = 0;      // s3 lavender
+  let c4x = 62, c4y = 40, v4x = 0, v4y = 0;      // s4 warm cyan
   let idleT = 0, blend = 0, hovering = false;
 
   let maskRadius = 0, curMaskRadius = 0;
 
 
   function tick() {
-    blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.032 : 0.018);
+    blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.004 : 0.003);
 
     idleT += 0.009;
     const ix = 55 + Math.sin(idleT * 0.9) * 22;
@@ -1776,39 +1782,62 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     const tx = ix + (mouseX - ix) * blend;
     const ty = iy + (mouseY - iy) * blend;
 
-    cx += (tx - cx) * 0.005;
-    cy += (ty - cy) * 0.005;
-    wx += (cx - wx) * 0.028;
-    wy += (cy - wy) * 0.028;
+    // Spring: velocity += force - damping; position += velocity
+    // Higher k = lighter mass = snappier. Damping keeps it from oscillating forever.
+    vx  += (tx - cx)  * 0.0008 - vx  * 0.91; cx  += vx;   // main — heaviest
+    vy  += (ty - cy)  * 0.0008 - vy  * 0.91; cy  += vy;
+    wx += (cx - wx) * 0.022; wy += (cy - wy) * 0.022;      // wake trails main
+    dmx += (tx - dmx) * 0.06; dmy += (ty - dmy) * 0.06;   // mask leads the orb
+
+    v1x += (tx - c1x) * 0.003 - v1x * 0.86; c1x += v1x;   // s1 — medium-light
+    v1y += (ty - c1y) * 0.003 - v1y * 0.86; c1y += v1y;
+    v2x += (tx - c2x) * 0.002 - v2x * 0.88; c2x += v2x;   // s2 — medium
+    v2y += (ty - c2y) * 0.002 - v2y * 0.88; c2y += v2y;
+    v3x += (tx - c3x) * 0.0013 - v3x * 0.90; c3x += v3x;  // s3 — medium-heavy
+    v3y += (ty - c3y) * 0.0013 - v3y * 0.90; c3y += v3y;
+    v4x += (tx - c4x) * 0.005 - v4x * 0.83; c4x += v4x;   // s4 — lightest
+    v4y += (ty - c4y) * 0.005 - v4y * 0.83; c4y += v4y;
 
     const t = performance.now() * 0.001;
-    const s1x = cx + Math.cos(t * 0.38) * 12;
-    const s1y = cy + Math.sin(t * 0.38) * 6;
-    const s2x = cx + Math.cos(t * 0.38 + Math.PI) * 8;
-    const s2y = cy + Math.sin(t * 0.38 + Math.PI) * 4;
+    const hue = 206 + Math.sin(t * 0.05) * 18;
+    const s1x = c1x + Math.cos(t * 0.38) * 14;
+    const s1y = c1y + Math.sin(t * 0.38) * 7;
+    const s2x = c2x + Math.cos(t * 0.38 + Math.PI) * 10;
+    const s2y = c2y + Math.sin(t * 0.38 + Math.PI) * 5;
+    const s3x = c3x + Math.cos(t * 0.61 + 1.1) * 22;
+    const s3y = c3y + Math.sin(t * 0.61 + 1.1) * 13;
+    const s4x = c4x + Math.cos(t * 0.22 + 2.6) * 30;
+    const s4y = c4y + Math.sin(t * 0.22 + 2.6) * 9;
 
-    const dark  = document.documentElement.classList.contains('dark');
-    const scale = dark ? 0.38 : 1;
-    const breath = (0.171 + Math.sin(t * 0.9) * 0.036) * scale;
+    const dark     = document.documentElement.classList.contains('dark');
+    const scale    = dark ? 0.72 : 1;      // main orb + wake
+    const satScale = dark ? 0.30 : 1;      // satellites — subtle in dark, no flash effect
+    const breath   = (0.171 + Math.sin(t * 0.9) * 0.036) * scale;
 
     if (deco) {
       const hr = hero.getBoundingClientRect();
       const dr = deco.getBoundingClientRect();
       // Convert orb % position (relative to hero) into px coords relative to deco
-      const orbPxX = (cx / 100) * hr.width  + hr.left - dr.left;
-      const orbPxY = (cy / 100) * hr.height + hr.top  - dr.top;
+      const orbPxX = (dmx / 100) * hr.width  + hr.left - dr.left;
+      const orbPxY = (dmy / 100) * hr.height + hr.top  - dr.top;
       curMaskRadius += (maskRadius - curMaskRadius) * 0.08;
-      const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${orbPxX.toFixed(1)}px ${orbPxY.toFixed(1)}px, black 0%, black 18%, transparent 85%)`;
+      const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${orbPxX.toFixed(1)}px ${orbPxY.toFixed(1)}px, black 0%, black 10%, transparent 82%)`;
       deco.style.webkitMaskImage = mask;
       deco.style.maskImage       = mask;
     }
 
     orb.style.background = [
-      `radial-gradient(ellipse 58% 60% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, rgba(74,158,221,${breath.toFixed(3)}) 0%, rgba(74,158,221,${(0.045*scale).toFixed(3)}) 52%, transparent 72%)`,
-      // s1 — notably brighter
-      `radial-gradient(ellipse 20% 22% at ${s1x.toFixed(2)}% ${s1y.toFixed(2)}%, rgba(74,158,221,${(0.18*scale).toFixed(3)}) 0%, transparent 100%)`,
-      // s2 — dim
-      `radial-gradient(ellipse 14% 16% at ${s2x.toFixed(2)}% ${s2y.toFixed(2)}%, rgba(74,158,221,${(0.063*scale).toFixed(3)}) 0%, transparent 100%)`,
+      // Main — hue-breathing sky
+      `radial-gradient(ellipse 58% 60% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, hsla(${hue.toFixed(1)},68%,57%,${breath.toFixed(3)}) 0%, hsla(${hue.toFixed(1)},60%,57%,${(0.045*scale).toFixed(3)}) 52%, transparent 72%)`,
+      // s1 — teal
+      `radial-gradient(ellipse 20% 22% at ${s1x.toFixed(2)}% ${s1y.toFixed(2)}%, rgba(56,195,210,${(0.18*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s2 — deep blue
+      `radial-gradient(ellipse 14% 16% at ${s2x.toFixed(2)}% ${s2y.toFixed(2)}%, rgba(52,120,200,${(0.07*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s3 — lavender
+      `radial-gradient(ellipse 13% 15% at ${s3x.toFixed(2)}% ${s3y.toFixed(2)}%, rgba(130,90,220,${(0.13*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s4 — warm cyan
+      `radial-gradient(ellipse 9% 11% at ${s4x.toFixed(2)}% ${s4y.toFixed(2)}%, rgba(56,200,185,${(0.09*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // wake
       `radial-gradient(ellipse 80% 82% at ${wx.toFixed(2)}% ${wy.toFixed(2)}%, rgba(74,158,221,${(0.072*scale).toFixed(3)}) 0%, transparent 65%)`
     ].join(', ');
 
@@ -1822,7 +1851,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     const r = hero.getBoundingClientRect();
     mouseX = (e.clientX - r.left) / r.width  * 100;
     mouseY = (e.clientY - r.top)  / r.height * 100;
-    if (deco) maskRadius = 300;
+    if (deco) maskRadius = 460;
   });
   hero.addEventListener('mouseleave', () => {
     hovering = false;
