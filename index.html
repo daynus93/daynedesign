@@ -3222,6 +3222,11 @@ function triggerGalaga() {
   });
 })();
 
+// Contact links — zero stagger delay after first hover so hover-out is instant
+document.querySelectorAll('.contact-link').forEach(link => {
+  link.addEventListener('mouseenter', () => link.style.transitionDelay = '0s', { once: true });
+});
+
 // Ghost watermark — only one visible at a time
 (function() {
   const rows = document.querySelectorAll('.exp-row');
