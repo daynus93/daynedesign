@@ -1039,15 +1039,17 @@ html.dark .dark-toggle .sun-icon { display: block; }
 /* ── RESPONSIVE ── */
 @media (max-width: 960px) {
   .study-hero { padding: 4rem 2rem 0; }
-  .impact-pill { padding: 1rem 1.25rem; }
+  .impact-pill { padding: 1rem 1.25rem; flex: 0 0 50%; min-width: 0; }
+  .impact-pill:nth-child(2n) { border-right: none; }
+  .impact-pill:nth-child(-n+2):nth-last-child(n+3) { border-bottom: 1px solid rgba(255,255,255,0.08); }
   .impact-num { font-size: 1.4rem; }
+  .study-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .study-body { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 0; }
   .study-toc { display: none; }
   .img-3col { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
-  .study-meta { gap: 1.5rem; }
   .impact-pill { flex-direction: column; gap: 0.2rem; }
   .img-2col { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: 1fr; }
