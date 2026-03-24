@@ -726,18 +726,17 @@ window.addEventListener('load', function() {
   .study-card:hover { transform: none; box-shadow: none; border-color: var(--stone); }
   .study-card:hover .study-card-bg { opacity: 0.55; transform: none; }
   .study-card:hover::after { opacity: 0; }
-  /* Active state mirrors desktop hover (border stays neutral until press) */
-  .study-card.active { transform: scale(1.03); box-shadow: 0 28px 60px rgba(28,43,58,0.18); }
-  .study-card.active:active { border-color: var(--sky); }
-  .study-card.active .study-card-bg { opacity: 1; transform: scale(1.05); }
-  .study-card.active::after { opacity: 1; }
-  .study-card.active .study-chip { background: var(--sky); }
-  /* Badge collapse/unfurl on touch */
+  /* Scroll-by: badges unfurl, bg reveals, chip colors — no scale/lift */
   .study-card .study-badge {
     max-width: 1.6rem; overflow: hidden; padding-right: 0.3rem;
     transition: max-width 0.38s cubic-bezier(0.34, 1.04, 0.64, 1), padding-right 0.38s cubic-bezier(0.34, 1.04, 0.64, 1);
   }
   .study-card.active .study-badge { max-width: 9rem; padding-right: 0.55rem; }
+  .study-card.active .study-card-bg { opacity: 1; transform: scale(1.05); }
+  .study-card.active::after { opacity: 1; }
+  /* Press: add scale/lift on top */
+  .study-card.active:active { transform: scale(1.03); box-shadow: 0 28px 60px rgba(28,43,58,0.18); border-color: var(--sky); }
+  .study-card.active:active .study-chip { background: var(--sky); }
 }
 @media (max-width: 1200px) {
   .skills-section { grid-template-columns: 1fr; gap: 2rem; }
