@@ -243,7 +243,8 @@ a.nav-cta:hover { background: var(--sky-mid); color: #fff !important; transform:
   display: flex; flex-direction: column; justify-content: flex-end;
   height: 200px; border-radius: var(--radius-card);
   border: 1.5px solid var(--stone); background: var(--off);
-  transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), box-shadow 0.35s, border-color 0.3s;
+  transition: transform 0.35s cubic-bezier(.22,.68,0,1.2);
+  will-change: transform;
 }
 .related-card:hover { transform: scale(1.03); box-shadow: 0 20px 48px rgba(28,43,58,0.15); border-color: var(--sky); }
 .related-card-bg {
@@ -296,7 +297,7 @@ html.dark .related-home .related-card-title { color: #fff; }
 .c-easybridge .related-card-bg { background-image: url('https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2017/04/eb_front.png'); }
 .c-vlogger    .related-card-bg { background-image: url('https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2018/03/vlogger_4.png'); }
 .study-card-badges { position: absolute; top: 1rem; left: 1rem; display: flex; gap: 0.4rem; z-index: 2; }
-.study-badge { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(245,249,252,0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 0.25rem 0.55rem 0.25rem 0.3rem; border-radius: 8px; font-family: var(--mono); font-size: var(--font-badge); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); white-space: nowrap; border: 1px solid rgba(28,43,58,0.1); }
+.study-badge { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(245,249,252,0.82); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); padding: 0.25rem 0.55rem 0.25rem 0.3rem; border-radius: 8px; font-family: var(--mono); font-size: var(--font-badge); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); white-space: nowrap; border: 1px solid rgba(28,43,58,0.1); }
 .study-badge img { width: 14px; height: 14px; border-radius: 4px; object-fit: contain; flex-shrink: 0; }
 .badge-icon-circle { width: 14px; height: 14px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; }
 .badge-icon-circle svg { width: 8px; height: 8px; }
