@@ -30,9 +30,9 @@
         if (item.desktopOnly && isMobile) return;
         var btn = document.createElement('button');
         btn.textContent = item.label;
-        btn.style.cssText = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.75);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
-        btn.onmouseenter = function() { btn.style.background = 'rgba(74,158,221,0.12)'; btn.style.color = 'rgba(255,255,255,0.95)'; };
-        btn.onmouseleave = function() { btn.style.background = 'none'; btn.style.color = 'rgba(255,255,255,0.75)'; };
+        btn.style.cssText = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.7);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
+        btn.onmouseenter = function() { btn.style.background = 'rgba(74,158,221,0.12)'; btn.style.color = 'rgba(255,255,255,0.9)'; };
+        btn.onmouseleave = function() { btn.style.background = 'none'; btn.style.color = 'rgba(255,255,255,0.7)'; };
         btn.onclick = function() { closeYearMenu(); item.action(); };
         menu.appendChild(btn);
       });
@@ -291,14 +291,14 @@
     { label: 'Moran, WY',         miles: 901  },
   ];
 
-  var btnStyle = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.75);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
+  var btnStyle = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.7);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
   var rowStyle = 'display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.75rem;gap:1.5rem;';
   var labelStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;';
   var miStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.45);font-family:\'DM Mono\',monospace;white-space:nowrap;';
 
   function addHover(el) {
-    el.onmouseenter = function() { el.style.background = 'rgba(74,158,221,0.12)'; el.style.color = 'rgba(255,255,255,0.95)'; };
-    el.onmouseleave = function() { el.style.background = 'none'; el.style.color = 'rgba(255,255,255,0.75)'; };
+    el.onmouseenter = function() { el.style.background = 'rgba(74,158,221,0.12)'; el.style.color = 'rgba(255,255,255,0.9)'; };
+    el.onmouseleave = function() { el.style.background = 'none'; el.style.color = 'rgba(255,255,255,0.7)'; };
   }
 
   function closeMenu() { menu.style.display = 'none'; }

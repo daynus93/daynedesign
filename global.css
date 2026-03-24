@@ -760,8 +760,10 @@ html.dark nav.detaching { animation-name: nav-detach-dark; }
 html.dark nav.attaching  { animation-name: nav-attach-dark; }
 html.dark nav.menu-open { background: var(--nav-dark-bg); }
 html.dark .nav-work-panel { background: #162030; border-color: var(--stone); }
-html.dark .nav-work-panel a { color: var(--ink); }
-html.dark .nav-work-panel a:hover { color: var(--sky); }
+html.dark .nav-work-item { color: rgba(255,255,255,0.7); }
+html.dark .nav-work-item:hover { background: rgba(74,158,221,0.12); color: rgba(255,255,255,0.9); }
+html.dark .nav-work-all { color: var(--sky); }
+html.dark .nav-work-all:hover { background: rgba(74,158,221,0.12); }
 html.dark #mobileMenu { background: #0a1520; }
 html.dark footer { background: #070f18; }
 html.dark .study-hero { background: var(--off); border-bottom-color: var(--stone); }
