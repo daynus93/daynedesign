@@ -221,3 +221,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }).observe(tocList,{subtree:true,attributes:true,attributeFilter:['class']});
   }
 })();
+
+// ── BACK TO TOP BUTTON ──
+(function(){
+  var wrap=document.getElementById('mobileTocWrap');
+  var btn=document.getElementById('backToTopBtn');
+  var related=document.querySelector('.related-work');
+  if(!wrap||!btn||!related)return;
+  new IntersectionObserver(function(entries){
+    wrap.classList.toggle('back-top-visible',entries[0].isIntersecting);
+  },{threshold:0}).observe(related);
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
