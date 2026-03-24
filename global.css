@@ -16,8 +16,10 @@
   --sky-hover-bg:  rgba(74,158,221,0.08);
   --status-green:  #5cb85c;
   /* nav surfaces */
-  --nav-light-bg:  var(--nav-light-bg);
-  --nav-dark-bg:   var(--nav-dark-bg);
+  --nav-light-bg:         rgba(255,255,255,0.80);
+  --nav-light-scrolled:   rgba(255,255,255,0.65);
+  --nav-dark-bg:          rgba(7,15,24,0.95);
+  --nav-dark-scrolled:    rgba(7,15,24,0.80);
   /* fonts */
   --serif: 'Playfair Display', Georgia, serif;
   --sans:  'DM Sans', sans-serif;
@@ -97,7 +99,7 @@ nav.scrolled {
   right: 4rem;
   padding: 1rem;
   border-radius: 999px;
-  background: var(--nav-light-bg);
+  background: var(--nav-light-scrolled);
   backdrop-filter: blur(var(--blur-lg));
   -webkit-backdrop-filter: blur(var(--blur-lg));
   border-bottom-color: transparent;
@@ -115,14 +117,14 @@ nav.scrolled {
   }
   42% {
     top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px;
-    background: var(--nav-light-bg); backdrop-filter: blur(var(--blur-lg));
+    background: var(--nav-light-scrolled); backdrop-filter: blur(var(--blur-lg));
     box-shadow: 0 2px 12px rgba(28,43,58,0.08), 0 8px 32px rgba(28,43,58,0.07);
     border-bottom-color: transparent;
     animation-timing-function: cubic-bezier(0.34, 1.6, 0.64, 1);
   }
   100% {
     top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px;
-    background: var(--nav-light-bg); backdrop-filter: blur(var(--blur-lg));
+    background: var(--nav-light-scrolled); backdrop-filter: blur(var(--blur-lg));
     box-shadow: 0 2px 12px rgba(28,43,58,0.08), 0 8px 32px rgba(28,43,58,0.07);
     border-bottom-color: transparent;
   }
@@ -130,14 +132,14 @@ nav.scrolled {
 @keyframes nav-attach {
   0% {
     top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px;
-    background: var(--nav-light-bg); backdrop-filter: blur(var(--blur-lg));
+    background: var(--nav-light-scrolled); backdrop-filter: blur(var(--blur-lg));
     box-shadow: 0 2px 12px rgba(28,43,58,0.08), 0 8px 32px rgba(28,43,58,0.07);
     border-bottom-color: transparent;
     animation-timing-function: cubic-bezier(0.55, 0, 0.9, 0.5);
   }
   42% {
     top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px;
-    background: var(--nav-light-bg); backdrop-filter: blur(var(--blur-lg));
+    background: var(--nav-light-scrolled); backdrop-filter: blur(var(--blur-lg));
     box-shadow: 0 2px 12px rgba(28,43,58,0.08), 0 8px 32px rgba(28,43,58,0.07);
     border-bottom-color: transparent;
     animation-timing-function: cubic-bezier(0.34, 1.6, 0.64, 1);
@@ -158,6 +160,31 @@ nav.attaching { animation: nav-attach 0.65s linear forwards; }
 .nav-links a:not(.nav-work-item):not(.nav-work-all):not(.nav-cta) { font-family: var(--mono); font-size: var(--font-eyebrow); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s, background 0.2s; line-height: 1; padding: 0.5rem 0.75rem; border-radius: 999px; }
 .nav-links a:not(.nav-work-item):not(.nav-work-all):not(.nav-cta):hover { color: var(--sky); background: var(--sky-hover-bg); }
 .nav-sep { width: 1px; height: 1.1rem; background: var(--stone); opacity: 0.6; margin: 0 0.25rem; }
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.9rem; border-radius: var(--radius);
+  font-family: var(--mono); font-size: 0.75rem; letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; text-decoration: none; cursor: pointer;
+  border: none; transition: all 0.22s ease; white-space: nowrap;
+}
+.btn-primary { background: var(--sky); color: white; }
+.btn-primary:hover { background: var(--sky-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(74,158,221,0.3); }
+.btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--stone); }
+.btn-outline:hover { border-color: var(--sky); color: var(--sky); transform: translateY(-2px); }
+.btn-ghost-dark { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+.btn-ghost-dark:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+
+/* ── SECTION UTILITIES ── */
+.section-label {
+  font-family: var(--mono); font-size: var(--font-eyebrow); letter-spacing: var(--tracking-widest);
+  text-transform: uppercase; color: var(--sky); margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: var(--serif); font-size: var(--font-section);
+  font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; color: var(--ink);
+}
+
 /* ── BUTTON ICON SIZES ── */
 .btn svg { width: 1.1em; height: 1.1em; flex-shrink: 0; }
 .nav-cta svg { width: 1em; height: 1em; flex-shrink: 0; }
@@ -704,17 +731,17 @@ html.dark body { background: var(--off); color: var(--ink); }
 /* Nav — desktop */
 @media (min-width: 961px) {
   html.dark nav { background: var(--nav-dark-bg); }
-  html.dark nav.scrolled { background: var(--nav-dark-bg); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); }
+  html.dark nav.scrolled { background: var(--nav-dark-scrolled); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); }
 }
 html.dark nav::before { background: var(--nav-dark-bg); }
 @keyframes nav-detach-dark {
   0%   { top: 0; left: 0; right: 0; padding: 1.1rem 4rem; border-radius: 0; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-sm)); box-shadow: 0 2px 16px rgba(0,0,0,0.2), 0 8px 32px rgba(0,0,0,0); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.55,0,0.9,0.5); }
-  42%  { top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.34,1.6,0.64,1); }
-  100% { top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; }
+  42%  { top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-scrolled); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.34,1.6,0.64,1); }
+  100% { top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-scrolled); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; }
 }
 @keyframes nav-attach-dark {
-  0%   { top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.55,0,0.9,0.5); }
-  42%  { top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.34,1.6,0.64,1); }
+  0%   { top: 12px; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-scrolled); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.55,0,0.9,0.5); }
+  42%  { top: 0; left: 4rem; right: 4rem; padding: 1rem; border-radius: 999px; background: var(--nav-dark-scrolled); backdrop-filter: blur(var(--blur-lg)); box-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 8px 32px rgba(0,0,0,0.3); border-bottom-color: transparent; animation-timing-function: cubic-bezier(0.34,1.6,0.64,1); }
   100% { top: 0; left: 0; right: 0; padding: 1.1rem 4rem; border-radius: 0; background: var(--nav-dark-bg); backdrop-filter: blur(var(--blur-sm)); box-shadow: 0 2px 16px rgba(0,0,0,0.2), 0 8px 32px rgba(0,0,0,0); border-bottom-color: transparent; }
 }
 html.dark nav.detaching { animation-name: nav-detach-dark; }
