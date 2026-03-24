@@ -364,6 +364,8 @@ window.addEventListener('load', function() {
 @media (hover: hover) {
   .exp-row:not(.open):hover { background: rgba(74,158,221,0.06); }
   .exp-row:not(.open):hover .exp-row-header { padding-left: 0.5rem; }
+  .exp-row:not(.open):hover .exp-toggle { background: var(--sky); border-color: var(--sky); color: white; }
+  .exp-row.open .exp-row-header:hover .exp-toggle { background: white; border-color: white; color: var(--sky-mid); transform: rotate(-45deg) scale(1.1); }
 }
 
 .exp-company { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; }
@@ -647,6 +649,10 @@ window.addEventListener('load', function() {
   .principles-grid { grid-template-columns: 1fr; }
 }
 @media (hover: none) and (pointer: coarse) {
+  .contact-link:hover { padding-left: 0; color: var(--ink); }
+  .contact-link:hover .cl-label { color: var(--muted); }
+  .contact-link:hover .cl-value { color: var(--ink); }
+  .contact-link:hover .cl-arrow { transform: none; color: var(--muted); }
   .principle-card:hover { box-shadow: none; transform: none; }
   .principle-card.active::before { transform: scaleX(1); transition: transform 0.4s var(--ease-smooth); }
   .principle-card.active { box-shadow: 0 12px 40px rgba(74,158,221,0.16); border-color: rgba(74,158,221,0.3); transition: box-shadow 0.4s var(--ease-smooth), border-color 0.4s var(--ease-smooth); }

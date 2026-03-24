@@ -589,6 +589,14 @@ footer {
   text-transform: uppercase; color: rgba(255,255,255,0.45);
 }
 
+/* ── TOUCH — suppress hover effects that feel jarring on tap ── */
+@media (hover: none) and (pointer: coarse) {
+  .related-card:hover { transform: none; box-shadow: none; border-color: var(--stone); }
+  .related-card:hover .related-card-bg { opacity: 0.55; transform: none; }
+  .related-card:hover .related-chip { background: rgba(74,158,221,0.6); }
+  .btn-primary:hover, .btn-outline:hover, .btn-ghost-dark:hover, a.nav-cta:hover { transform: none; box-shadow: none; }
+}
+
 /* ── REDUCED MOTION ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
