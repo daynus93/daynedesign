@@ -857,7 +857,8 @@ html.dark .dark-toggle .sun-icon { display: block; }
   border-right: 1px solid rgba(255,255,255,0.08);
   transition: background 0.2s;
 }
-.impact-pill:last-child { border-right: none; }
+.impact-pill:first-child { padding-left: 5rem; }
+.impact-pill:last-child { border-right: none; padding-right: 5rem; }
 .impact-pill:hover { background: rgba(255,255,255,0.06); }
 .impact-num { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; color: #fff; line-height: 1; }
 .impact-desc { font-family: var(--mono); font-size: var(--font-badge); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: rgba(255,255,255,0.55); line-height: 1.4; }
@@ -1040,7 +1041,8 @@ html.dark .dark-toggle .sun-icon { display: block; }
 @media (max-width: 960px) {
   .study-hero { padding: 4rem 2rem 0; }
   .impact-pill { padding: 1rem 1.25rem; flex: 0 0 50%; min-width: 0; }
-  .impact-pill:nth-child(2n) { border-right: none; }
+  .impact-pill:nth-child(odd) { padding-left: 2rem; }
+  .impact-pill:nth-child(2n) { border-right: none; padding-right: 2rem; }
   .impact-pill:nth-child(-n+2):nth-last-child(n+3) { border-bottom: 1px solid rgba(255,255,255,0.08); }
   .impact-num { font-size: 1.4rem; }
   .study-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
