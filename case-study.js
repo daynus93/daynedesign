@@ -226,10 +226,32 @@ document.addEventListener('DOMContentLoaded', function() {
 (function(){
   var wrap=document.getElementById('mobileTocWrap');
   var btn=document.getElementById('backToTopBtn');
+  var pill=document.getElementById('mobileTocPill');
+  var label=document.getElementById('mobileTocLabel');
   var related=document.querySelector('.related-work');
   if(!wrap||!btn||!related)return;
   new IntersectionObserver(function(entries){
     wrap.classList.toggle('back-top-visible',entries[0].isIntersecting);
   },{threshold:0}).observe(related);
-  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  var weeeing=false;
+  var scrollTimer=null;
+  function stopWee(){
+    if(!weeeing)return;
+    weeeing=false;
+    // restore label from active toc link or first link
+    var active=document.querySelector('.toc-link.active')||document.querySelector('.toc-link');
+    if(label&&active)label.textContent=active.textContent.trim();
+  }
+  function onScroll(){
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(stopWee,150);
+  }
+
+  btn.addEventListener('click',function(){
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(label){weeeing=true;label.textContent='Weeeeeeeee!';}
+    window.addEventListener('scroll',onScroll,{passive:true});
+  });
+  if(pill){pill.addEventListener('mouseenter',stopWee);}
 })();
