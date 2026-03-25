@@ -146,6 +146,9 @@ window.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeMenu();
   });
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768 && menu.classList.contains('open')) closeMenu();
+  });
 
   if (mobileWorkBtn && mobileWorkSub) {
     mobileWorkBtn.addEventListener('click', function() {

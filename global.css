@@ -581,7 +581,7 @@ html.dark .mmenu-row { color: #fff; border-color: rgba(255,255,255,0.07); }
   .mmenu-row:hover .mmenu-arrow { opacity: 0.7; transform: translateX(3px); }
 }
 .mmenu-row:active { background: rgba(74,158,221,0.1); color: var(--sky); }
-.mmenu-label { font-family: var(--sans); font-size: 1.15rem; font-weight: 600; letter-spacing: -0.015em; }
+.mmenu-label { font-family: var(--sans); font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
 .mmenu-arrow { width: 1rem; height: 1rem; flex-shrink: 0; opacity: 0.3; transition: opacity 0.15s, transform 0.2s; }
 .mmenu-chevron { width: 1rem; height: 1rem; flex-shrink: 0; opacity: 0.4; transition: transform 0.3s cubic-bezier(0.34,1.1,0.64,1), opacity 0.15s; }
 .mmenu-work-btn[aria-expanded="true"] .mmenu-chevron { transform: rotate(180deg); opacity: 0.8; }
@@ -670,6 +670,128 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
 .mmenu-cta .mmenu-label { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .mmenu-cta .mmenu-arrow { opacity: 0.7; }
 .mmenu-cta:hover, .mmenu-cta:active { background: var(--sky) !important; color: #fff !important; }
+
+/* ── SAY HELLO MODAL ── */
+#sayHelloModal {
+  position: fixed; inset: 0; z-index: 9500;
+  display: flex; align-items: flex-end; justify-content: center;
+  pointer-events: none;
+}
+#sayHelloModal.sh-open { pointer-events: auto; }
+#shBackdrop {
+  position: absolute; inset: 0;
+  background: rgba(10,18,26,0.55);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+#sayHelloModal.sh-open #shBackdrop { opacity: 1; }
+#shSheet {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 520px;
+  background: var(--off);
+  border-radius: 20px 20px 0 0;
+  padding: 0 1.75rem 2.5rem;
+  box-sizing: border-box;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.34, 1.1, 0.64, 1);
+  max-height: 92vh; overflow-y: auto;
+}
+html.dark #shSheet { background: #0f1e2e; box-shadow: 0 -8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06); }
+#sayHelloModal.sh-open #shSheet { transform: translateY(0); }
+.sh-handle { width: 36px; height: 4px; background: var(--stone); border-radius: 999px; margin: 0.85rem auto 0; }
+html.dark .sh-handle { background: rgba(255,255,255,0.12); }
+.sh-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 0 1rem;
+}
+.sh-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+html.dark .sh-title { color: #fff; }
+.sh-subtitle { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); margin-top: 0.2rem; }
+.sh-close {
+  width: 32px; height: 32px; border-radius: 999px;
+  background: rgba(0,0,0,0.06); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+html.dark .sh-close { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+.sh-close svg { width: 14px; height: 14px; }
+.sh-close:hover { background: rgba(74,158,221,0.12); color: var(--sky); }
+.sh-body { display: flex; flex-direction: column; }
+.sh-label {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--slate); margin-bottom: 0.25rem; margin-top: 0.85rem;
+}
+.sh-input {
+  width: 100%; border: 1.5px solid var(--stone); border-radius: 10px;
+  padding: 0.8rem 0.9rem; font-family: var(--sans); font-size: 0.95rem;
+  color: var(--ink); background: #fff; box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+html.dark .sh-input { background: #162030; border-color: rgba(255,255,255,0.1); color: #fff; }
+.sh-input:focus { outline: none; border-color: var(--sky); box-shadow: 0 0 0 3px rgba(74,158,221,0.15); }
+.sh-input::placeholder { color: var(--muted); }
+.sh-input.sh-input-error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.15); }
+.sh-select-wrap { position: relative; margin-bottom: 0.25rem; }
+.sh-select {
+  width: 100%; appearance: none; -webkit-appearance: none;
+  background: #fff; border: 1.5px solid var(--stone); border-radius: 10px;
+  padding: 0.8rem 2.5rem 0.8rem 0.9rem;
+  font-family: var(--sans); font-size: 0.95rem; color: var(--ink);
+  cursor: pointer; box-sizing: border-box; transition: border-color 0.15s, box-shadow 0.15s;
+}
+html.dark .sh-select { background: #162030; border-color: rgba(255,255,255,0.1); color: #fff; }
+.sh-select:focus { outline: none; border-color: var(--sky); box-shadow: 0 0 0 3px rgba(74,158,221,0.15); }
+.sh-select-chevron { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); width: 1rem; height: 1rem; pointer-events: none; color: var(--slate); }
+.sh-textarea {
+  width: 100%; border: 1.5px solid var(--stone); border-radius: 10px;
+  padding: 0.8rem 0.9rem; font-family: var(--sans); font-size: 0.95rem;
+  line-height: 1.65; color: var(--ink); background: #fff;
+  resize: none; box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+html.dark .sh-textarea { background: #162030; border-color: rgba(255,255,255,0.1); color: #fff; }
+.sh-textarea:focus { outline: none; border-color: var(--sky); box-shadow: 0 0 0 3px rgba(74,158,221,0.15); }
+.sh-textarea::placeholder { color: var(--muted); }
+.sh-footer { display: flex; align-items: center; gap: 0.75rem; padding-top: 1.25rem; }
+.sh-cancel {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--slate); background: none; border: none; cursor: pointer;
+  padding: 0.85rem 1rem; border-radius: 999px; white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+.sh-cancel:hover { color: var(--ink); background: rgba(0,0,0,0.05); }
+html.dark .sh-cancel { color: rgba(255,255,255,0.4); }
+html.dark .sh-cancel:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.sh-send {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  background: var(--sky); color: #fff; border: none; border-radius: 999px;
+  padding: 0.85rem 1.5rem; font-family: var(--mono); font-size: 0.75rem;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.sh-send svg { width: 0.9rem; height: 0.9rem; }
+.sh-send:hover { background: var(--sky-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,158,221,0.35); }
+.sh-send:active { transform: translateY(0); box-shadow: none; }
+
+@media (min-width: 641px) {
+  #sayHelloModal { align-items: center; }
+  #shSheet {
+    border-radius: 16px;
+    max-width: 440px;
+    transform: scale(0.94);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.22s ease;
+  }
+  #sayHelloModal.sh-open #shSheet { transform: scale(1); opacity: 1; }
+  .sh-handle { display: none; }
+  .sh-title { font-size: 1.1rem; }
+  .sh-subtitle { font-size: 0.65rem; }
+  .sh-footer { justify-content: flex-end; }
+  .sh-send { flex: none; padding: 0.6rem 1.2rem; font-size: 0.7rem; }
+  .sh-cancel { padding: 0.6rem 0.75rem; }
+}
 
 /* ── FOOTER ── */
 footer {

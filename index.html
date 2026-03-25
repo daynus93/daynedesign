@@ -1900,6 +1900,50 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   <div class="skill-detail-links" id="skillLinks"></div>
 </div>
 
+<div id="sayHelloModal" aria-modal="true" role="dialog" aria-label="Say hello" style="display:none">
+  <div id="shBackdrop"></div>
+  <div id="shSheet">
+    <div class="sh-handle"></div>
+    <div class="sh-header">
+      <div>
+        <div class="sh-title">Say hello</div>
+        <div class="sh-subtitle">Drop me a line</div>
+      </div>
+      <button class="sh-close" id="shClose" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+    <div class="sh-body">
+      <label class="sh-label" for="shFrom">From</label>
+      <input id="shFrom" class="sh-input" type="email" placeholder="your@email.com" autocomplete="email">
+      <label class="sh-label" for="shReason">What's on your mind?</label>
+      <div class="sh-select-wrap">
+        <select id="shReason" class="sh-select">
+          <option value="hi">Just saying hi 👋</option>
+          <option value="hire">I want to hire you 🎯</option>
+          <option value="project">I have a project for you 💡</option>
+          <option value="collab">Let's collaborate ✨</option>
+          <option value="system">I need a design system 🧱</option>
+          <option value="coffee">Let's grab coffee ☕</option>
+          <option value="feedback">I have some feedback 📝</option>
+          <option value="question">Quick question ❓</option>
+          <option value="wow">For the Horde 🔴</option>
+        </select>
+        <svg class="sh-select-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <label class="sh-label" for="shMessage">Message</label>
+      <textarea id="shMessage" class="sh-textarea" rows="6"></textarea>
+    </div>
+    <div class="sh-footer">
+      <button class="sh-cancel" id="shCancel">Cancel</button>
+      <button class="sh-send" id="shSend">
+        Send
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2L9 14l-2-5-5-2 12-5z"/><path d="M14 2L7 9"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* NAV */
 (function() {
@@ -2196,6 +2240,9 @@ window.addEventListener('DOMContentLoaded', function() {
   });
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768 && menu.classList.contains('open')) closeMenu();
   });
 
   if (mobileWorkBtn && mobileWorkSub) {
@@ -3378,5 +3425,80 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
 </div>
 
 
+<script>
+/* ── SAY HELLO MODAL ── */
+(function() {
+  var modal = document.getElementById('sayHelloModal');
+  if (!modal) return;
+  var backdrop = document.getElementById('shBackdrop');
+  var sheet    = document.getElementById('shSheet');
+  var closeBtn = document.getElementById('shClose');
+  var cancelBtn= document.getElementById('shCancel');
+  var sendBtn  = document.getElementById('shSend');
+  var reasonSel= document.getElementById('shReason');
+  var messageTa= document.getElementById('shMessage');
+  var fromInput= document.getElementById('shFrom');
+
+  var messages = {
+    hi:       'Hey Dayne,\n\nJust wanted to reach out and say hi — love what you\'ve built.',
+    hire:     'Hey Dayne,\n\nWe\'re looking for a product designer and your portfolio caught our eye. Would love to connect.',
+    project:  'Hey Dayne,\n\nI have a project I\'d love to chat about.\n\nHere\'s a quick overview:\n',
+    collab:   'Hey Dayne,\n\nI\'d love to explore a collaboration. Here\'s what I\'m thinking:\n',
+    system:   'Hey Dayne,\n\nWe\'re looking to build out a design system and think you\'d be a great fit to lead it.',
+    coffee:   'Hey Dayne,\n\nWould love to grab a virtual coffee and chat. Are you open to it?',
+    feedback: 'Hey Dayne,\n\nI checked out your portfolio and wanted to share some thoughts:\n',
+    question: 'Hey Dayne,\n\nQuick question for you:\n',
+    wow:      'Lok\'tar ogar, Dayne.\n\nThe Horde has need of a designer. Report to Orgrimmar at once.'
+  };
+  var subjects = {
+    hi: 'Just saying hi', hire: 'Design role', project: 'Project inquiry',
+    collab: 'Collaboration', system: 'Design system work',
+    coffee: 'Virtual coffee?', feedback: 'Portfolio feedback',
+    question: 'Quick question', wow: 'For the Horde'
+  };
+
+  messageTa.value = messages.hi;
+
+  function openModal() {
+    modal.style.display = 'flex';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        modal.classList.add('sh-open');
+        setTimeout(function() { messageTa.focus(); messageTa.setSelectionRange(messageTa.value.length, messageTa.value.length); }, 420);
+      });
+    });
+  }
+  function closeModal() {
+    modal.classList.remove('sh-open');
+    setTimeout(function() { modal.style.display = 'none'; }, 450);
+  }
+
+  reasonSel.addEventListener('change', function() {
+    messageTa.value = messages[reasonSel.value] || '';
+  });
+
+  document.querySelectorAll('a[href="mailto:dayne@dayne.design"]').forEach(function(a) {
+    a.addEventListener('click', function(e) { e.preventDefault(); openModal(); });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('sh-open')) closeModal();
+  });
+  sendBtn.addEventListener('click', function() {
+    var from = fromInput.value.trim();
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from);
+    fromInput.classList.toggle('sh-input-error', !valid);
+    if (!valid) { fromInput.focus(); return; }
+    var subject = encodeURIComponent((subjects[reasonSel.value] || 'Hello') + ' — ' + from);
+    var body    = encodeURIComponent(messageTa.value);
+    window.location.href = 'mailto:dayne@dayne.design?subject=' + subject + '&body=' + body;
+    setTimeout(closeModal, 200);
+  });
+  fromInput.addEventListener('input', function() { fromInput.classList.remove('sh-input-error'); });
+})();
+</script>
 </body>
 </html>
