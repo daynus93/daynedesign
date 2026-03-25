@@ -470,9 +470,9 @@ html.dark .related-card-title { color: #e8f0f7; }
   background: var(--ink); border-radius: 2px;
   transition: transform 0.3s, opacity 0.2s;
 }
-.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: #fff; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(-45deg); background: #fff; }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: #fff; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(45deg); background: #fff; }
 
 /* ── MOBILE MENU ── */
 #mobileMenu {
