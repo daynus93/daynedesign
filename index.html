@@ -3241,20 +3241,35 @@ document.querySelectorAll('.contact-link').forEach(link => {
 })();
 
 // Mobile ghost watermark — show on scroll-into-view (touch only)
-if (window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
-  const ghostRows = document.querySelectorAll('.exp-row');
-  const ghostObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        ghostRows.forEach(r => r.classList.remove('scroll-active'));
-        e.target.classList.add('scroll-active');
-      } else {
-        e.target.classList.remove('scroll-active');
-      }
+(function() {
+  var mq = window.matchMedia('(hover: none)');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('.exp-row'));
+  var raf;
+  function update() {
+    var vh = window.innerHeight;
+    var zoneTop = vh * 0.45;
+    var zoneBot = vh * 0.58;
+    var best = null, bestOverlap = 0;
+    rows.forEach(function(r) {
+      var rect = r.getBoundingClientRect();
+      var overlap = Math.max(0, Math.min(rect.bottom, zoneBot) - Math.max(rect.top, zoneTop));
+      if (overlap > bestOverlap) { bestOverlap = overlap; best = r; }
     });
-  }, { rootMargin: '-20% 0px -20% 0px', threshold: 0 });
-  ghostRows.forEach(r => ghostObs.observe(r));
-}
+    rows.forEach(function(r) { r.classList.toggle('scroll-active', r === best && bestOverlap > 0); });
+  }
+  function onScroll() { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }
+  function setup() {
+    if (mq.matches) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      update();
+    } else {
+      window.removeEventListener('scroll', onScroll);
+      rows.forEach(function(r) { r.classList.remove('scroll-active'); });
+    }
+  }
+  setup();
+  mq.addEventListener('change', setup);
+})();
 
 // Drawer study "more" menu toggle
 document.querySelectorAll('.drawer-study-more-btn').forEach(btn => {
