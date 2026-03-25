@@ -3487,7 +3487,7 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   }
   function closeModal() {
     modal.classList.remove('sh-open');
-    setTimeout(function() { modal.style.display = 'none'; }, 450);
+    setTimeout(function() { modal.style.display = 'none'; resetModal(); }, 450);
   }
 
   function updateCharCount() {
@@ -3624,6 +3624,20 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
     });
   });
   function resetSendBtn() { sendBtn._errClicks = 0; sendBtn.innerHTML = sendBtnHTML; }
+  function resetModal() {
+    fromInput.value = '';
+    fromInput.classList.remove('sh-input-error');
+    if (fromError) fromError.textContent = '';
+    reasonSel.value = 'hi';
+    messageTa.value = messages.hi;
+    messageTa.classList.remove('sh-input-error');
+    if (msgError) msgError.textContent = '';
+    updateCharCount();
+    sendBtn.disabled = false;
+    sendBtn._errClicks = 0;
+    sendBtn._longtestClicks = 0;
+    sendBtn.innerHTML = sendBtnHTML;
+  }
   fromInput.addEventListener('input', function() { fromInput.classList.remove('sh-input-error'); if (fromError) fromError.textContent = ''; resetSendBtn(); });
 })();
 </script>
