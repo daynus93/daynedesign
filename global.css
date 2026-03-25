@@ -789,11 +789,11 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
 }
 html.dark #shSheet { background: #0f1e2e; box-shadow: 0 -8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06); }
 #sayHelloModal.sh-open #shSheet { transform: translateY(0); }
-.sh-handle { width: 36px; height: 4px; background: var(--stone); border-radius: 999px; margin: 0.85rem auto 0; }
+.sh-handle { width: 36px; height: 4px; background: var(--stone); border-radius: 999px; margin: 0 auto; padding: 12px 40px; background-clip: content-box; cursor: grab; }
 html.dark .sh-handle { background: rgba(255,255,255,0.12); }
 .sh-header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1.25rem 0 1rem;
+  padding: 0.25rem 0 1rem;
 }
 .sh-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
 html.dark .sh-title { color: #fff; }
