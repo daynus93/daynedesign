@@ -2215,13 +2215,16 @@ window.addEventListener('DOMContentLoaded', function() {
   var nav = document.getElementById('mainNav');
   if (!btn || !menu) return;
 
+  var _menuScrollY = 0;
   function preventMenuScroll(e) { e.preventDefault(); }
   function openMenu() {
+    _menuScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + _menuScrollY + 'px';
+    document.body.style.width = '100%';
     menu.classList.add('open');
     btn.classList.add('open');
     nav.classList.add('menu-open');
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
     menu.addEventListener('touchmove', preventMenuScroll, { passive: false });
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
   }
@@ -2233,8 +2236,10 @@ window.addEventListener('DOMContentLoaded', function() {
     menu.classList.remove('open');
     btn.classList.remove('open');
     nav.classList.remove('menu-open');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, _menuScrollY);
     menu.removeEventListener('touchmove', preventMenuScroll);
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'none';
     if (mobileWorkSub) { mobileWorkSub.classList.remove('open'); }
@@ -3479,9 +3484,12 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   };
 
   messageTa.value = messages.hi;
+  var _modalScrollY = 0;
   function openModal() {
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    _modalScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + _modalScrollY + 'px';
+    document.body.style.width = '100%';
     modal.style.display = 'flex';
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
@@ -3492,8 +3500,10 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   }
   function closeModal() {
     modal.classList.remove('sh-open');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, _modalScrollY);
     setTimeout(function() { modal.style.display = 'none'; resetModal(); }, 450);
   }
 
