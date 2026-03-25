@@ -2304,9 +2304,9 @@ window.addEventListener('DOMContentLoaded', function() {
     if (href.charAt(0) === '#' && href.length > 1) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        closeMenu();
         var target = document.querySelector(href);
-        if (target) requestAnimationFrame(function() { target.scrollIntoView({ behavior: 'smooth' }); });
+        if (target) _menuScrollY = Math.round(target.getBoundingClientRect().top);
+        closeMenu();
       });
     } else {
       link.addEventListener('click', closeMenu);
