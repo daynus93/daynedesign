@@ -30,9 +30,7 @@
         if (item.desktopOnly && isMobile) return;
         var btn = document.createElement('button');
         btn.textContent = item.label;
-        btn.style.cssText = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.7);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
-        btn.onmouseenter = function() { btn.style.background = 'rgba(74,158,221,0.12)'; btn.style.color = 'rgba(255,255,255,0.9)'; };
-        btn.onmouseleave = function() { btn.style.background = 'none'; btn.style.color = 'rgba(255,255,255,0.7)'; };
+        btn.className = 'fmenu-btn';
         btn.onclick = function() { closeYearMenu(); item.action(); };
         menu.appendChild(btn);
       });
@@ -291,15 +289,7 @@
     { label: 'Moran, WY',         miles: 901  },
   ];
 
-  var btnStyle = 'display:block;width:100%;text-align:left;background:none;border:none;color:rgba(255,255,255,0.7);font-family:"DM Mono",monospace;font-size:0.65rem;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background 0.15s,color 0.15s;';
   var rowStyle = 'display:flex;justify-content:space-between;align-items:center;padding:0.35rem 0.75rem;gap:1.5rem;';
-  var labelStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.7);white-space:nowrap;';
-  var miStyle = 'font-size:0.78rem;color:rgba(255,255,255,0.45);font-family:\'DM Mono\',monospace;white-space:nowrap;';
-
-  function addHover(el) {
-    el.onmouseenter = function() { el.style.background = 'rgba(74,158,221,0.12)'; el.style.color = 'rgba(255,255,255,0.9)'; };
-    el.onmouseleave = function() { el.style.background = 'none'; el.style.color = 'rgba(255,255,255,0.7)'; };
-  }
 
   function closeMenu() { menu.style.display = 'none'; }
   window.closeMedfordMenu = closeMenu;
@@ -352,38 +342,38 @@
     header.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:0.4rem 0.75rem 0.2rem;gap:1rem;';
 
     var title = document.createElement('span');
-    title.style.cssText = 'font-size:0.65rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.35);letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap;';
+    title.className = 'fmenu-section-title';
     title.textContent = 'Driving distance to Medford, OR';
 
     var toggleWrap = document.createElement('div');
-    toggleWrap.style.cssText = 'display:flex;align-items:center;gap:0.35rem;cursor:pointer;flex-shrink:0;background:rgba(255,255,255,0.06);border-radius:100px;padding:0.2rem 0.45rem;';
+    toggleWrap.className = 'fmenu-toggle-wrap';
 
     var miLbl = document.createElement('span');
-    miLbl.style.cssText = 'font-size:0.6rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.55);text-transform:none;transition:color 0.2s;';
+    miLbl.className = 'fmenu-toggle-lbl';
     miLbl.textContent = 'mi';
 
     var track = document.createElement('div');
-    track.style.cssText = 'width:28px;height:16px;border-radius:100px;background:rgba(255,255,255,0.2);position:relative;transition:background 0.25s;flex-shrink:0;';
+    track.className = 'fmenu-track';
 
     var thumb = document.createElement('div');
     thumb.style.cssText = 'width:12px;height:12px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:transform 0.25s;';
     track.appendChild(thumb);
 
     var kmLbl = document.createElement('span');
-    kmLbl.style.cssText = 'font-size:0.6rem;font-family:"DM Mono",monospace;color:rgba(255,255,255,0.25);text-transform:none;transition:color 0.2s;';
+    kmLbl.className = 'fmenu-toggle-lbl dim';
     kmLbl.textContent = 'km';
 
     function updateToggleUI() {
       if (useKm) {
         track.style.background = '#4a9edd';
         thumb.style.transform = 'translateX(12px)';
-        miLbl.style.color = 'rgba(255,255,255,0.25)';
-        kmLbl.style.color = 'rgba(255,255,255,0.55)';
+        miLbl.classList.add('dim');
+        kmLbl.classList.remove('dim');
       } else {
-        track.style.background = 'rgba(255,255,255,0.2)';
+        track.style.background = '';
         thumb.style.transform = 'translateX(0)';
-        miLbl.style.color = 'rgba(255,255,255,0.55)';
-        kmLbl.style.color = 'rgba(255,255,255,0.25)';
+        miLbl.classList.remove('dim');
+        kmLbl.classList.add('dim');
       }
     }
 
@@ -406,10 +396,10 @@
       var row = document.createElement('div');
       row.style.cssText = rowStyle;
       var lbl = document.createElement('span');
-      lbl.style.cssText = labelStyle;
+      lbl.className = 'fmenu-row-label';
       lbl.textContent = c.label;
       var val = document.createElement('span');
-      val.style.cssText = miStyle;
+      val.className = 'fmenu-row-value';
       val.textContent = fmt(c.miles);
       row.appendChild(lbl);
       row.appendChild(val);
@@ -420,10 +410,10 @@
     var userRow = document.createElement('div');
     userRow.style.cssText = rowStyle;
     var userLabel = document.createElement('span');
-    userLabel.style.cssText = labelStyle;
+    userLabel.className = 'fmenu-row-label';
     userLabel.textContent = 'You';
     var userVal = document.createElement('span');
-    userVal.style.cssText = miStyle;
+    userVal.className = 'fmenu-row-value';
     userVal.textContent = 'locating\u2026';
     userRow.appendChild(userLabel);
     userRow.appendChild(userVal);
@@ -455,15 +445,14 @@
     directions.href = 'https://maps.app.goo.gl/c1PoGoBUCVr2QkoL8';
     directions.target = '_blank';
     directions.rel = 'noopener noreferrer';
-    directions.style.cssText = btnStyle + 'text-decoration:none;display:block;text-transform:none;';
+    directions.className = 'fmenu-btn';
+    directions.style.textTransform = 'none';
     directions.textContent = '🗺️ Directions please!';
-    addHover(directions);
     menu.appendChild(directions);
 
     var howFar = document.createElement('button');
-    howFar.style.cssText = btnStyle;
+    howFar.className = 'fmenu-btn';
     howFar.textContent = '📏 How far away is Medford?';
-    addHover(howFar);
     howFar.onclick = function(e) {
       e.stopPropagation();
       buildDistanceView();

@@ -568,25 +568,29 @@ window.addEventListener('load', function() {
 .drawer-study-more-btn span { display: block; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
 .drawer-study-more-menu {
   position: absolute; bottom: calc(100% + 8px); right: 0;
-  background: #162030; border: 1px solid var(--stone);
+  background: #fff; border: 1px solid var(--stone);
   border-radius: var(--radius-card); padding: 0.5rem; min-width: 210px;
   box-shadow: 0 8px 32px rgba(28,43,58,0.18);
   opacity: 0; transform: translateY(5px); pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease; z-index: 200;
 }
+html.dark .drawer-study-more-menu { background: #162030; }
 .drawer-study-more-menu.open { opacity: 1; transform: none; pointer-events: auto; }
 .drawer-study-more-link {
   display: flex; align-items: center; gap: 0.55rem;
   padding: 0.5rem 0.75rem; border-radius: 999px;
-  text-decoration: none; color: rgba(255,255,255,0.7);
+  text-decoration: none; color: var(--muted);
   font-family: var(--mono); font-size: var(--font-label); letter-spacing: 0.06em; text-transform: uppercase;
   transition: background 0.15s, color 0.15s; white-space: nowrap;
 }
-.drawer-study-more-link:hover { background: rgba(74,158,221,0.12); color: rgba(255,255,255,0.9); }
+html.dark .drawer-study-more-link { color: rgba(255,255,255,0.7); }
+.drawer-study-more-link:hover { background: var(--sky-lt); color: var(--sky-mid); }
+html.dark .drawer-study-more-link:hover { background: rgba(74,158,221,0.12); color: rgba(255,255,255,0.9); }
 .drawer-study-more-thumb {
   width: 30px; height: 22px; border-radius: 4px; overflow: hidden; flex-shrink: 0; position: relative;
-  background: rgba(255,255,255,0.07);
+  background: var(--stone);
 }
+html.dark .drawer-study-more-thumb { background: rgba(255,255,255,0.07); }
 .drawer-study-more-thumb .related-card-bg { border-radius: 4px; opacity: 0.7; }
 
 /* ── SKILLS ── */

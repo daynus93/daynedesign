@@ -259,6 +259,40 @@ html.dark .nav-work-preview { background-color: rgba(255,255,255,0.06); }
 }
 .nav-work-all:hover { background: var(--sky-lt); }
 
+/* ── FOOTER POPUP MENUS ── */
+#yearMenu, #medfordMenu {
+  background: #fff !important;
+  border-color: rgba(28,43,58,0.1) !important;
+}
+html.dark #yearMenu, html.dark #medfordMenu {
+  background: #162030 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.fmenu-btn {
+  display: block; width: 100%; text-align: left; background: none; border: none;
+  color: var(--muted); font-family: var(--mono); font-size: var(--font-label);
+  letter-spacing: 0.06em; text-transform: uppercase; padding: 0.5rem 0.75rem;
+  border-radius: 999px; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s; text-decoration: none;
+}
+.fmenu-btn:hover { background: var(--sky-lt); color: var(--sky-mid); }
+html.dark .fmenu-btn { color: rgba(255,255,255,0.7); }
+html.dark .fmenu-btn:hover { background: rgba(74,158,221,0.12); color: rgba(255,255,255,0.9); }
+.fmenu-row-label { font-size: 0.78rem; color: var(--ink); white-space: nowrap; }
+html.dark .fmenu-row-label { color: rgba(255,255,255,0.7); }
+.fmenu-row-value { font-size: 0.78rem; color: var(--slate); font-family: var(--mono); white-space: nowrap; }
+html.dark .fmenu-row-value { color: rgba(255,255,255,0.45); }
+.fmenu-section-title { font-size: 0.65rem; font-family: var(--mono); color: rgba(28,43,58,0.4); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+html.dark .fmenu-section-title { color: rgba(255,255,255,0.35); }
+.fmenu-toggle-wrap { display: flex; align-items: center; gap: 0.35rem; cursor: pointer; flex-shrink: 0; background: rgba(28,43,58,0.06); border-radius: 100px; padding: 0.2rem 0.45rem; }
+html.dark .fmenu-toggle-wrap { background: rgba(255,255,255,0.06); }
+.fmenu-toggle-lbl { font-size: 0.6rem; font-family: var(--mono); text-transform: none; transition: color 0.2s; color: rgba(28,43,58,0.45); }
+html.dark .fmenu-toggle-lbl { color: rgba(255,255,255,0.55); }
+.fmenu-toggle-lbl.dim { color: rgba(28,43,58,0.2); }
+html.dark .fmenu-toggle-lbl.dim { color: rgba(255,255,255,0.25); }
+.fmenu-track { width: 28px; height: 16px; border-radius: 100px; background: rgba(28,43,58,0.15); position: relative; transition: background 0.25s; flex-shrink: 0; }
+html.dark .fmenu-track { background: rgba(255,255,255,0.2); }
+
 /* ── RELATED WORK SECTION ── */
 .related-work { padding: 3rem 5rem; border-top: 1px solid var(--stone); }
 .related-label { font-family: var(--mono); font-size: var(--font-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
