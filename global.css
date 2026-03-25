@@ -449,7 +449,7 @@ html.dark .related-card-title { color: #e8f0f7; }
   font-family: var(--serif); font-size: 3rem; font-weight: 900;
   color: var(--ink); text-decoration: none; line-height: 1.2;
 }
-.mobile-link:hover { color: var(--sky); }
+@media (hover: hover) { .mobile-link:hover { color: var(--sky); } }
 html.dark .mobile-link { color: #fff; }
 .mobile-link-cta {
   font-family: var(--mono); font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em;
@@ -655,7 +655,7 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
   transition: background 0.15s, color 0.15s;
 }
 .mmenu-see-all svg { width: 0.85rem; height: 0.85rem; opacity: 0.7; }
-.mmenu-see-all:hover, .mmenu-see-all:active { background: var(--sky); color: #fff; }
+@media (hover: hover) { .mmenu-see-all:hover { background: var(--sky); color: #fff; } }
 
 /* CTA row */
 
