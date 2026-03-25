@@ -3690,10 +3690,12 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
       sheet.style.transform = '';
     }
   }
-  if (handle) {
-    handle.addEventListener('touchstart', onDragStart, { passive: true });
-    handle.addEventListener('mousedown', onDragStart);
-  }
+  var shHeader = sheet && sheet.querySelector('.sh-header');
+  [handle, shHeader].forEach(function(el) {
+    if (!el) return;
+    el.addEventListener('touchstart', onDragStart, { passive: true });
+    el.addEventListener('mousedown', onDragStart);
+  });
   window.addEventListener('touchmove', onDragMove, { passive: false });
   window.addEventListener('touchend', onDragEnd);
   window.addEventListener('mousemove', onDragMove);
