@@ -550,7 +550,7 @@ html.dark .mobile-work-sub-link:hover { color: #fff; }
   padding-bottom: 2.5rem;
 }
 /* Reset old type styles scoped to v2 */
-.mmenu-inner .mobile-link:not(.mmenu-see-all):not(.mmenu-project-card):not(.mcard-see-all) { font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; color: inherit; }
+.mmenu-inner .mobile-link:not(.mmenu-see-all):not(.mmenu-project-card):not(.mcard-see-all):not(.mcard-item) { font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; color: inherit; }
 .mmenu-inner .mobile-work-btn { font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; color: inherit; background: none; border: none; cursor: pointer; position: static; }
 .mmenu-inner .mobile-work-chevron { display: none; }
 .mmenu-inner .mobile-work-sub { align-items: stretch !important; gap: 0 !important; padding-top: 0 !important; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
