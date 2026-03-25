@@ -2418,9 +2418,12 @@ function toggleRow(id) {
     row.classList.add('open');
     const btn = row.querySelector('.exp-row-header');
     if (btn) btn.setAttribute('aria-expanded', 'true');
-    // On mobile: scroll row into view only if needed
+    // On mobile: nudge row into view only if clipped behind nav
     if (window.matchMedia('(max-width: 768px)').matches) {
-      row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(function() {
+        var top = row.getBoundingClientRect().top;
+        if (top < 72) window.scrollBy({ top: top - 80, behavior: 'smooth' });
+      }, 50);
     }
   }
   // Spotlight: mark roles container when any row is open
