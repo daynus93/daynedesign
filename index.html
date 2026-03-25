@@ -2242,6 +2242,7 @@ window.addEventListener('DOMContentLoaded', function() {
     menu.classList.contains('open') ? closeMenu() : openMenu();
   });
   menu.querySelectorAll('.mobile-link').forEach(function(link) {
+    if (link.getAttribute('href') && link.getAttribute('href').indexOf('mailto:') === 0) return;
     link.addEventListener('click', closeMenu);
   });
   document.addEventListener('keydown', function(e) {
@@ -3470,8 +3471,6 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   };
 
   messageTa.value = messages.hi;
-  var openedFromMenu = false;
-
   function openModal() {
     modal.style.display = 'flex';
     requestAnimationFrame(function() {
@@ -3483,24 +3482,7 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   }
   function closeModal() {
     modal.classList.remove('sh-open');
-    var shouldReopenMenu = openedFromMenu;
-    openedFromMenu = false;
-    setTimeout(function() {
-      modal.style.display = 'none';
-      if (shouldReopenMenu) {
-        var mobileMenu = document.getElementById('mobileMenu');
-        var hamburger = document.getElementById('navHamburger');
-        var mainNav = document.getElementById('mainNav');
-        if (mobileMenu && hamburger) {
-          mobileMenu.classList.add('open');
-          hamburger.classList.add('open');
-          if (mainNav) mainNav.classList.add('menu-open');
-          document.documentElement.style.overflow = 'hidden';
-          document.body.style.overflow = 'hidden';
-          var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
-        }
-      }
-    }, 450);
+    setTimeout(function() { modal.style.display = 'none'; }, 450);
   }
 
   function updateCharCount() {
@@ -3530,7 +3512,6 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   document.querySelectorAll('a[href="mailto:hello@dayne.design"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
-      if (a.closest('#mobileMenu')) openedFromMenu = true;
       openModal();
     });
   });
@@ -3544,7 +3525,7 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   var handle = sheet && sheet.querySelector('.sh-handle');
   var dragStart = null, dragY = 0;
   function onDragStart(e) {
-    if (window.innerWidth >= 500) return;
+    if (window.innerWidth >= 641) return;
     dragStart = e.touches ? e.touches[0].clientY : e.clientY;
     dragY = 0;
     sheet.style.transition = 'none';
