@@ -656,20 +656,8 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
 .mmenu-see-all:hover, .mmenu-see-all:active { background: var(--sky); color: #fff; }
 
 /* CTA row */
-.mmenu-cta {
-  margin: 1.25rem 1.75rem 0;
-  width: calc(100% - 3.5rem);
-  border-radius: 999px !important;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 52px;
-  border: 1.5px solid var(--sky) !important;
-  border-bottom: 1.5px solid var(--sky) !important;
-  color: var(--sky) !important;
-}
-.mmenu-cta .mmenu-label { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.mmenu-cta .mmenu-arrow { opacity: 0.7; }
-.mmenu-cta:hover, .mmenu-cta:active { background: var(--sky) !important; color: #fff !important; }
+.mmenu-cta { color: var(--sky); }
+.mmenu-cta .mmenu-arrow { color: var(--sky); opacity: 0.7; }
 
 /* ── SAY HELLO MODAL ── */
 #sayHelloModal {
