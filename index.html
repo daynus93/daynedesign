@@ -335,7 +335,6 @@ window.addEventListener('load', function() {
   transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
               border-radius 0.25s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              margin 0.25s cubic-bezier(0.4, 0, 0.2, 1),
               padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .exp-row:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -362,7 +361,6 @@ window.addEventListener('load', function() {
   box-shadow: 0 4px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(74,158,221,0.14);
   border-top-color: transparent;
   border-bottom-color: transparent;
-  margin: 0.5rem 0;
   padding: 0 1.25rem;
 }
 /* hide divider immediately after open card */
@@ -377,12 +375,10 @@ window.addEventListener('load', function() {
   gap: 1rem; align-items: center;
   cursor: pointer;
   width: 100%; background: none; border: none; text-align: left; color: inherit; font: inherit;
-  transition: padding-left 0.2s cubic-bezier(0, 0, 0.2, 1), padding-right 0.2s cubic-bezier(0, 0, 0.2, 1);
 }
 @media (hover: hover) {
-  .exp-row:not(.open):hover { background: rgba(74,158,221,0.06); border-radius: 8px; border-top-color: transparent; border-bottom-color: transparent; }
+  .exp-row:not(.open):hover { background: rgba(74,158,221,0.06); border-radius: 8px; border-top-color: transparent; border-bottom-color: transparent; padding-left: 1.25rem; padding-right: 1.25rem; }
   .exp-row:not(.open):hover + .exp-row { border-top-color: transparent; }
-  .exp-row:not(.open):hover .exp-row-header { padding-left: 0.75rem; padding-right: 0.75rem; }
   .exp-row:not(.open):hover .exp-toggle { background: var(--sky); border-color: var(--sky); color: white; }
   .exp-roles.has-open .exp-row:not(.open):hover { opacity: 1; }
   .exp-row.open .exp-row-header:hover .exp-toggle { background: white; border-color: white; color: var(--sky-mid); transform: rotate(-45deg) scale(1.1); }
