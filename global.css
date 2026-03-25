@@ -780,7 +780,7 @@ html.dark .sh-cancel:hover { color: #fff; background: rgba(255,255,255,0.08); }
   #sayHelloModal { align-items: center; }
   #shSheet {
     border-radius: 16px;
-    max-width: 440px;
+    max-width: 880px;
     transform: scale(0.94);
     opacity: 0;
     transition: transform 0.3s cubic-bezier(0.34, 1.1, 0.64, 1), opacity 0.22s ease;
