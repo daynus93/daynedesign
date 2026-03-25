@@ -1914,8 +1914,9 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
       </button>
     </div>
     <div class="sh-body">
-      <label class="sh-label" for="shFrom">From</label>
-      <input id="shFrom" class="sh-input" type="email" placeholder="your@email.com" autocomplete="email">
+      <label class="sh-label" for="shFrom">From <span class="sh-required">*</span></label>
+      <input id="shFrom" class="sh-input" type="email" placeholder="your@email.com" autocomplete="email" required>
+      <span id="shFromError" class="sh-field-error"></span>
       <label class="sh-label" for="shReason">What's on your mind?</label>
       <div class="sh-select-wrap">
         <select id="shReason" class="sh-select">
@@ -1928,11 +1929,16 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
           <option value="feedback">I have some feedback 📝</option>
           <option value="question">Quick question ❓</option>
           <option value="wow">For the Horde 🔴</option>
+          <option value="longtest">Long text example 📏</option>
         </select>
         <svg class="sh-select-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
       </div>
       <label class="sh-label" for="shMessage">Message</label>
       <textarea id="shMessage" class="sh-textarea" rows="6"></textarea>
+      <div class="sh-msg-meta">
+        <span id="shMessageError" class="sh-field-error"></span>
+        <span id="shCharCount" class="sh-char-count">0/500</span>
+      </div>
     </div>
     <div class="sh-footer">
       <button class="sh-cancel" id="shCancel">Cancel</button>
@@ -3435,9 +3441,14 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   var closeBtn = document.getElementById('shClose');
   var cancelBtn= document.getElementById('shCancel');
   var sendBtn  = document.getElementById('shSend');
+  var sendBtnHTML = sendBtn ? sendBtn.innerHTML : '';
   var reasonSel= document.getElementById('shReason');
   var messageTa= document.getElementById('shMessage');
-  var fromInput= document.getElementById('shFrom');
+  var fromInput  = document.getElementById('shFrom');
+  var fromError  = document.getElementById('shFromError');
+  var msgError   = document.getElementById('shMessageError');
+  var charCount  = document.getElementById('shCharCount');
+  var MAX_CHARS  = 500;
 
   var messages = {
     hi:       'Hey Dayne,\n\nJust wanted to reach out and say hi — love what you\'ve built.',
@@ -3448,13 +3459,14 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
     coffee:   'Hey Dayne,\n\nWould love to grab a virtual coffee and chat. Are you open to it?',
     feedback: 'Hey Dayne,\n\nI checked out your portfolio and wanted to share some thoughts:\n',
     question: 'Hey Dayne,\n\nQuick question for you:\n',
-    wow:      'Lok\'tar ogar, Dayne.\n\nThe Horde has need of a designer. Report to Orgrimmar at once.'
+    wow:      'Lok\'tar ogar, Dayne.\n\nThe Horde has need of a designer. Report to Orgrimmar at once.',
+    longtest: 'Hey Dayne,\n\nI came across your portfolio and wanted to reach out. The depth of thinking in your case studies is refreshing — it is rare to see process documented so clearly. The HRIS Sync work especially stood out to me. The way you navigated complexity while keeping the user experience clean shows real craft. I would love to connect and learn more about your approach to product design. Your very close attention to small details and edge cases is exactly what our team is looking for right now.'
   };
   var subjects = {
     hi: 'Just saying hi', hire: 'Design role', project: 'Project inquiry',
     collab: 'Collaboration', system: 'Design system work',
     coffee: 'Virtual coffee?', feedback: 'Portfolio feedback',
-    question: 'Quick question', wow: 'For the Horde'
+    question: 'Quick question', wow: 'For the Horde', longtest: 'Long text example'
   };
 
   messageTa.value = messages.hi;
@@ -3491,8 +3503,28 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
     }, 450);
   }
 
+  function updateCharCount() {
+    var len = messageTa.value.length;
+    if (charCount) {
+      var nearLimit = len >= MAX_CHARS * 0.9;
+      charCount.textContent = len + '/' + MAX_CHARS;
+      charCount.classList.toggle('sh-char-visible', nearLimit);
+      charCount.classList.toggle('sh-char-over', len > MAX_CHARS);
+    }
+  }
+  messageTa.addEventListener('input', function() {
+    updateCharCount();
+    messageTa.classList.remove('sh-input-error');
+    if (msgError) msgError.textContent = '';
+    resetSendBtn();
+  });
+  updateCharCount();
+
   reasonSel.addEventListener('change', function() {
     messageTa.value = messages[reasonSel.value] || '';
+    updateCharCount();
+    sendBtn._longtestClicks = 0;
+    sendBtn.innerHTML = sendBtnHTML;
   });
 
   document.querySelectorAll('a[href="mailto:hello@dayne.design"]').forEach(function(a) {
@@ -3506,17 +3538,82 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
   closeBtn.addEventListener('click', closeModal);
   cancelBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
+
+  // Drag-to-dismiss on mobile (handle + sheet header)
+  var sheet = document.getElementById('shSheet');
+  var handle = sheet && sheet.querySelector('.sh-handle');
+  var dragStart = null, dragY = 0;
+  function onDragStart(e) {
+    if (window.innerWidth >= 500) return;
+    dragStart = e.touches ? e.touches[0].clientY : e.clientY;
+    dragY = 0;
+    sheet.style.transition = 'none';
+  }
+  function onDragMove(e) {
+    if (dragStart === null) return;
+    var y = (e.touches ? e.touches[0].clientY : e.clientY) - dragStart;
+    dragY = Math.max(0, y);
+    sheet.style.transform = 'translateY(' + dragY + 'px)';
+  }
+  function onDragEnd() {
+    if (dragStart === null) return;
+    dragStart = null;
+    sheet.style.transition = '';
+    if (dragY > 120) {
+      sheet.style.transform = '';
+      closeModal();
+    } else {
+      sheet.style.transform = '';
+    }
+  }
+  if (handle) {
+    handle.addEventListener('touchstart', onDragStart, { passive: true });
+    handle.addEventListener('mousedown', onDragStart);
+  }
+  window.addEventListener('touchmove', onDragMove, { passive: true });
+  window.addEventListener('touchend', onDragEnd);
+  window.addEventListener('mousemove', onDragMove);
+  window.addEventListener('mouseup', onDragEnd);
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && modal.classList.contains('sh-open')) closeModal();
   });
   sendBtn.addEventListener('click', function() {
+    if (reasonSel.value === 'longtest') {
+      sendBtn._longtestClicks = (sendBtn._longtestClicks || 0) + 1;
+      if (sendBtn._longtestClicks >= 3) {
+        sendBtn.innerHTML = 'that one doesn\'t work, stop. 🤚';
+        clearTimeout(sendBtn._longtestTimer);
+        sendBtn._longtestTimer = setTimeout(function() {
+          sendBtn.innerHTML = sendBtnHTML;
+          sendBtn._longtestClicks = 0;
+        }, 2500);
+      }
+    }
     var from = fromInput.value.trim();
     var valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(from);
     fromInput.classList.toggle('sh-input-error', !valid);
-    if (!valid) { fromInput.focus(); return; }
+    if (fromError) fromError.textContent = !valid ? (from === '' ? 'Email is required.' : 'Please enter a valid email.') : '';
+    var msg = messageTa.value.trim();
+    var msgEmpty = msg === '';
+    var msgOver = messageTa.value.length > MAX_CHARS;
+    messageTa.classList.toggle('sh-input-error', msgEmpty || msgOver);
+    if (msgError) msgError.textContent = msgEmpty ? 'Please enter a message.' : msgOver ? 'Message is too long.' : '';
+    if (reasonSel.value === 'longtest') return;
+    sendBtn._longtestClicks = 0;
+    if (!valid || msgEmpty || msgOver) {
+      sendBtn._errClicks = (sendBtn._errClicks || 0) + 1;
+      if (sendBtn._errClicks >= 2) {
+        sendBtn.innerHTML = 'Fix your errors <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.5" fill="currentColor" stroke="none"/></svg>';
+        clearTimeout(sendBtn._errTimer);
+        sendBtn._errTimer = setTimeout(resetSendBtn, 3000);
+      }
+      if (!valid) { fromInput.focus(); } else { messageTa.focus(); }
+      return;
+    }
+    sendBtn._errClicks = 0;
     var subject = (subjects[reasonSel.value] || 'Hello') + ' — ' + from;
     sendBtn.disabled = true;
-    sendBtn.textContent = 'Sending…';
+    sendBtn.innerHTML = 'Sending…';
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -3529,18 +3626,19 @@ document.querySelectorAll('.exp-logo-open-wrap').forEach(wrap => {
       })
     }).then(function(r) { return r.json(); }).then(function(data) {
       if (data.success) {
-        sendBtn.textContent = 'Sent!';
+        sendBtn.innerHTML = 'Sent!';
         setTimeout(closeModal, 800);
       } else {
         sendBtn.disabled = false;
-        sendBtn.textContent = 'Send';
+        sendBtn.innerHTML = sendBtnHTML;
       }
     }).catch(function() {
       sendBtn.disabled = false;
-      sendBtn.textContent = 'Send';
+      sendBtn.innerHTML = sendBtnHTML;
     });
   });
-  fromInput.addEventListener('input', function() { fromInput.classList.remove('sh-input-error'); });
+  function resetSendBtn() { sendBtn._errClicks = 0; sendBtn.innerHTML = sendBtnHTML; }
+  fromInput.addEventListener('input', function() { fromInput.classList.remove('sh-input-error'); if (fromError) fromError.textContent = ''; resetSendBtn(); });
 })();
 </script>
 </body>
