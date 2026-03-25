@@ -132,14 +132,14 @@ window.addEventListener('load', function() {
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-family: var(--mono); font-size: var(--font-eyebrow); letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--sky); margin-bottom: 1.5rem;
-  opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  opacity: 0; animation: fadeUp 0.7s 0.3s forwards;
 }
 .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); flex-shrink: 0; }
 .hero-title {
   font-family: var(--serif); font-size: clamp(3.5rem, 6vw, 6.5rem);
   font-weight: 900; line-height: 1.0; letter-spacing: -0.03em; color: var(--ink);
   margin-bottom: 1.8rem;
-  opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
 }
 .hero-title-em { color: var(--sky); font-style: italic; }
 .rotate-wrap { display: block; overflow: visible; }
@@ -147,9 +147,9 @@ window.addEventListener('load', function() {
 
 .hero-desc {
   font-size: 1.1rem; color: var(--muted); max-width: 580px; line-height: 1.78; margin-bottom: 2.5rem;
-  opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  opacity: 0; animation: fadeUp 0.7s 0.7s forwards;
 }
-.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.8s forwards; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.9s forwards; }
 
 /* large decorative mark — top right */
 .hero-deco {
@@ -788,6 +788,7 @@ html.dark {
 }
 html.dark .hero-badge,
 html.dark .exp-badge { color: var(--sky); }
+html.dark .hero-deco-svg { fill: rgba(74,158,221,0.18); }
 html.dark .study-card-info { border-top-color: rgba(255,255,255,0.08); }
 html.dark footer { background: var(--section-dark); }
 
@@ -2008,12 +2009,6 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   let idleT = 0, blend = 0, hovering = false;
 
   let maskRadius = 0, curMaskRadius = 0;
-  let decoRevealed = false;
-
-  // Auto-reveal deco after hero entrance animations complete
-  setTimeout(function() {
-    if (deco) { maskRadius = 460; decoRevealed = true; }
-  }, 1400);
 
   function tick() {
     blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.004 : 0.003);
@@ -2029,7 +2024,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     vx  += (tx - cx)  * 0.0008 - vx  * 0.91; cx  += vx;   // main — heaviest
     vy  += (ty - cy)  * 0.0008 - vy  * 0.91; cy  += vy;
     wx += (cx - wx) * 0.022; wy += (cy - wy) * 0.022;      // wake trails main
-    dmx += (tx - dmx) * 0.06; dmy += (ty - dmy) * 0.06;   // mask leads the orb
+    dmx += (mouseX - dmx) * 0.03; dmy += (mouseY - dmy) * 0.03;  // mask lags behind mouse
 
     v1x += (tx - c1x) * 0.003 - v1x * 0.86; c1x += v1x;   // s1 — medium-light
     v1y += (ty - c1y) * 0.003 - v1y * 0.86; c1y += v1y;
@@ -2062,8 +2057,9 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
       // Convert orb % position (relative to hero) into px coords relative to deco
       const orbPxX = (dmx / 100) * hr.width  + hr.left - dr.left;
       const orbPxY = (dmy / 100) * hr.height + hr.top  - dr.top;
-      curMaskRadius += (maskRadius - curMaskRadius) * 0.08;
-      const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${orbPxX.toFixed(1)}px ${orbPxY.toFixed(1)}px, black 0%, black 10%, transparent 82%)`;
+      const maskLerp = maskRadius > curMaskRadius ? 0.02 : 0.008;
+      curMaskRadius += (maskRadius - curMaskRadius) * maskLerp;
+      const mask = `radial-gradient(circle ${curMaskRadius.toFixed(1)}px at ${orbPxX.toFixed(1)}px ${orbPxY.toFixed(1)}px, black 0%, transparent 75%)`;
       deco.style.webkitMaskImage = mask;
       deco.style.maskImage       = mask;
     }
@@ -2075,8 +2071,8 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
       `radial-gradient(ellipse 20% 22% at ${s1x.toFixed(2)}% ${s1y.toFixed(2)}%, rgba(56,195,210,${(0.18*satScale).toFixed(3)}) 0%, transparent 100%)`,
       // s2 — deep blue
       `radial-gradient(ellipse 14% 16% at ${s2x.toFixed(2)}% ${s2y.toFixed(2)}%, rgba(52,120,200,${(0.07*satScale).toFixed(3)}) 0%, transparent 100%)`,
-      // s3 — lavender
-      `radial-gradient(ellipse 13% 15% at ${s3x.toFixed(2)}% ${s3y.toFixed(2)}%, rgba(130,90,220,${(0.13*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s3 — emerald
+      `radial-gradient(ellipse 13% 15% at ${s3x.toFixed(2)}% ${s3y.toFixed(2)}%, rgba(45,210,140,${(0.15*satScale).toFixed(3)}) 0%, transparent 100%)`,
       // s4 — warm cyan
       `radial-gradient(ellipse 9% 11% at ${s4x.toFixed(2)}% ${s4y.toFixed(2)}%, rgba(56,200,185,${(0.09*satScale).toFixed(3)}) 0%, transparent 100%)`,
       // wake
@@ -2097,7 +2093,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   });
   hero.addEventListener('mouseleave', () => {
     hovering = false;
-    if (!decoRevealed) maskRadius = 0;
+    maskRadius = 0;
   });
 })();
 
