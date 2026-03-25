@@ -833,14 +833,17 @@ html.dark footer { background: var(--section-dark); }
     <li class="nav-work-wrap">
       <button class="nav-work-btn" id="workDropBtn" aria-expanded="false">Work <span class="nav-work-chevron">▾</span></button>
       <div class="nav-work-panel" id="workDropPanel">
-        <a class="nav-work-item" href="hris-sync.html">HRIS Sync</a>
-        <a class="nav-work-item" href="lessen-pro.html">Lessen Pro</a>
-        <a class="nav-work-item" href="veho.html">Exception Handling</a>
-        <a class="nav-work-item" href="software-tools.html">Software &amp; Tools</a>
-        <a class="nav-work-item" href="rivet.html">Rivet</a>
-        <a class="nav-work-item" href="strongmind.html">StrongMind App</a>
-        <div class="nav-work-divider"></div>
-        <a class="nav-work-all" href="#studies" id="workSeeAll">Go to case studies</a>
+        <div class="nav-work-list">
+          <a class="nav-work-item" href="hris-sync.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2026/02/hris-hero-lg.png?w=400&ssl=1">HRIS Sync</a>
+          <a class="nav-work-item" href="lessen-pro.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/01/pro-hero.png?w=400&ssl=1">Lessen Pro</a>
+          <a class="nav-work-item" href="veho.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2024/02/showcase.reg_.png?w=400&ssl=1">Exception Handling</a>
+          <a class="nav-work-item" href="software-tools.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2026/02/software-and-tools-hero-1.png?w=400&ssl=1">Software &amp; Tools</a>
+          <a class="nav-work-item" href="rivet.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/02/screenshot-2023-02-09-at-6.29.15-pm.png?w=400&ssl=1">Rivet</a>
+          <a class="nav-work-item" href="strongmind.html" data-img="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2020/10/splash.png?w=400&ssl=1">StrongMind App</a>
+          <div class="nav-work-divider"></div>
+          <a class="nav-work-all" href="#studies" id="workSeeAll">Go to case studies</a>
+        </div>
+        <div class="nav-work-preview" id="workPreview" aria-hidden="true"></div>
       </div>
     </li>
     <li><a href="#experience">Experience</a></li>
@@ -2318,9 +2321,42 @@ window.addEventListener('DOMContentLoaded', function() {
     e.stopPropagation();
     dropPanel.classList.contains('open') ? closeDrop() : openDrop();
   });
+  dropBtn.addEventListener('mouseenter', openDrop);
+  dropPanel.addEventListener('mouseleave', closeDrop);
   document.addEventListener('click', function() { closeDrop(); });
   dropPanel.addEventListener('click', function(e) { e.stopPropagation(); });
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrop(); });
+
+  var preview = document.getElementById('workPreview');
+  if (preview) {
+    var badgeMap = {
+      'hris-sync.html':      '<span class="study-badge"><img width="14" height="14" src="assets/logos/trainual_logo.png" alt="">Trainual</span><span class="study-badge"><span class="badge-icon-circle" style="background:#4a9edd"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1.5" width="10" height="7" rx="1"/><path d="M4 11h4M6 8.5V11"/></svg></span>Web App</span>',
+      'lessen-pro.html':     '<span class="study-badge"><img width="14" height="14" src="assets/logos/lessen_logo.png" alt="">Lessen</span><span class="study-badge"><span class="badge-icon-circle" style="background:#8b5cf6"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="1" width="5" height="10" rx="1.5"/><path d="M5.5 9.5h1"/></svg></span>iOS &amp; Android</span>',
+      'veho.html':           '<span class="study-badge"><img width="14" height="14" src="assets/logos/veho_logo.png" alt="">Veho</span><span class="study-badge"><span class="badge-icon-circle" style="background:#8b5cf6"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="1" width="5" height="10" rx="1.5"/><path d="M5.5 9.5h1"/></svg></span>Android &amp; Web</span>',
+      'software-tools.html': '<span class="study-badge"><img width="14" height="14" src="assets/logos/trainual_logo.png" alt="">Trainual</span><span class="study-badge"><span class="badge-icon-circle" style="background:#4a9edd"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1.5" width="10" height="7" rx="1"/><path d="M4 11h4M6 8.5V11"/></svg></span>Web App</span>',
+      'rivet.html':          '<span class="study-badge"><img width="14" height="14" src="assets/logos/lessen_logo.png" alt="">Lessen</span><span class="study-badge"><span class="badge-icon-circle" style="background:#f97316"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="4" height="4" rx="0.75"/><rect x="7" y="1" width="4" height="4" rx="0.75"/><rect x="1" y="7" width="4" height="4" rx="0.75"/><rect x="7" y="7" width="4" height="4" rx="0.75"/></svg></span>Design System</span>',
+      'strongmind.html':     '<span class="study-badge"><img width="14" height="14" src="assets/logos/strongmind_logo.png" alt="">StrongMind</span><span class="study-badge"><span class="badge-icon-circle" style="background:#8b5cf6"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="1" width="5" height="10" rx="1.5"/><path d="M5.5 9.5h1"/></svg></span>iOS &amp; Android</span>'
+    };
+    // Badges container inside preview
+    var previewBadges = document.createElement('div');
+    previewBadges.className = 'study-card-badges';
+    preview.appendChild(previewBadges);
+    // Preload all images so hover is instant
+    dropPanel.querySelectorAll('.nav-work-item[data-img]').forEach(function(item) {
+      (new Image()).src = item.dataset.img;
+    });
+    dropPanel.querySelectorAll('.nav-work-item[data-img]').forEach(function(item) {
+      item.addEventListener('mouseenter', function() {
+        preview.style.backgroundImage = 'url(' + item.dataset.img + ')';
+        previewBadges.innerHTML = badgeMap[item.getAttribute('href')] || '';
+        preview.classList.add('active');
+      });
+    });
+    // Hide preview on "go to case studies" hover
+    var seeAllLink = dropPanel.querySelector('.nav-work-all');
+    if (seeAllLink) seeAllLink.addEventListener('mouseenter', function() { preview.classList.remove('active'); });
+    dropPanel.addEventListener('mouseleave', function() { preview.classList.remove('active'); });
+  }
 
   if (seeAll) {
     seeAll.addEventListener('click', function() {
