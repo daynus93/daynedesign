@@ -677,6 +677,16 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
   transition: background 0.15s;
 }
 .mcard:active { background: rgba(74,158,221,0.15); }
+@media (hover: hover) {
+  .mcard:hover { background: rgba(74,158,221,0.08); }
+  .mcard-item:hover { background: rgba(74,158,221,0.08); color: var(--sky); }
+  .mcard-item:hover svg { opacity: 0.9; }
+  .mcard-item:hover .mcard-arrow { opacity: 0.7; transform: translateX(3px); }
+  .mcard-proj:hover { opacity: 0.85; }
+  .mcard-see-all:hover { opacity: 1; background: rgba(74,158,221,0.18); }
+  html.dark .mcard:hover { background: rgba(74,158,221,0.12); }
+  html.dark .mcard-item:hover { background: rgba(74,158,221,0.12); }
+}
 
 /* Work card */
 .mcard-work { padding: 0.9rem; }
@@ -713,7 +723,7 @@ html.dark .mmenu-work-wrap { border-color: rgba(255,255,255,0.07); }
 }
 .mcard-item svg:first-child { width: 1.15rem; height: 1.15rem; opacity: 0.55; flex-shrink: 0; }
 .mcard-item-label { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; letter-spacing: -0.015em; flex: 1; text-align: left; }
-.mcard-arrow { width: 0.9rem; height: 0.9rem; opacity: 0.3; flex-shrink: 0; }
+.mcard-arrow { width: 0.9rem; height: 0.9rem; opacity: 0.3; flex-shrink: 0; transition: opacity 0.15s, transform 0.2s; }
 .mcard-item:active { background: rgba(74,158,221,0.15); color: var(--sky); }
 .mcard-item:active svg { opacity: 0.9; }
 
