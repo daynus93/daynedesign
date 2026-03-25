@@ -885,6 +885,12 @@ html.dark .sh-cancel:hover { color: #fff; background: rgba(255,255,255,0.08); }
 .sh-send:hover { background: var(--sky-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,158,221,0.35); }
 .sh-send:active { transform: translateY(0); box-shadow: none; }
 
+@media (max-width: 640px) {
+  .sh-input,
+  .sh-select,
+  .sh-textarea { font-size: 1rem; }
+}
+
 @media (min-width: 641px) {
   #sayHelloModal { align-items: center; }
   #shSheet {
