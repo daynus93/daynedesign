@@ -416,6 +416,8 @@ window.addEventListener('DOMContentLoaded', function() {
   btn.addEventListener('click', function() {
     menu.classList.contains('open') ? closeMenu() : openMenu();
   });
+  var logoLink = document.querySelector('.nav-logo');
+  if (logoLink) logoLink.addEventListener('click', function() { if (menu.classList.contains('open')) closeMenu(); });
   menu.querySelectorAll('.mobile-link').forEach(function(link) {
     link.addEventListener('click', closeMenu);
   });

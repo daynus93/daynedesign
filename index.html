@@ -2249,6 +2249,8 @@ window.addEventListener('DOMContentLoaded', function() {
   btn.addEventListener('click', function() {
     menu.classList.contains('open') ? closeMenu() : openMenu();
   });
+  var logoLink = document.querySelector('.nav-logo');
+  if (logoLink) logoLink.addEventListener('click', function() { if (menu.classList.contains('open')) closeMenu(); });
   menu.querySelectorAll('.mobile-link').forEach(function(link) {
     if (link.getAttribute('href') && link.getAttribute('href').indexOf('mailto:') === 0) return;
     link.addEventListener('click', closeMenu);
