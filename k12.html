@@ -407,8 +407,8 @@ window.addEventListener('DOMContentLoaded', function() {
     btn.classList.add('open');
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
   }
-  var mobileWorkBtn = document.getElementById('mobileWorkBtn');
-  var mobileWorkSub = document.getElementById('mobileWorkSub');
+  var mobileWorkBtn = document.getElementById('mcardWorkBtn');
+  var mobileWorkSub = document.getElementById('mcardWorkSub');
 
   function closeMenu() {
     menu.classList.remove('open');
@@ -496,23 +496,62 @@ document.addEventListener('DOMContentLoaded',function(){document.querySelectorAl
 })();
 </script>
 
-<div id="mobileMenu">
-  <a class="mobile-link" href="index.html">Home</a>
-  <div>
-  <button class="mobile-work-btn" id="mobileWorkBtn" aria-expanded="false">Work <span class="mobile-work-chevron">▾</span></button>
-  <div class="mobile-work-sub" id="mobileWorkSub">
-    <a class="mobile-work-sub-link" href="hris-sync.html">HRIS Sync</a>
-    <a class="mobile-work-sub-link" href="lessen-pro.html">Lessen Pro</a>
-    <a class="mobile-work-sub-link" href="veho.html">Exception Handling</a>
-    <a class="mobile-work-sub-link" href="software-tools.html">Software &amp; Tools</a>
-    <a class="mobile-work-sub-link" href="rivet.html">Rivet</a>
-    <a class="mobile-work-sub-link" href="strongmind.html">StrongMind App</a>
-    <a class="mobile-work-sub-link mobile-work-see-all" href="index.html#studies">Go to case studies</a>
+<div id="mobileMenu" class="mmenu-v2">
+  <div class="mmenu-inner">
+    <div class="mmenu-cards">
+
+      <!-- Home -->
+      <a class="mcard mcard-item mobile-link" href="index.html">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l6-6 6 6M3 7.5V14h4v-3h2v3h4V7.5"/></svg>
+        <span class="mcard-item-label">Home</span>
+        <svg class="mcard-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+      </a>
+
+      <!-- Work — expandable -->
+      <div class="mcard mcard-work-wrap" id="mcardWorkWrap">
+        <button class="mcard-item mcard-work-btn" id="mcardWorkBtn" aria-expanded="false">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+          <span class="mcard-item-label">Work</span>
+          <svg class="mcard-plus" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="8" x2="13" y2="8"/>
+            <line class="mcard-plus-v" x1="8" y1="3" x2="8" y2="13"/>
+          </svg>
+        </button>
+        <div class="mcard-work-sub" id="mcardWorkSub">
+          <div class="mcard-proj-grid">
+            <a class="mcard-proj mobile-link" href="hris-sync.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2026/02/hris-hero-lg.png?w=300&ssl=1" alt="HRIS Sync" loading="lazy"><span class="mcard-proj-name">HRIS Sync</span></a>
+            <a class="mcard-proj mobile-link" href="lessen-pro.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/01/pro-hero.png?w=300&ssl=1" alt="Lessen Pro" loading="lazy"><span class="mcard-proj-name">Lessen Pro</span></a>
+            <a class="mcard-proj mobile-link" href="veho.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2024/02/showcase.reg_.png?w=300&ssl=1" alt="Exception Handling" loading="lazy"><span class="mcard-proj-name">Exception Handling</span></a>
+            <a class="mcard-proj mobile-link" href="software-tools.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2026/02/software-and-tools-hero-1.png?w=300&ssl=1" alt="Software &amp; Tools" loading="lazy"><span class="mcard-proj-name">Software &amp; Tools</span></a>
+            <a class="mcard-proj mobile-link" href="rivet.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2023/02/screenshot-2023-02-09-at-6.29.15-pm.png?w=300&ssl=1" alt="Rivet" loading="lazy"><span class="mcard-proj-name">Rivet</span></a>
+            <a class="mcard-proj mobile-link" href="strongmind.html"><img src="https://i0.wp.com/daynepetera.wordpress.com/wp-content/uploads/2020/10/splash.png?w=300&ssl=1" alt="StrongMind" loading="lazy"><span class="mcard-proj-name">StrongMind</span></a>
+          </div>
+          <a class="mcard-see-all mobile-link" href="index.html#studies">Go to Work →</a>
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <a class="mcard mcard-item mobile-link" href="index.html#experience">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="12" height="8" rx="1.5"/><path d="M5 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        <span class="mcard-item-label">Experience</span>
+        <svg class="mcard-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+      </a>
+
+      <!-- Play -->
+      <a class="mcard mcard-item mobile-link" href="index.html#fish-quiz">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c2-4 8-4 10 0-2 4-8 4-10 0z"/><circle cx="11" cy="8" r="1" fill="currentColor" stroke="none"/><path d="M1 5l2 3-2 3"/></svg>
+        <span class="mcard-item-label">Play</span>
+        <svg class="mcard-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+      </a>
+
+      <!-- Say Hello -->
+      <a class="mcard mcard-item mcard-hello mobile-link" href="mailto:hello@dayne.design">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4.5l7 5 7-5"/></svg>
+        <span class="mcard-item-label">Say hello</span>
+      </a>
+
+    </div>
   </div>
-  </div>
-  <a class="mobile-link" href="index.html#experience">Experience</a>
-  <a class="mobile-link" href="index.html#fish-quiz">Play</a>
-  <a class="mobile-link mobile-link-cta" href="mailto:hello@dayne.design">Say hello</a>
 </div>
 
 <script src="footer-easter-egg.js"></script>

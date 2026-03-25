@@ -123,8 +123,8 @@ window.addEventListener('DOMContentLoaded', function() {
     document.body.style.overflow = 'hidden';
     var mdb = document.querySelector('.mobile-dark-btn'); if (mdb) mdb.style.display = 'flex';
   }
-  var mobileWorkBtn = document.getElementById('mobileWorkBtn');
-  var mobileWorkSub = document.getElementById('mobileWorkSub');
+  var mobileWorkBtn = document.getElementById('mcardWorkBtn');
+  var mobileWorkSub = document.getElementById('mcardWorkSub');
 
   function closeMenu() {
     menu.classList.remove('open');
