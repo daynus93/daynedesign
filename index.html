@@ -235,9 +235,9 @@ window.addEventListener('load', function() {
   border-radius: var(--radius-card);
   box-shadow: 0 0 0 1.5px var(--stone);
   transition: transform 0.4s cubic-bezier(.22,.68,0,1.2), box-shadow 0.2s ease;
-  will-change: transform;
 }
 .study-card:hover {
+  will-change: transform;
   transform: scale(1.03);
   box-shadow: 0 0 0 1.5px var(--sky), 0 28px 60px rgba(28,43,58,0.18);
 }
@@ -2099,8 +2099,15 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
       `radial-gradient(ellipse 80% 82% at ${wx.toFixed(2)}% ${wy.toFixed(2)}%, rgba(74,158,221,${(0.072*scale).toFixed(3)}) 0%, transparent 65%)`
     ].join(', ');
 
-    requestAnimationFrame(tick);
+    if (heroVisible) requestAnimationFrame(tick);
   }
+
+  let heroVisible = true;
+  const heroVis = new IntersectionObserver(function(entries) {
+    heroVisible = entries[0].isIntersecting;
+    if (heroVisible) requestAnimationFrame(tick);
+  }, { threshold: 0 });
+  heroVis.observe(hero);
   tick();
 
   hero.addEventListener('mouseenter', () => { hovering = true; });
