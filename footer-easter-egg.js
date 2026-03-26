@@ -12,6 +12,7 @@
     { label: '🪩 Party mode',         action: function() { triggerPartyMode(); } },
     { label: '🖥️ View source (retro)', action: function() { triggerViewSource(); } },
     { label: '👾 Play Galaga',         action: function() { if (typeof triggerGalaga === 'function') triggerGalaga(); }, desktopOnly: true },
+    { label: '🛷 Line Rider',          action: function() { triggerLineRider(); }, desktopOnly: true },
     { get label() { return document.documentElement.classList.contains('dark') ? '☀️ Light mode' : '🌙 Dark mode'; }, action: function() { triggerDarkMode(); } },
   ];
 
@@ -271,6 +272,437 @@
       trail.forEach(function(d) { d.el.remove(); });
     }
   };
+
+  /* ── LINE RIDER ── */
+  window.triggerLineRider = function() {
+    if (document.getElementById('lr-wrap')) return;
+
+    var W = window.innerWidth, H = window.innerHeight;
+
+    // ── State ──
+    var lines = [];
+    var STATE = 'DRAW';
+    var rafId = null;
+    var drawStart = null;  // world coords
+    var mousePos  = null;  // world coords
+    var rider = { x: 0, y: 0, vx: 0, vy: 0, angle: 0, alive: false };
+    var riderTrail = [];
+    var toastEl = null;
+
+    // ── Camera ──
+    var cam = { x: 0, y: 0, scale: 1 };
+    var isPanning = false;
+    var panLastX = 0, panLastY = 0;
+
+    function screenToWorld(sx, sy) {
+      return { x: (sx - cam.x) / cam.scale, y: (sy - cam.y) / cam.scale };
+    }
+
+    function zoomAt(sx, sy, factor) {
+      var newScale = Math.max(0.1, Math.min(12, cam.scale * factor));
+      cam.x = sx - (sx - cam.x) * (newScale / cam.scale);
+      cam.y = sy - (sy - cam.y) * (newScale / cam.scale);
+      cam.scale = newScale;
+      updateZoomLabel();
+    }
+
+    function resetView() {
+      cam.x = 0; cam.y = 0; cam.scale = 1;
+      updateZoomLabel();
+    }
+
+    // ── DOM ──
+    var wrap = document.createElement('div');
+    wrap.id = 'lr-wrap';
+    wrap.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0d0d1a;user-select:none;font-family:"DM Mono",monospace;';
+
+    var toolbar = document.createElement('div');
+    toolbar.style.cssText = 'position:absolute;top:0;left:0;right:0;height:48px;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;padding:0 1rem;gap:0.6rem;z-index:2;border-bottom:1px solid rgba(255,255,255,0.08);box-sizing:border-box;';
+
+    function tbBtn(label) {
+      var b = document.createElement('button');
+      b.textContent = label;
+      b.style.cssText = 'background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:0.28rem 0.7rem;font-family:"DM Mono",monospace;font-size:0.7rem;letter-spacing:0.06em;cursor:pointer;white-space:nowrap;';
+      b.onmouseenter = function() { b.style.background = 'rgba(255,255,255,0.13)'; };
+      b.onmouseleave = function() { b.style.background = b._sky ? 'rgba(74,158,221,0.25)' : 'rgba(255,255,255,0.07)'; };
+      return b;
+    }
+
+    var titleEl = document.createElement('span');
+    titleEl.textContent = '🛷 Line Rider';
+    titleEl.style.cssText = 'color:rgba(255,255,255,0.85);font-size:0.78rem;letter-spacing:0.08em;margin-right:0.25rem;';
+
+    var playBtn  = tbBtn('▶  Play');
+    var clearBtn = tbBtn('⟳  Clear all');
+
+    var sep = document.createElement('div');
+    sep.style.cssText = 'width:1px;height:20px;background:rgba(255,255,255,0.1);margin:0 0.1rem;';
+
+    var zoomOutBtn = tbBtn('−');
+    zoomOutBtn.title = 'Zoom out (scroll wheel)';
+    var zoomLabel = document.createElement('span');
+    zoomLabel.style.cssText = 'color:rgba(255,255,255,0.45);font-size:0.68rem;letter-spacing:0.04em;min-width:3.2rem;text-align:center;cursor:default;';
+    zoomLabel.textContent = '100%';
+    var zoomInBtn = tbBtn('+');
+    zoomInBtn.title = 'Zoom in (scroll wheel)';
+    var resetViewBtn = tbBtn('⌂');
+    resetViewBtn.title = 'Reset view (H)';
+
+    function updateZoomLabel() {
+      zoomLabel.textContent = Math.round(cam.scale * 100) + '%';
+    }
+
+    var spacer = document.createElement('div');
+    spacer.style.flex = '1';
+
+    var hintEl = document.createElement('span');
+    hintEl.textContent = 'Draw lines · Space to ride · scroll to zoom · right-drag to pan';
+    hintEl.style.cssText = 'color:rgba(255,255,255,0.25);font-size:0.65rem;letter-spacing:0.04em;transition:opacity 0.6s;pointer-events:none;';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&#x2715;';
+    closeBtn.style.cssText = 'background:none;color:rgba(255,255,255,0.45);border:none;font-size:1rem;cursor:pointer;padding:0.1rem 0.35rem;line-height:1;margin-left:0.25rem;';
+    closeBtn.onmouseenter = function() { closeBtn.style.color = '#fff'; };
+    closeBtn.onmouseleave = function() { closeBtn.style.color = 'rgba(255,255,255,0.45)'; };
+    closeBtn.onclick = quit;
+
+    toolbar.appendChild(titleEl);
+    toolbar.appendChild(playBtn);
+    toolbar.appendChild(clearBtn);
+    toolbar.appendChild(sep);
+    toolbar.appendChild(zoomOutBtn);
+    toolbar.appendChild(zoomLabel);
+    toolbar.appendChild(zoomInBtn);
+    toolbar.appendChild(resetViewBtn);
+    toolbar.appendChild(spacer);
+    toolbar.appendChild(hintEl);
+    toolbar.appendChild(closeBtn);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    canvas.style.cssText = 'position:absolute;top:0;left:0;display:block;';
+
+    wrap.appendChild(toolbar);
+    wrap.appendChild(canvas);
+    document.body.appendChild(wrap);
+
+    var ctx = canvas.getContext('2d');
+
+    function setCursor(c) { canvas.style.cursor = c; }
+    setCursor('crosshair');
+
+    // ── Toast ──
+    function showToast(msg) {
+      if (toastEl) { toastEl.remove(); toastEl = null; }
+      toastEl = document.createElement('div');
+      toastEl.textContent = msg;
+      toastEl.style.cssText = 'position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.72);color:rgba(255,255,255,0.82);padding:0.45rem 1.1rem;border-radius:20px;font-family:"DM Mono",monospace;font-size:0.72rem;letter-spacing:0.05em;pointer-events:none;white-space:nowrap;transition:opacity 0.4s;z-index:3;';
+      wrap.appendChild(toastEl);
+      setTimeout(function() { if (toastEl) { toastEl.style.opacity = '0'; setTimeout(function() { if (toastEl) { toastEl.remove(); toastEl = null; } }, 420); } }, 2500);
+    }
+
+    // ── Render ──
+    function render() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Apply camera transform for world-space drawing
+      ctx.save();
+      ctx.setTransform(cam.scale, 0, 0, cam.scale, cam.x, cam.y);
+
+      var pw = 2.5 / cam.scale; // pixel-constant line width
+
+      // Committed lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.88)';
+      ctx.lineWidth = pw;
+      ctx.lineCap = 'round';
+      for (var i = 0; i < lines.length; i++) {
+        var l = lines[i];
+        ctx.beginPath(); ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2); ctx.stroke();
+      }
+
+      // Spawn marker
+      if (lines.length > 0 && STATE === 'DRAW') {
+        var mr = 6 / cam.scale;
+        ctx.beginPath();
+        ctx.arc(lines[0].x1, lines[0].y1, mr, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(74,158,221,0.7)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(74,158,221,1)';
+        ctx.lineWidth = 1.5 / cam.scale;
+        ctx.stroke();
+      }
+
+      // Preview line while drawing
+      if (STATE === 'DRAW' && drawStart && mousePos) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.32)';
+        ctx.lineWidth = 2 / cam.scale;
+        ctx.setLineDash([7 / cam.scale, 6 / cam.scale]);
+        ctx.beginPath(); ctx.moveTo(drawStart.x, drawStart.y); ctx.lineTo(mousePos.x, mousePos.y); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Rider trail
+      for (var t = 0; t < riderTrail.length; t++) {
+        var p = riderTrail[t];
+        var a = (1 - t / riderTrail.length) * 0.3;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2.5 / cam.scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(200,164,80,' + a + ')';
+        ctx.fill();
+      }
+
+      // Rider
+      if (STATE !== 'DRAW' && rider.alive) {
+        var rs = 1 / cam.scale;
+        ctx.save();
+        ctx.translate(rider.x, rider.y);
+        ctx.rotate(rider.angle);
+        ctx.scale(rs, rs);
+
+        ctx.fillStyle = '#c8a450';
+        ctx.beginPath(); ctx.rect(-14, 1, 28, 6); ctx.fill();
+
+        ctx.strokeStyle = '#8a6020';
+        ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-13, 7); ctx.lineTo(-15, 11);
+        ctx.moveTo(13, 7);  ctx.lineTo(15, 11);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#e8d0a0';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -11); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(-8, -6); ctx.lineTo(8, -6); ctx.stroke();
+
+        ctx.beginPath(); ctx.arc(0, -16, 5.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#e8d0a0'; ctx.fill();
+        ctx.strokeStyle = '#c8a450'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        ctx.restore();
+      }
+
+      ctx.restore(); // reset transform
+    }
+
+    // ── Physics ──
+    var GRAVITY = 0.38;
+    var FRICTION = 0.998;
+    var SNAP = 11;
+
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+    function physicsStep() {
+      if (!rider.alive) return;
+
+      rider.vy += GRAVITY;
+      rider.x  += rider.vx;
+      rider.y  += rider.vy;
+
+      riderTrail.unshift({ x: rider.x, y: rider.y });
+      if (riderTrail.length > 10) riderTrail.length = 10;
+
+      var onGround = false;
+      var groundAngle = 0;
+
+      for (var iter = 0; iter < 3; iter++) {
+        for (var i = 0; i < lines.length; i++) {
+          var l = lines[i];
+          var ldx = l.x2 - l.x1, ldy = l.y2 - l.y1;
+          var len2 = ldx * ldx + ldy * ldy;
+          if (len2 < 1) continue;
+
+          var t = clamp(((rider.x - l.x1) * ldx + (rider.y - l.y1) * ldy) / len2, 0, 1);
+          var cx = l.x1 + t * ldx, cy = l.y1 + t * ldy;
+          var ex = rider.x - cx, ey = rider.y - cy;
+          var dist = Math.sqrt(ex * ex + ey * ey);
+
+          if (dist < SNAP && dist > 0.01) {
+            var nx = ex / dist, ny = ey / dist;
+            if (ny > 0.15) continue;
+            var vDotN = rider.vx * nx + rider.vy * ny;
+            if (vDotN >= 0) continue;
+            rider.x = cx + nx * SNAP;
+            rider.y = cy + ny * SNAP;
+            rider.vx -= vDotN * nx;
+            rider.vy -= vDotN * ny;
+            rider.vx *= FRICTION;
+            rider.vy *= FRICTION;
+            onGround = true;
+            groundAngle = Math.atan2(ldy, ldx);
+          }
+        }
+      }
+
+      if (onGround) {
+        var diff = groundAngle - rider.angle;
+        while (diff > Math.PI)  diff -= Math.PI * 2;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        rider.angle += diff * 0.25;
+      } else {
+        rider.angle *= 0.88;
+      }
+
+      var spd = Math.sqrt(rider.vx * rider.vx + rider.vy * rider.vy);
+      if (spd > 28) { rider.vx = rider.vx / spd * 28; rider.vy = rider.vy / spd * 28; }
+
+      // Far fall (world units, generous for zoomed/panned canvases)
+      if (rider.y > 8000 || rider.y < -8000 || rider.x < -8000 || rider.x > 8000) {
+        rider.alive = false;
+        showToast('Fell off — press R to reset or Space to try again');
+        setState('PAUSED');
+      }
+    }
+
+    // ── Loop ──
+    function loop() {
+      if (STATE === 'PLAY') physicsStep();
+      render();
+      rafId = requestAnimationFrame(loop);
+    }
+
+    // ── State machine ──
+    function setState(s) {
+      STATE = s;
+      if (s === 'PLAY') {
+        playBtn.textContent = '⏸  Pause';
+        playBtn._sky = true;
+        playBtn.style.background = 'rgba(74,158,221,0.25)';
+        playBtn.style.borderColor = 'rgba(74,158,221,0.45)';
+        playBtn.style.color = 'rgba(74,158,221,1)';
+        setCursor('default');
+      } else {
+        playBtn.textContent = '▶  Play';
+        playBtn._sky = false;
+        playBtn.style.background = 'rgba(255,255,255,0.07)';
+        playBtn.style.borderColor = 'rgba(255,255,255,0.18)';
+        playBtn.style.color = 'rgba(255,255,255,0.75)';
+        setCursor('crosshair');
+      }
+    }
+
+    function spawnRider() {
+      if (lines.length === 0) { showToast('Draw some lines first!'); return false; }
+      rider.x = lines[0].x1; rider.y = lines[0].y1 - 22;
+      rider.vx = 0.8; rider.vy = 0; rider.angle = 0; rider.alive = true;
+      riderTrail = [];
+      return true;
+    }
+
+    function togglePlay() {
+      if (STATE === 'DRAW') { if (!spawnRider()) return; setState('PLAY'); }
+      else if (STATE === 'PLAY') { setState('PAUSED'); }
+      else { if (!rider.alive && !spawnRider()) return; setState('PLAY'); }
+    }
+
+    function resetRider() {
+      if (lines.length === 0) return;
+      spawnRider(); setState('PAUSED');
+    }
+
+    function clearAll() {
+      lines = []; riderTrail = [];
+      rider.alive = false;
+      drawStart = null; mousePos = null;
+      setState('DRAW');
+      hintEl.style.opacity = '1';
+    }
+
+    // ── Mouse: draw ──
+    function evtScreen(e) {
+      var r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    canvas.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+    canvas.addEventListener('mousedown', function(e) {
+      // Right-click or middle-click → pan
+      if (e.button === 2 || e.button === 1) {
+        e.preventDefault();
+        isPanning = true;
+        panLastX = e.clientX; panLastY = e.clientY;
+        setCursor('grabbing');
+        return;
+      }
+      // Left-click → draw (only in DRAW state)
+      if (e.button !== 0 || STATE !== 'DRAW') return;
+      var s = evtScreen(e);
+      drawStart = screenToWorld(s.x, s.y);
+      mousePos  = { x: drawStart.x, y: drawStart.y };
+    });
+
+    function onWinMove(e) {
+      if (isPanning) {
+        cam.x += e.clientX - panLastX;
+        cam.y += e.clientY - panLastY;
+        panLastX = e.clientX; panLastY = e.clientY;
+        return;
+      }
+      if (STATE !== 'DRAW' || !drawStart) return;
+      var s = evtScreen(e);
+      mousePos = screenToWorld(s.x, s.y);
+    }
+
+    function onWinUp(e) {
+      if (isPanning) {
+        isPanning = false;
+        setCursor(STATE === 'DRAW' ? 'crosshair' : 'default');
+        return;
+      }
+      if (e.button !== 0 || STATE !== 'DRAW' || !drawStart) return;
+      var s = evtScreen(e);
+      var end = screenToWorld(s.x, s.y);
+      var dx = end.x - drawStart.x, dy = end.y - drawStart.y;
+      if (dx * dx + dy * dy > 36 / (cam.scale * cam.scale)) {
+        lines.push({ x1: drawStart.x, y1: drawStart.y, x2: end.x, y2: end.y });
+        if (lines.length === 1) hintEl.style.opacity = '0';
+      }
+      drawStart = null; mousePos = null;
+    }
+
+    window.addEventListener('mousemove', onWinMove);
+    window.addEventListener('mouseup', onWinUp);
+
+    // ── Mouse: zoom ──
+    canvas.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      var factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+      var s = evtScreen(e);
+      zoomAt(s.x, s.y, factor);
+    }, { passive: false });
+
+    // ── Toolbar zoom buttons ──
+    zoomInBtn.addEventListener('click', function() { zoomAt(W / 2, H / 2, 1.25); });
+    zoomOutBtn.addEventListener('click', function() { zoomAt(W / 2, H / 2, 1 / 1.25); });
+    resetViewBtn.addEventListener('click', resetView);
+
+    // ── Keys ──
+    function onKey(e) {
+      if (e.key === 'Escape') { quit(); return; }
+      if (e.key === ' ' || e.code === 'Space') { e.preventDefault(); togglePlay(); return; }
+      if (e.key === 'r' || e.key === 'R') { if (e.shiftKey) clearAll(); else resetRider(); return; }
+      if (e.key === 'h' || e.key === 'H') { resetView(); return; }
+      if (e.key === '=') { zoomAt(W / 2, H / 2, 1.25); return; }
+      if (e.key === '-') { zoomAt(W / 2, H / 2, 1 / 1.25); return; }
+    }
+    document.addEventListener('keydown', onKey);
+
+    playBtn.addEventListener('click', function() { togglePlay(); });
+    clearBtn.addEventListener('click', function() { clearAll(); });
+
+    // ── Quit ──
+    function quit() {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('mousemove', onWinMove);
+      window.removeEventListener('mouseup', onWinUp);
+      if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    }
+
+    rafId = requestAnimationFrame(loop);
+  };
+
 })();
 
 /* MEDFORD MENU */
