@@ -197,7 +197,7 @@ window.addEventListener('load', function() {
 .principles-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
 .principle-card {
   background: var(--surface); border-radius: var(--radius-card);
-  padding: 2rem; border: 1px solid var(--stone);
+  padding: var(--sp-6); border: 1px solid var(--stone);
   transition: transform 0.4s var(--ease-smooth);
   position: relative; overflow: hidden;
   will-change: transform;
@@ -445,7 +445,7 @@ window.addEventListener('load', function() {
 .exp-logo-wrap {
   position: absolute; left: 10%; bottom: -40px;
   width: 140px; height: 140px;
-  border-radius: 16px; overflow: hidden;
+  border-radius: var(--radius-card); overflow: hidden;
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -668,7 +668,7 @@ html.dark .drawer-study-more-thumb { background: rgba(255,255,255,0.07); }
   display: flex; gap: 0.45rem; margin-top: 1.2rem; justify-content: flex-start;
 }
 .quote-dot {
-  width: 7px; height: 7px; border-radius: 999px;
+  width: 7px; height: 7px; border-radius: var(--radius);
   background: var(--stone); border: none; padding: 0; cursor: pointer;
   transition: width 0.3s ease, height 0.3s ease;
   overflow: hidden; position: relative; flex-shrink: 0;
