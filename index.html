@@ -761,6 +761,10 @@ html.dark .drawer-study-more-thumb { background: rgba(255,255,255,0.07); }
   /* Press: add scale/lift on top */
   .study-card.active:active { transform: scale(1.03); box-shadow: 0 0 0 1.5px var(--sky), 0 28px 60px rgba(28,43,58,0.18); }
   .study-card.active:active .study-chip { background: var(--sky); }
+  /* Slower, softer transitions for scroll-active state changes on touch */
+  .study-card-info { transition: transform 0.55s ease; }
+  .study-chip { transition: opacity 0.55s ease, background 0.2s; }
+  .study-card-bg { transition: opacity 0.4s ease, transform 0.55s ease; }
 }
 @media (max-width: 1200px) {
   .skills-section { grid-template-columns: 1fr; gap: 2rem; }
