@@ -433,6 +433,13 @@ window.addEventListener('load', function() {
   padding-bottom: 1.8rem;
   border-top: 1px solid rgba(255,255,255,0.07);
 }
+.exp-row.open .exp-drawer-inner {
+  animation: drawer-slide-in 0.35s ease forwards;
+}
+@keyframes drawer-slide-in {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
 
 /* ghost watermark wrap — bottom-left, fades in on row hover, clickable to visit site */
 .exp-logo-wrap {
@@ -456,24 +463,12 @@ window.addEventListener('load', function() {
 .exp-header-inner { display: flex; align-items: center; gap: 0.75rem; }
 .exp-logo-open-wrap {
   display: none; position: relative;
-  width: 44px; height: 44px; flex-shrink: 0;
-  border-radius: 8px; overflow: hidden; cursor: pointer;
+  width: calc(var(--sp-6) + var(--sp-3)); height: calc(var(--sp-6) + var(--sp-3)); flex-shrink: 0;
+  border-radius: var(--sp-2); overflow: hidden; cursor: pointer;
 }
 .exp-row.open .exp-logo-open-wrap {
   display: block;
-  animation: logo-slide-in 0.35s ease forwards;
-}
-.exp-logo-open-wrap.logo-out {
-  display: block !important;
-  animation: logo-slide-out 0.25s ease forwards;
-}
-@keyframes logo-slide-in {
-  from { opacity: 0; transform: translateX(-14px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes logo-slide-out {
-  from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(-14px); }
+  animation: drawer-slide-in 0.35s ease forwards;
 }
 .exp-logo-open { width: 100%; height: 100%; object-fit: contain; display: block; }
 .exp-logo-open-arrow {
@@ -2415,8 +2410,6 @@ function toggleRow(id) {
   const isOpen = row.classList.contains('open');
   // Close all rows + lock ghost until drawer finishes closing (480ms)
   document.querySelectorAll('.exp-row.open').forEach(r => {
-    const logo = r.querySelector('.exp-logo-open-wrap');
-    if (logo) { logo.classList.add('logo-out'); setTimeout(() => logo.classList.remove('logo-out'), 280); }
     r.classList.remove('open');
     const btn = r.querySelector('.exp-row-header');
     if (btn) btn.setAttribute('aria-expanded', 'false');
