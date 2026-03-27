@@ -339,12 +339,12 @@
     sep.style.cssText = 'width:1px;height:20px;background:rgba(255,255,255,0.1);margin:0 0.1rem;';
 
     var zoomOutBtn = tbBtn('−');
-    zoomOutBtn.title = 'Zoom out (scroll wheel)';
+    zoomOutBtn.title = 'Zoom out (pinch or − key)';
     var zoomLabel = document.createElement('span');
     zoomLabel.style.cssText = 'color:rgba(255,255,255,0.45);font-size:0.68rem;letter-spacing:0.04em;min-width:3.2rem;text-align:center;cursor:default;';
     zoomLabel.textContent = '100%';
     var zoomInBtn = tbBtn('+');
-    zoomInBtn.title = 'Zoom in (scroll wheel)';
+    zoomInBtn.title = 'Zoom in (pinch or = key)';
     var resetViewBtn = tbBtn('⌂');
     resetViewBtn.title = 'Reset view (H)';
 
@@ -356,7 +356,7 @@
     spacer.style.flex = '1';
 
     var hintEl = document.createElement('span');
-    hintEl.textContent = 'Draw lines · Space to ride · scroll to zoom · right-drag to pan';
+    hintEl.textContent = 'Draw lines · Space to ride · pinch/scroll to zoom · two-finger pan';
     hintEl.style.cssText = 'color:rgba(255,255,255,0.25);font-size:0.65rem;letter-spacing:0.04em;transition:opacity 0.6s;pointer-events:none;';
 
     var closeBtn = document.createElement('button');
@@ -664,12 +664,20 @@
     window.addEventListener('mousemove', onWinMove);
     window.addEventListener('mouseup', onWinUp);
 
-    // ── Mouse: zoom ──
+    // ── Mouse / trackpad: zoom + pan ──
     canvas.addEventListener('wheel', function(e) {
       e.preventDefault();
-      var factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
       var s = evtScreen(e);
-      zoomAt(s.x, s.y, factor);
+      if (e.ctrlKey) {
+        // Trackpad pinch-to-zoom (ctrlKey is set by the OS for pinch gestures)
+        // deltaY values are small floats, so use exponential scaling for smoothness
+        var factor = Math.pow(1.002, -e.deltaY);
+        zoomAt(s.x, s.y, factor);
+      } else {
+        // Two-finger scroll → pan; plain scroll wheel also pans (use +/− or toolbar to zoom)
+        cam.x -= e.deltaX;
+        cam.y -= e.deltaY;
+      }
     }, { passive: false });
 
     // ── Toolbar zoom buttons ──
