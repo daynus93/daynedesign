@@ -509,7 +509,8 @@
 
     // ── Physics ──
     var GRAVITY = 0.38;
-    var FRICTION = 0.998;
+    var FRICTION      = 0.995;  // applied once per frame on flat/downhill
+    var FRICTION_UP   = 0.9995; // much less loss when climbing
     var SNAP = 11;
 
     function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
@@ -548,8 +549,6 @@
             rider.y = cy + ny * SNAP;
             rider.vx -= vDotN * nx;
             rider.vy -= vDotN * ny;
-            rider.vx *= FRICTION;
-            rider.vy *= FRICTION;
             onGround = true;
             groundAngle = Math.atan2(ldy, ldx);
           }
@@ -557,6 +556,12 @@
       }
 
       if (onGround) {
+        // Apply friction once per frame — use lower friction when climbing to preserve momentum
+        var climbing = rider.vy < -0.5;
+        var fr = climbing ? FRICTION_UP : FRICTION;
+        rider.vx *= fr;
+        rider.vy *= fr;
+
         var diff = groundAngle - rider.angle;
         while (diff > Math.PI)  diff -= Math.PI * 2;
         while (diff < -Math.PI) diff += Math.PI * 2;
