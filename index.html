@@ -477,9 +477,10 @@ window.addEventListener('load', function() {
   background: rgba(0,0,0,0.45); color: #fff;
   opacity: 0; transition: opacity 0.18s ease;
 }
-.exp-logo-open-arrow svg { width: 16px; height: 16px; }
+.exp-logo-open-arrow svg { width: 16px; height: 16px; transform: rotate(45deg); transition: transform 0.35s cubic-bezier(.22,.68,0,1); }
 @media (hover: hover) {
   .exp-logo-open-wrap:hover .exp-logo-open-arrow { opacity: 1; }
+  .exp-logo-open-wrap:hover .exp-logo-open-arrow svg { transform: rotate(0deg); }
 }
 
 .drawer-co-header {
@@ -719,20 +720,45 @@ html.dark .drawer-study-more-thumb { background: rgba(255,255,255,0.07); }
 .contact-heading em { color: var(--sky); font-style: italic; }
 .contact-links { display: flex; flex-direction: column; }
 .contact-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--ink); border-top: 1px solid var(--stone); padding: 1.2rem 0; }
-/* Override reveal-stagger's generic transition so hover color + indent animate */
+/* Override reveal-stagger's generic transition so hover color animates */
 .reveal-stagger > .contact-link,
 .js-reveal .reveal-stagger > .contact-link {
-  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0, 0, 0.2, 1);
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s cubic-bezier(0, 0, 0.2, 1);
 }
 .contact-link:hover,
-.js-reveal .reveal-stagger.visible > .contact-link:hover { color: var(--sky); transform: translateX(6px); transition-delay: 0s; }
-.contact-link:hover .cl-arrow { transform: translateX(4px); color: var(--sky); }
+.js-reveal .reveal-stagger.visible > .contact-link:hover { color: var(--sky); transition-delay: 0s; }
+.contact-link:hover .cl-arrow { color: var(--sky); }
+.contact-link > div { transition: transform 0.35s cubic-bezier(.22,.68,0,1); }
+.contact-link:hover > div { transform: translateX(8px); }
 .cl-label { font-family: var(--mono); font-size: var(--font-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.1rem; transition: color 0.2s cubic-bezier(0, 0, 0.2, 1); }
 .contact-link:hover .cl-label { color: var(--sky); }
 .cl-value { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); transition: color 0.2s cubic-bezier(0, 0, 0.2, 1); }
 .contact-link:hover .cl-value { color: var(--sky); }
-.cl-arrow { margin-left: auto; font-size: 1.1rem; transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1), color 0.2s cubic-bezier(0, 0, 0.2, 1); color: var(--muted); display: flex; }
+.cl-arrow { margin-left: auto; font-size: 1.1rem; transition: color 0.2s cubic-bezier(0, 0, 0.2, 1); color: var(--muted); display: flex; }
 .cl-arrow svg { width: 1em; height: 1em; }
+/* Email: envelope swoops right (sent!), returns from left — scoped to .contact-link only */
+@keyframes envelope-send {
+  0%   { transform: translateX(0);    opacity: 1; }
+  30%  { transform: translateX(50%);  opacity: 0; }
+  31%  { transform: translateX(-50%); opacity: 0; }
+  100% { transform: translateX(0);    opacity: 1; }
+}
+/* LinkedIn / GitHub: arrow starts pointing right (→), rotates to ↗ on hover */
+a[href*="linkedin"] .cl-arrow svg,
+a[href*="github"] .cl-arrow svg {
+  transform: rotate(45deg);
+  transform-origin: center;
+  transition: transform 0.35s cubic-bezier(.22,.68,0,1);
+}
+a[href*="linkedin"]:hover .cl-arrow svg,
+a[href*="github"]:hover .cl-arrow svg { transform: rotate(0deg); }
+/* Résumé: arrow drops in from above on hover */
+.dl-arrow { }
+a[href*="Resume"]:hover .dl-arrow { animation: dl-drop 1.4s cubic-bezier(.22,.68,0,1) forwards; }
+@keyframes dl-drop {
+  from { transform: translateY(-16px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1300px) {
@@ -1906,7 +1932,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     </a>
     <a class="contact-link" href="assets/Petera-Product-Design-Resume.pdf" target="_blank" rel="noopener noreferrer">
       <div><span class="cl-label">Résumé</span><span class="cl-value">Download PDF</span></div>
-      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9M4 7l4 4 4-4M2 13h12"/></svg></span>
+      <span class="cl-arrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path class="dl-bar" d="M2 13h12"/><path class="dl-arrow" d="M8 2v9M4 7l4 4 4-4"/></svg></span>
     </a>
   </div>
 </section>
@@ -3397,6 +3423,29 @@ function triggerGalaga(skipIntro) {
 document.querySelectorAll('.contact-link').forEach(link => {
   link.addEventListener('mouseenter', () => link.style.transitionDelay = '0s', { once: true });
 });
+
+// Email: swipe right → return from left on each hover
+const emailLink = document.querySelector('.contact-link[href^="mailto:hello"]');
+if (emailLink) {
+  const envSvg = emailLink.querySelector('.cl-arrow svg');
+  emailLink.addEventListener('mouseenter', () => {
+    envSvg.style.animation = 'envelope-send 0.65s cubic-bezier(.4,0,0.2,1)';
+  });
+  envSvg.addEventListener('animationend', () => {
+    envSvg.style.animation = '';
+  });
+}
+
+// Reset download animation on mouse-leave so it replays fresh each hover
+const dlLink = document.querySelector('a[href*="Resume"]');
+if (dlLink) {
+  const dlArrow = dlLink.querySelector('.dl-arrow');
+  dlLink.addEventListener('mouseleave', () => {
+    dlArrow.style.animation = 'none';
+    dlArrow.offsetHeight; // force reflow
+    dlArrow.style.animation = '';
+  });
+}
 
 // Ghost watermark — only one visible at a time
 (function() {
