@@ -2075,7 +2075,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   function tick() {
     blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.004 : 0.003);
 
-    idleT += 0.004;
+    idleT += 0.007;
     const ix = 55 + Math.sin(idleT * 0.9) * 22;
     const iy = 38 + Math.cos(idleT * 0.6) * 18;
     const tx = ix + (mouseX - ix) * blend;
@@ -2169,6 +2169,28 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     hovering = false;
     maskRadius = 0;
   });
+
+  // Touch: track finger position over the hero on mobile
+  hero.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    const r = hero.getBoundingClientRect();
+    mouseX = (t.clientX - r.left) / r.width  * 100;
+    mouseY = (t.clientY - r.top)  / r.height * 100;
+    hovering = true;
+    if (deco) maskRadius = 460;
+  }, { passive: true });
+  hero.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const r = hero.getBoundingClientRect();
+    mouseX = (t.clientX - r.left) / r.width  * 100;
+    mouseY = (t.clientY - r.top)  / r.height * 100;
+    hovering = true;
+    if (deco) maskRadius = 460;
+  }, { passive: true });
+  hero.addEventListener('touchend', () => {
+    hovering = false;
+    maskRadius = 0;
+  }, { passive: true });
 })();
 
 /* Rotating words */
