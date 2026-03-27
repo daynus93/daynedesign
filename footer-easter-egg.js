@@ -11,7 +11,7 @@
     { label: '📖 What even is 2026?', action: function() { window.open('https://en.wikipedia.org/wiki/2026','_blank','noopener'); } },
     { label: '🪩 Party mode',         action: function() { triggerPartyMode(); } },
     { label: '🖥️ View source (retro)', action: function() { triggerViewSource(); } },
-    { label: '👾 Play Galaga',         action: function() { if (typeof triggerGalaga === 'function') triggerGalaga(); }, desktopOnly: true },
+    { label: '👾 Play Galaga',         action: function() { if (typeof triggerGalaga === 'function') triggerGalaga(true); }, desktopOnly: true },
     { label: '🛷 Line Rider',          action: function() { triggerLineRider(); }, desktopOnly: true },
   ];
 

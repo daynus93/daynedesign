@@ -2670,7 +2670,7 @@ function toggleStudies() { studiesMore(); } /* legacy alias */
 })();
 
 /* ── GALAGA EASTER EGG ── */
-function triggerGalaga() {
+function triggerGalaga(skipIntro) {
   if (window.innerWidth < 900 || 'ontouchstart' in window) return;
   if (document.getElementById('galaga-wrap')) return;
 
@@ -2757,7 +2757,7 @@ function triggerGalaga() {
   function resetGame() { score = 0; lives = 3; dyingTimer = 0; level = 1; setupLevel(); }
 
   setupLevel();
-  gameState = 'eggreveal'; eggStart = Date.now();
+  if (!skipIntro) { gameState = 'eggreveal'; eggStart = Date.now(); }
 
   var keys = {};
 
