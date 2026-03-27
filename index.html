@@ -102,13 +102,23 @@ window.addEventListener('load', function() {
   position: relative; overflow: hidden;
 }
 
-/* dot grid texture */
+/* dot grid texture — dim base layer everywhere */
 .hero::before {
   content: '';
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background-image: radial-gradient(circle, var(--stone) 1px, transparent 1px);
   background-size: 28px 28px;
-  opacity: 0.55;
+  opacity: 0.22;
+}
+/* dot grid center glow — larger brighter dots masked to center */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, var(--stone) 1.8px, transparent 1.8px);
+  background-size: 28px 28px;
+  opacity: 0.75;
+  mask-image: radial-gradient(ellipse 35% 40% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 35% 40% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
 }
 
 /* mouse-tracked gradient orb — updated via JS */
@@ -151,9 +161,9 @@ window.addEventListener('load', function() {
 }
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.9s forwards; }
 
-/* large decorative mark — top right */
+/* large decorative mark — bottom right */
 .hero-deco {
-  position: absolute; right: -6rem; bottom: -4rem;
+  position: absolute; right: -12rem; bottom: -12rem;
   width: clamp(480px, 60vw, 900px);
   pointer-events: none; user-select: none;
   opacity: 1;
@@ -2050,6 +2060,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
 
   let mouseX = 62, mouseY = 40;
   let cx = 62, cy = 40, vx = 0, vy = 0;           // main orb + velocity
+  let dotX = 62, dotY = 40;                        // dot glow center — tiny lag behind cursor
   let dmx = 62, dmy = 40;                          // deco mask center — leads the orb
   let wx = 62, wy = 40;
   // Satellite centers — velocity-spring per body (lighter = higher k, more responsive)
@@ -2064,7 +2075,7 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
   function tick() {
     blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.004 : 0.003);
 
-    idleT += 0.009;
+    idleT += 0.004;
     const ix = 55 + Math.sin(idleT * 0.9) * 22;
     const iy = 38 + Math.cos(idleT * 0.6) * 18;
     const tx = ix + (mouseX - ix) * blend;
@@ -2074,17 +2085,20 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     // Higher k = lighter mass = snappier. Damping keeps it from oscillating forever.
     vx  += (tx - cx)  * 0.0008 - vx  * 0.91; cx  += vx;   // main — heaviest
     vy  += (ty - cy)  * 0.0008 - vy  * 0.91; cy  += vy;
+    dotX += (mouseX - dotX) * 0.2; dotY += (mouseY - dotY) * 0.2;
+    hero.style.setProperty('--dot-cx', dotX.toFixed(2) + '%');
+    hero.style.setProperty('--dot-cy', dotY.toFixed(2) + '%');
     wx += (cx - wx) * 0.022; wy += (cy - wy) * 0.022;      // wake trails main
     dmx += (mouseX - dmx) * 0.03; dmy += (mouseY - dmy) * 0.03;  // mask lags behind mouse
 
-    v1x += (tx - c1x) * 0.003 - v1x * 0.86; c1x += v1x;   // s1 — medium-light
-    v1y += (ty - c1y) * 0.003 - v1y * 0.86; c1y += v1y;
-    v2x += (tx - c2x) * 0.002 - v2x * 0.88; c2x += v2x;   // s2 — medium
-    v2y += (ty - c2y) * 0.002 - v2y * 0.88; c2y += v2y;
-    v3x += (tx - c3x) * 0.0013 - v3x * 0.90; c3x += v3x;  // s3 — medium-heavy
-    v3y += (ty - c3y) * 0.0013 - v3y * 0.90; c3y += v3y;
-    v4x += (tx - c4x) * 0.005 - v4x * 0.83; c4x += v4x;   // s4 — lightest
-    v4y += (ty - c4y) * 0.005 - v4y * 0.83; c4y += v4y;
+    v1x += (tx - c1x) * 0.0015 - v1x * 0.88; c1x += v1x;   // s1 — medium-light
+    v1y += (ty - c1y) * 0.0015 - v1y * 0.88; c1y += v1y;
+    v2x += (tx - c2x) * 0.001  - v2x * 0.90; c2x += v2x;   // s2 — medium
+    v2y += (ty - c2y) * 0.001  - v2y * 0.90; c2y += v2y;
+    v3x += (tx - c3x) * 0.0007 - v3x * 0.92; c3x += v3x;  // s3 — medium-heavy
+    v3y += (ty - c3y) * 0.0007 - v3y * 0.92; c3y += v3y;
+    v4x += (tx - c4x) * 0.0025 - v4x * 0.86; c4x += v4x;   // s4 — lightest
+    v4y += (ty - c4y) * 0.0025 - v4y * 0.86; c4y += v4y;
 
     const t = performance.now() * 0.001;
     const hue = 206 + Math.sin(t * 0.05) * 18;
