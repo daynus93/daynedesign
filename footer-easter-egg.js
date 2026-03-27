@@ -878,8 +878,7 @@
     directions.target = '_blank';
     directions.rel = 'noopener noreferrer';
     directions.className = 'fmenu-btn';
-    directions.style.textTransform = 'none';
-    directions.textContent = '🗺️ Directions please!';
+    directions.textContent = '🗺️ DIRECTIONS PLEASE!';
     menu.appendChild(directions);
 
     var howFar = document.createElement('button');
