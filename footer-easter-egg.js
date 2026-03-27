@@ -471,18 +471,16 @@
         var p = riderTrail[t];
         var a = (1 - t / riderTrail.length) * 0.3;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.5 / cam.scale, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(200,164,80,' + a + ')';
         ctx.fill();
       }
 
       // Rider
       if (STATE !== 'DRAW' && rider.alive) {
-        var rs = 1 / cam.scale;
         ctx.save();
         ctx.translate(rider.x, rider.y);
         ctx.rotate(rider.angle);
-        ctx.scale(rs, rs);
 
         ctx.fillStyle = '#c8a450';
         ctx.beginPath(); ctx.rect(-14, 1, 28, 6); ctx.fill();
