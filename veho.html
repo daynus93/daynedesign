@@ -383,6 +383,59 @@
   </div>
 </div>
 
+
+<!-- SAY HELLO MODAL -->
+<div id="sayHelloModal" aria-modal="true" role="dialog" aria-label="Say hello" style="display:none">
+  <div id="shBackdrop"></div>
+  <div id="shSheet">
+    <div class="sh-handle"></div>
+    <div class="sh-header">
+      <div>
+        <div class="sh-title">Say hello</div>
+        <div class="sh-subtitle">Drop me a line <span class="sh-tip" tabindex="0" aria-label="Yes, this really will send me an email"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 7v4"/><circle cx="8" cy="5" r="0.5" fill="currentColor" stroke="none"/></svg><span class="sh-tip-text">Yes, this really will send me an email</span></span></div>
+      </div>
+      <button class="sh-close" id="shClose" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+    <div class="sh-body">
+      <label class="sh-label" for="shFrom">From <span class="sh-required">*</span></label>
+      <input id="shFrom" class="sh-input" type="email" placeholder="your@email.com" autocomplete="email" required>
+      <span id="shFromError" class="sh-field-error"></span>
+      <label class="sh-label" for="shReason">What's on your mind?</label>
+      <div class="sh-select-wrap">
+        <select id="shReason" class="sh-select">
+          <option value="hi">Just saying hi 👋</option>
+          <option value="hire">I want to hire you 🎯</option>
+          <option value="project">I have a project for you 💡</option>
+          <option value="collab">Let's collaborate ✨</option>
+          <option value="system">I need a design system 🧱</option>
+          <option value="coffee">Let's grab coffee ☕</option>
+          <option value="feedback">I have some feedback 📝</option>
+          <option value="question">Quick question ❓</option>
+          <option value="wow">For the Horde 🔴</option>
+          <option value="longtest">Long text example 📏</option>
+        </select>
+        <svg class="sh-select-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>
+      </div>
+      <label class="sh-label" for="shMessage">Message</label>
+      <textarea id="shMessage" class="sh-textarea" rows="6"></textarea>
+      <div class="sh-msg-meta">
+        <span id="shMessageError" class="sh-field-error"></span>
+        <span id="shCharCount" class="sh-char-count">0/500</span>
+      </div>
+    </div>
+    <div class="sh-footer">
+      <button class="sh-cancel" id="shCancel">Cancel</button>
+      <button class="sh-send" id="shSend">
+        Send
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2L9 14l-2-5-5-2 12-5z"/><path d="M14 2L7 9"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+<script src="say-hello-modal.js"></script>
+
 <script src="footer-easter-egg.js"></script>
 </body>
 </html>
