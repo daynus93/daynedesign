@@ -145,8 +145,18 @@ window.addEventListener('load', function() {
   background-image: radial-gradient(circle, var(--stone) 1.8px, transparent 1.8px);
   background-size: 28px 28px;
   opacity: 0.75;
-  mask-image: radial-gradient(ellipse 35% 40% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 35% 40% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
+  mask-image: radial-gradient(ellipse 28% 32% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 28% 32% at var(--dot-cx, 52%) var(--dot-cy, 42%), black 0%, transparent 100%);
+}
+
+/* second dot grid glow — independent orb 2 */
+.hero-dot-glow2 {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, var(--stone) 1.8px, transparent 1.8px);
+  background-size: 28px 28px;
+  opacity: 0.75;
+  mask-image: radial-gradient(ellipse 24% 28% at var(--dot2-cx, 38%) var(--dot2-cy, 55%), black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 24% 28% at var(--dot2-cx, 38%) var(--dot2-cy, 55%), black 0%, transparent 100%);
 }
 
 /* mouse-tracked gradient orb — updated via JS */
@@ -929,6 +939,8 @@ html.dark footer { background: var(--section-dark); }
 <!-- HERO -->
 <section class="hero" id="heroSection">
   <div class="hero-orb" id="heroOrb"></div>
+  <div class="hero-orb" id="heroOrb2"></div>
+  <div class="hero-dot-glow2" id="heroDotGlow2"></div>
   <div class="hero-deco" aria-hidden="true">
     <svg viewBox="0 0 207 207" xmlns="http://www.w3.org/2000/svg" class="hero-deco-svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M131 39C151.435 39 168 55.5655 168 76C168 96.4345 151.435 113 131 113H117V94H131C140.941 94 149 85.9411 149 76C149 66.0589 140.941 58 131 58C121.059 58 113 66.0589 113 76V91V94V113V116V131C113 151.435 96.4345 168 76 168C55.5655 168 39 151.435 39 131C39 110.565 55.5655 94 76 94H90V113H76C66.0589 113 58 121.059 58 131C58 140.941 66.0589 149 76 149C85.9411 149 94 140.941 94 131V116V113V94V91V76C94 55.5655 110.565 39 131 39Z"/>
@@ -2206,6 +2218,120 @@ document.getElementById('viewStatsBtn').addEventListener('click', function() {
     hovering = false;
     maskRadius = 0;
   }, { passive: true });
+})();
+
+/* ── HERO ORB 2 — independent second gradient orb ── */
+(function() {
+  const hero = document.getElementById('heroSection');
+  const orb2 = document.getElementById('heroOrb2');
+  const glow2 = document.getElementById('heroDotGlow2');
+  if (!hero || !orb2) return;
+
+  let mouseX = 38, mouseY = 55;
+  let cx = 38, cy = 55, vx = 0, vy = 0;
+  let dotX = 38, dotY = 55;
+  // Satellites for orb 2
+  let c1x = 38, c1y = 55, v1x = 0, v1y = 0;
+  let c2x = 38, c2y = 55, v2x = 0, v2y = 0;
+  let c3x = 38, c3y = 55, v3x = 0, v3y = 0;
+  let c4x = 38, c4y = 55, v4x = 0, v4y = 0;
+  let wx = 38, wy = 55;
+  let idleT = Math.PI * 1.3, blend = 0, hovering = false;
+
+  function tick() {
+    blend += ((hovering ? 1 : 0) - blend) * (hovering ? 0.004 : 0.003);
+
+    idleT += 0.006;
+    const ix = 35 + Math.cos(idleT * 0.7) * 20;
+    const iy = 52 + Math.sin(idleT * 0.5) * 16;
+    const tx = ix + (mouseX - ix) * blend;
+    const ty = iy + (mouseY - iy) * blend;
+
+    vx += (tx - cx) * 0.0006 - vx * 0.92; cx += vx;
+    vy += (ty - cy) * 0.0006 - vy * 0.92; cy += vy;
+    const dotTX = hovering ? mouseX : cx;
+    const dotTY = hovering ? mouseY : cy;
+    dotX += (dotTX - dotX) * 0.18; dotY += (dotTY - dotY) * 0.18;
+    if (glow2) {
+      hero.style.setProperty('--dot2-cx', dotX.toFixed(2) + '%');
+      hero.style.setProperty('--dot2-cy', dotY.toFixed(2) + '%');
+    }
+    wx += (cx - wx) * 0.018; wy += (cy - wy) * 0.018;
+
+    v1x += (tx - c1x) * 0.0012 - v1x * 0.89; c1x += v1x;
+    v1y += (ty - c1y) * 0.0012 - v1y * 0.89; c1y += v1y;
+    v2x += (tx - c2x) * 0.0008 - v2x * 0.91; c2x += v2x;
+    v2y += (ty - c2y) * 0.0008 - v2y * 0.91; c2y += v2y;
+    v3x += (tx - c3x) * 0.0005 - v3x * 0.93; c3x += v3x;
+    v3y += (ty - c3y) * 0.0005 - v3y * 0.93; c3y += v3y;
+    v4x += (tx - c4x) * 0.002  - v4x * 0.87; c4x += v4x;
+    v4y += (ty - c4y) * 0.002  - v4y * 0.87; c4y += v4y;
+
+    const t = performance.now() * 0.001;
+    const hue = 160 + Math.sin(t * 0.04) * 20;
+    const s1x = c1x + Math.cos(t * 0.32 + 0.8) * 12;
+    const s1y = c1y + Math.sin(t * 0.32 + 0.8) * 6;
+    const s2x = c2x + Math.cos(t * 0.32 + Math.PI + 0.8) * 9;
+    const s2y = c2y + Math.sin(t * 0.32 + Math.PI + 0.8) * 4;
+    const s3x = c3x + Math.cos(t * 0.55 + 2.3) * 18;
+    const s3y = c3y + Math.sin(t * 0.55 + 2.3) * 11;
+    const s4x = c4x + Math.cos(t * 0.18 + 3.8) * 25;
+    const s4y = c4y + Math.sin(t * 0.18 + 3.8) * 8;
+
+    const dark     = document.documentElement.classList.contains('dark');
+    const scale    = dark ? 0.72 : 1;
+    const satScale = dark ? 0.30 : 1;
+    const breath   = (0.14 + Math.sin(t * 0.8 + 1.2) * 0.03) * scale;
+
+    orb2.style.background = [
+      // Main — hue-breathing teal-green
+      `radial-gradient(ellipse 52% 54% at ${cx.toFixed(2)}% ${cy.toFixed(2)}%, hsla(${hue.toFixed(1)},55%,52%,${breath.toFixed(3)}) 0%, hsla(${hue.toFixed(1)},48%,52%,${(0.035*scale).toFixed(3)}) 50%, transparent 70%)`,
+      // s1 — seafoam
+      `radial-gradient(ellipse 18% 20% at ${s1x.toFixed(2)}% ${s1y.toFixed(2)}%, rgba(72,210,180,${(0.14*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s2 — slate blue
+      `radial-gradient(ellipse 12% 14% at ${s2x.toFixed(2)}% ${s2y.toFixed(2)}%, rgba(80,130,190,${(0.06*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s3 — mint
+      `radial-gradient(ellipse 11% 13% at ${s3x.toFixed(2)}% ${s3y.toFixed(2)}%, rgba(60,200,160,${(0.12*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // s4 — aqua
+      `radial-gradient(ellipse 8% 10% at ${s4x.toFixed(2)}% ${s4y.toFixed(2)}%, rgba(70,190,200,${(0.07*satScale).toFixed(3)}) 0%, transparent 100%)`,
+      // wake
+      `radial-gradient(ellipse 72% 74% at ${wx.toFixed(2)}% ${wy.toFixed(2)}%, rgba(60,190,170,${(0.055*scale).toFixed(3)}) 0%, transparent 65%)`
+    ].join(', ');
+
+    if (orb2Visible) requestAnimationFrame(tick);
+  }
+
+  let orb2Visible = true;
+  const obs2 = new IntersectionObserver(function(entries) {
+    orb2Visible = entries[0].isIntersecting;
+    if (orb2Visible) requestAnimationFrame(tick);
+  }, { threshold: 0 });
+  obs2.observe(hero);
+  tick();
+
+  hero.addEventListener('mouseenter', () => { hovering = true; });
+  hero.addEventListener('mousemove', e => {
+    hovering = true;
+    const r = hero.getBoundingClientRect();
+    mouseX = (e.clientX - r.left) / r.width  * 100;
+    mouseY = (e.clientY - r.top)  / r.height * 100;
+  });
+  hero.addEventListener('mouseleave', () => { hovering = false; });
+  hero.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    const r = hero.getBoundingClientRect();
+    mouseX = (t.clientX - r.left) / r.width  * 100;
+    mouseY = (t.clientY - r.top)  / r.height * 100;
+    hovering = true;
+  }, { passive: true });
+  hero.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const r = hero.getBoundingClientRect();
+    mouseX = (t.clientX - r.left) / r.width  * 100;
+    mouseY = (t.clientY - r.top)  / r.height * 100;
+    hovering = true;
+  }, { passive: true });
+  hero.addEventListener('touchend', () => { hovering = false; }, { passive: true });
 })();
 
 /* Rotating words */
