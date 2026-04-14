@@ -74,14 +74,26 @@ if (funFactBtn) {
 const lb = document.getElementById('deckLightbox');
 const lbImg = document.getElementById('deckLbImg');
 const lbClose = document.getElementById('deckLbClose');
+let lbImages = []; // images on current slide
+let lbIndex = 0;
 
-function openLightbox(src, alt) {
+function openLightbox(src, alt, slideImgs, idx) {
+  lbImages = slideImgs || [];
+  lbIndex = idx || 0;
   lbImg.src = src;
   lbImg.alt = alt || '';
   lb.classList.add('open');
 }
 function closeLightbox() {
   lb.classList.remove('open');
+  lbImages = [];
+}
+function lbNav(dir) {
+  if (!lbImages.length) return;
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  const img = lbImages[lbIndex];
+  lbImg.src = img.src;
+  lbImg.alt = img.alt || '';
 }
 
 // Mark all img-boxes with real images as zoomable, attach click
@@ -90,7 +102,20 @@ document.querySelectorAll('.img-box').forEach(box => {
   if (!img) return;
   if (box.closest('.headshot')) return;
   box.classList.add('zoomable');
-  box.addEventListener('click', () => openLightbox(img.src, img.alt));
+  box.addEventListener('click', () => {
+    // Collect all zoomable images on the same slide
+    const slide = box.closest('.slide');
+    const slideImgs = [];
+    let clickedIdx = 0;
+    slide.querySelectorAll('.img-box.zoomable').forEach(b => {
+      const bImg = b.querySelector('img[src]:not([src=""])');
+      if (bImg) {
+        if (b === box) clickedIdx = slideImgs.length;
+        slideImgs.push(bImg);
+      }
+    });
+    openLightbox(img.src, img.alt, slideImgs, clickedIdx);
+  });
 });
 
 lbClose.addEventListener('click', closeLightbox);
@@ -98,8 +123,8 @@ lb.addEventListener('click', (e) => {
   if (e.target === lb) closeLightbox();
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && lb.classList.contains('open')) {
-    closeLightbox();
-    e.stopPropagation();
-  }
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') { closeLightbox(); e.stopPropagation(); }
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); lbNav(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); lbNav(-1); }
 });
