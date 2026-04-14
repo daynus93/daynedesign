@@ -106,7 +106,7 @@ ul li + li { margin-top: 8px; }
   border-radius: 16px;
   overflow: hidden;
   background: var(--bg-alt);
-  border: none;
+  border: 1px solid rgba(0,0,0,0.06);
   position: relative;
 }
 .img-box img {
